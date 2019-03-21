@@ -1,36 +1,61 @@
 <div style="position: fixed;bottom:20px;left:30px;z-index: 999">
-    <a target="_blank" title="contactate via Facebook" href="https://m.me/gattisa" style="vertical-align:middle;box-shadow:0px 0px 10px #333;font-size:12px;padding:10px;border-radius:5px;background-color:#1787fb;color:white;text-shadow:none;">
-        <i class="fab fa-lg fa-facebook-messenger"></i> <span class="hidden-xs hidden-sm">Contactate vía</span> Facebook
+    <a target="_blank"
+       title="contactate via Facebook"
+       href="https://m.me/gattisa"
+       style="vertical-align:middle;box-shadow:0px 0px 10px #333;font-size:12px;padding:10px;border-radius:5px;background-color:#1787fb;color:white;text-shadow:none;">
+        <i class="fab fa-lg fa-facebook-messenger"></i>
+        <span class="hidden-xs hidden-sm">Contactate vía</span> Facebook
     </a> &nbsp;
-    <a target="_blank" title="contactate via WhatsApp" href="https://wa.me/5493564589747" style="vertical-align:middle;box-shadow:0px 0px 10px #333;font-size:12px;padding:10px;border-radius:5px;background-color:#189D0E;color:white;text-shadow:none;">
-        <i class="fab fa-lg fa-whatsapp"></i>  <span class="hidden-xs hidden-sm">Contactate vía</span> WhatsApp
+    <a target="_blank"
+       title="contactate via WhatsApp"
+       href="https://wa.me/5493564589747"
+       style="vertical-align:middle;box-shadow:0px 0px 10px #333;font-size:12px;padding:10px;border-radius:5px;background-color:#189D0E;color:white;text-shadow:none;">
+        <i class="fab fa-lg fa-whatsapp"></i>
+        <span class="hidden-xs hidden-sm">Contactate vía</span> WhatsApp
     </a>
 </div>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-
-
 
 <div class="clearfix"></div>
 <div style="width:100%;background:#F8E002;">
     <center class="container">
-        <a href="https://perfil.mercadolibre.com.ar/gattisa" target="_blank"><img src="<?=URL ?>/assets/img/banner-mercadolibre.jpg" alt="mercadolibre" style="width: 60%"></a>
+        <a href="https://perfil.mercadolibre.com.ar/gattisa" target="_blank">
+            <img src="<?=URL ?>/assets/img/banner-mercadolibre.jpg" alt="mercadolibre" style="width: 60%">
+        </a>
     </center>
 </div>
 <div class="clearfix"></div>
 <footer>
-
     <div class="container">
         <div class="col-md-6 col-xs-12 col-sm-12">
             <h3><i class="fa fa-caret-right"></i> redesSociales</h3>
             <?php  //Traer_Contenidos("facebook"); ?>
             <h3><i class="fa fa-caret-right"></i> menu</h3>
             <ul class="footerMenu">
-                <li><a href="<?=URL ?>/index" title="index">inicio</a></li><br/>
-                <li><a href="<?=URL ?>/nosotros" title="nosotros">nosotros</a></li><br/>
-                <li><a href="<?=URL ?>/productos" title="productos">productos</a></li><br/>
-                <li><a href="<?=URL ?>/novedades" title="novedades">novedades</a></li><br/>
-                <li><a href="<?=URL ?>/videos" title="videos">videos</a></li><br/>
-                <li><a href="<?=URL ?>/contacto" title="contacto">contacto</a></li><br/><br/>
+                <li>
+                    <a href="<?=URL ?>/index" title="index">inicio</a>
+                </li>
+                <br/>
+                <li>
+                    <a href="<?=URL ?>/nosotros" title="nosotros">nosotros</a>
+                </li>
+                <br/>
+                <li>
+                    <a href="<?=URL ?>/productos" title="productos">productos</a>
+                </li>
+                <br/>
+                <li>
+                    <a href="<?=URL ?>/novedades" title="novedades">novedades</a>
+                </li>
+                <br/>
+                <li>
+                    <a href="<?=URL ?>/videos" title="videos">videos</a>
+                </li>
+                <br/>
+                <li>
+                    <a href="<?=URL ?>/contacto" title="contacto">contacto</a>
+                </li>
+                <br/>
+                <br/>
                 <img src="<?=URL ?>/assets/img/exportadores.png" alt="exportadores de argentina" width="40%">
             </ul>
         </div>
@@ -56,10 +81,26 @@
             Tel: (0341) 4354452<br/>
             rosario@gattisa.com.ar<br/>
             <div class="clearfix"></div>
-            <a target="_blank" title="facebook" href="https://www.facebook.com/gattisa/"><i style="font-size: 30px;margin-right: 10px;margin-top: 10px;color:#fff" class="fab fa-facebook-square"></i></a>
-            <a target="_blank" title="twitter" href="https://twitter.com/gattivent"><i style="font-size: 30px;margin-right: 10px;margin-top: 10px;color:#fff" class="fab fa-twitter-square"></i></a>
-            <a target="_blank" title="instagram" href="https://www.instagram.com/gattiventilacion/"><i style="font-size: 30px;margin-right: 10px;margin-top: 10px;color:#fff" class="fab fa-instagram"></i></a>
-            <a target="_blank" title="youtube" href="https://www.youtube.com/channel/UC7G9zR9o0vymBSb63dSvkLA"><i style="font-size: 30px;margin-right: 10px;margin-top: 10px;color:#fff" class="fab fa-youtube-square"></i></a>
+            <a target="_blank"
+               title="facebook"
+               href="https://www.facebook.com/gattisa/">
+                <i style="font-size: 30px;margin-right: 10px;margin-top: 10px;color:#fff" class="fab fa-facebook-square"></i>
+            </a>
+            <a target="_blank"
+               title="twitter"
+               href="https://twitter.com/gattivent">
+                <i style="font-size: 30px;margin-right: 10px;margin-top: 10px;color:#fff" class="fab fa-twitter-square"></i>
+            </a>
+            <a target="_blank"
+               title="instagram"
+               href="https://www.instagram.com/gattiventilacion/">
+                <i style="font-size: 30px;margin-right: 10px;margin-top: 10px;color:#fff" class="fab fa-instagram"></i>
+            </a>
+            <a target="_blank"
+               title="youtube"
+               href="https://www.youtube.com/channel/UC7G9zR9o0vymBSb63dSvkLA">
+                <i style="font-size: 30px;margin-right: 10px;margin-top: 10px;color:#fff" class="fab fa-youtube-square"></i>
+            </a>
         </div>
     </div>
 </footer>
