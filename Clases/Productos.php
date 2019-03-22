@@ -289,6 +289,7 @@ class Productos
             $limitSql = '';
         }
         $sql = "SELECT * FROM `productos` $filterSql  ORDER BY $orderSql $limitSql";
+        echo $sql;
         $productos = $this->con->sqlReturn($sql);
         if ($productos) {
             while ($row = mysqli_fetch_assoc($productos)) {

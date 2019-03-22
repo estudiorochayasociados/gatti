@@ -135,13 +135,13 @@ if (isset($_GET['logout'])) {
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a title="NUESTRA HISTORIA" href="<?= URL ?>/nosotros"> NUESTRA HISTORIA</a>
+                                    <a title="NUESTRA HISTORIA" href="<?= URL ?>/c/nosotros"> NUESTRA HISTORIA</a>
                                 </li>
                                 <li>
-                                    <a title="TUNEL DEL VIENTO" href="<?= URL ?>/tunel"> TUNEL DEL VIENTO</a>
+                                    <a title="TUNEL DEL VIENTO" href="<?= URL ?>/c/tunel"> TUNEL DEL VIENTO</a>
                                 </li>
                                 <li>
-                                    <a title="OBRAS INSTALADAS" href="<?= URL ?>/obras"> OBRAS INSTALADAS</a>
+                                    <a title="OBRAS INSTALADAS" href="<?= URL ?>/c/obras"> OBRAS INSTALADAS</a>
                                 </li>
                             </ul>
                         </li>

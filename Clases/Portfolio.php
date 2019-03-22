@@ -70,7 +70,7 @@ class Portfolio
             $filterSql = '';
         }
 
-        $sql   = "SELECT * FROM `portfolio` $filterSql  ORDER BY id DESC";
+        $sql   = "SELECT * FROM `portfolio` $filterSql  ORDER BY id_portfolio ASC";
         $notas = $this->con->sqlReturn($sql);
 
         if ($notas) {
