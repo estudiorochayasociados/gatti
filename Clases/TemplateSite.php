@@ -72,7 +72,7 @@ class TemplateSite
         echo '<meta property="og:title" content="' . strip_tags($this->title) . '" />';
         echo '<meta property="og:description" content="' . strip_tags($this->description) . '" />';
         echo '<meta property="og:image" content="' . $this->imagen . '" />';
-        echo '<link href="' . $this->favicon . '" rel="Shortcut Icon" />';
+        echo '<link href="' . FAVICON . '" rel="Shortcut Icon" />';
         include 'assets/inc/header.inc.php';
         echo '</head>';
         echo '<body ' . $this->body . '>';

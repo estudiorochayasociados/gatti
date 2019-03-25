@@ -32,7 +32,7 @@ body {
 
 
 .catt{
-	font-size: 18px;
+	font-size: 14px;
 	color: #e76915;
 }
 
@@ -725,4 +725,11 @@ footer h3 i {
 	.collapse.in{
 		display:block !important;
 	}
+}
+.centro{
+	text-align: center;
+}
+.hr-chicos{
+	margin-top: 3px;
+	margin-bottom: 3px;
 }

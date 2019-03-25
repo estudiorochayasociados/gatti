@@ -129,7 +129,7 @@ class Categorias
         } else {
             $limitSql = '';
         }
-        $sql = "SELECT * FROM `categorias` WHERE area = '{$this->area}'  ORDER BY id DESC $limitSql";
+        $sql = "SELECT * FROM `categorias` WHERE area = '{$this->area}'  ORDER BY titulo ASC $limitSql";
         $notas = $this->con->sqlReturn($sql);
         if ($notas) {
             while ($row = mysqli_fetch_assoc($notas)) {
@@ -139,15 +139,14 @@ class Categorias
         }
     }
 
-
-    function listForSearch($limit) {
+    function listForCount($limit) {
         $array = array();
         if ($limit != '') {
             $limitSql = "LIMIT " . $limit;
         } else {
             $limitSql = '';
         }
-        $sql = " SELECT `categorias`.`titulo`,`categorias`.`cod`, count(`productos`.`categoria`)  as cantidad  FROM `productos`,`categorias` WHERE `categoria` = `categorias`.`cod` GROUP BY categoria ORDER BY cantidad  DESC  $limitSql";
+        $sql = " SELECT categorias.titulo,categorias.cod FROM `productos`,`categorias` WHERE `categoria` = categorias.cod GROUP BY categoria ORDER BY titulo ASC $limitSql";
         $notas = $this->con->sqlReturn($sql);
         if ($notas) {
             while ($row = mysqli_fetch_assoc($notas)) {

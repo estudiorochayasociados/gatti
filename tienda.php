@@ -6,6 +6,7 @@ $template = new Clases\TemplateSite();
 $funciones = new Clases\PublicFunction();
 $producto = new Clases\Productos();
 $categoria = new Clases\Categorias();
+$subcategoria = new Clases\Subcategorias();
 $banner = new Clases\Banner();
 ///Banners
 $categoria->set("area", "banners");
@@ -21,6 +22,7 @@ $categorias_data = $categoria->listForCount('');
 //Productos
 $pagina = $funciones->antihack_mysqli(isset($_GET["pagina"]) ? $_GET["pagina"] : '0');
 $categoria_get = $funciones->antihack_mysqli(isset($_GET["categoria"]) ? $_GET["categoria"] : '');
+$subcategoria_get = $funciones->antihack_mysqli(isset($_GET["subcategoria"]) ? $_GET["subcategoria"] : '');
 $titulo = $funciones->antihack_mysqli(isset($_GET["buscar"]) ? $_GET["buscar"] : '');
 //
 $cantidad = 9;
@@ -49,13 +51,23 @@ if ($_GET) {
     $anidador = "?";
 }
 
-$filter = array("variable2='0'");
+$filter = array("variable2='1'");
 
 if (!empty($categoria_get)) {
-    $categoria->set("cod", $categoria_get);
-    $categoria_data_filtro = $categoria->view();
-    $cod = $categoria_data_filtro['cod'];
-    array_push($filter, "categoria='$cod'");
+    if (!empty($subcategoria_get)){
+        $categoria->set("cod", $categoria_get);
+        $categoria_data_filtro = $categoria->view();
+        $cod = $categoria_data_filtro['cod'];
+        $subcategoria->set("cod", $subcategoria_get);
+        $subcategoria_data_filtro = $subcategoria->view();
+        $cod_sub = $subcategoria_data_filtro['cod'];
+        array_push($filter, "categoria='$cod' AND subcategoria='$cod_sub'");
+    }else{
+        $categoria->set("cod", $categoria_get);
+        $categoria_data_filtro = $categoria->view();
+        $cod = $categoria_data_filtro['cod'];
+        array_push($filter, "categoria='$cod'");
+    }
 }
 
 if ($titulo != '') {
@@ -85,7 +97,7 @@ $template->themeInit();
 ?>
 <div class="headerTitular">
     <div class="container">
-        <h1>Productos</h1>
+        <h1>TIENDA ONLINE</h1>
     </div>
 </div>
 <div class="container cuerpoContenedor">
@@ -99,7 +111,7 @@ $template->themeInit();
                     <?php
                     if (!empty($categoria_get)) {
                         ?>
-                        <a href="<?= URL ?>/productos">
+                        <a href="<?= URL ?>/tienda">
                             <span class="alert btn-block alert-warning">
                                 <i class="fa fa-close"></i> <?= $categoria_data_filtro['titulo']; ?>
                             </span>
@@ -161,11 +173,43 @@ $template->themeInit();
                             <span class="precioProducto">
                             <b>Categoría: </b>
                             <br/>
-                            <a href="<?= URL . '/productos?categoria=' . $prod['data']['categoria'] ?>">
+                            <a href="<?= URL . '/tienda?categoria=' . $prod['data']['categoria'] ?>">
                                 <?= ucfirst($prod['categorias']['titulo']); ?>
                             </a>
                         </span>
                             <br/>
+                            <?php
+                            if ($prod['data']['variable2'] != 0) {
+                                if (!empty($prod['data']['precio_descuento']) && $prod['data']['precio_descuento'] > 0) {
+                                    ?>
+                                    <div class="label label-danger"
+                                         style="float:left;font-size: 12px;display:inherit;margin-bottom: 2px !important">
+                                        <?= "<b>Antes: </b>$" . ($prod['data']["precio"]) ?>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="label label-success"
+                                         style="float:left;font-size: 15px;display:inherit;margin-bottom: 2px !important">
+                                        <?= "<b>Ahora: </b>$" . ($prod['data']['precio_descuento']) ?>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <span class="precioProducto"><?= "<b>Precio: </b>$" . ($prod['data']['precio']) ?>
+                                    </span>
+                                    <br/>
+                                    <?php
+                                }
+                                ?>
+                                <span class="precioProducto" style="color:red">
+                                    <?= "<i>Precio de contado: $" . ($prod['data']['precio'] - ($prod['data']['precio'] * 10 / 100)) . "</i>" ?>
+                                </span>
+                                <?php
+                                if ($prod['data']['stock'] == 0) {
+                                    echo "<div class='label label-danger'>* sin stock</div>";
+                                }
+                            }
+                            ?>
                             <div class="clearfix"></div>
                             <br/>
                             <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>"
@@ -231,10 +275,19 @@ $template->themeInit();
                 <?php
                 foreach ($categorias_data as $cat) {
                     ?>
-                    <hr/>
-                    <a class="catt" href="<?= URL . '/productos?categoria=' . $cat['cod']; ?>"><?= $cat['titulo']; ?></a>
+                    <hr class="hr-chicos"/>
+                    <a class="catt" href="<?= URL . '/tienda?categoria=' . $cat['cod']; ?>"><?= $cat['titulo']; ?></a>
                     <br>
                     <?php
+                    $subs_data = $subcategoria->listForCount('');
+                    foreach ($subs_data as $sub) {
+                        if ($sub['categoria'] == $cat['cod']) {
+                            ?>
+                            <a class="subb" href="<?= URL . '/tienda?categoria=' . $cat['cod'] . '&subcategoria=' . $sub['cod'] ?>"><?= $sub['titulo']; ?></a>
+                            <br>
+                            <?php
+                        }
+                    }
                 }
                 ?>
             </div>

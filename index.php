@@ -12,7 +12,6 @@ $slider = new Clases\Sliders();
 $template->set("title", TITULO . " | Inicio");
 $template->set("description", "Página principal de " . TITULO);
 $template->set("keywords", "");
-$template->set("favicon", FAVICON);
 $template->themeInit();
 ////Datos
 ///Productos

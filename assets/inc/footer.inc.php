@@ -113,7 +113,6 @@
 <script src="<?=URL ?>/assets/js/bootstrap.min.js"></script>
 <script src="<?=URL ?>/assets/lightbox/lightbox.js"></script>
 <script type="text/javascript" src="<?=URL ?>/assets/js/slick.min.js"></script>
-
 <script type="text/javascript">
     $(document).ready(function(){
         $('.masVistos').slick({
@@ -165,18 +164,12 @@
 
     });
 </script>
-
-
-
 <script>var dolar = $('.dolar').text();</script>
-
-
 <script>
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
-
 <!-- lightox video -->
 <script>
     $(function() {
@@ -190,9 +183,7 @@
             });
         });
     });
-
 </script>
-
 <script>    // local storage o cookie
     if(localStorage.getItem('idChat') != '' && localStorage.getItem('idChat') !== null ) {
         sector(localStorage.getItem('idChat'));

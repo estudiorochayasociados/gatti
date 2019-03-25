@@ -77,8 +77,14 @@ class Subcategorias
         }
     }
 
-    function listForSearch($categoria) {
-        $sql = "SELECT subcategorias.cod, subcategorias.titulo, subcategorias.categoria, count(productos.id) as cantidad FROM subcategorias INNER JOIN productos ON subcategorias.cod = productos.subcategoria where productos.categoria = subcategorias.categoria AND productos.subcategoria = subcategorias.cod group by subcategorias.titulo ORDER BY `cantidad` DESC";
+    function listForCount($limit) {
+        $array = array();
+        if ($limit != '') {
+            $limitSql = "LIMIT " . $limit;
+        } else {
+            $limitSql = '';
+        }
+        $sql = " SELECT subcategorias.titulo,subcategorias.cod,subcategorias.categoria FROM `productos`,`subcategorias` WHERE `subcategoria` = subcategorias.cod GROUP BY subcategoria ORDER BY titulo ASC$limitSql";
         $notas = $this->con->sqlReturn($sql);
         if ($notas) {
             while ($row = mysqli_fetch_assoc($notas)) {
