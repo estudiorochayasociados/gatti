@@ -11,7 +11,7 @@ if (isset($_POST["agregar"])) {
     $envios->set("precio", $funciones->antihack_mysqli(isset($_POST["precio"]) ? $_POST["precio"] : ''));
     $envios->set("peso", $funciones->antihack_mysqli(isset($_POST["peso"]) ? $_POST["peso"] : ''));
     $envios->edit();
-    $funciones->headerMove(URL . "/index.php?op=envios&accion=modificar&cod=$cod");
+    $funciones->headerMove(URL . "/index.php?op=envios&accion=ver");
 }
 ?>
 

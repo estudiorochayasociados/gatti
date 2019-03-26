@@ -18,7 +18,7 @@ foreach ($categorias_banners as $catB) {
     }
 }
 //Categorias
-$categorias_data = $categoria->listForCount('');
+$categorias_data = $categoria->listForCount('1','');
 //Productos
 $pagina = $funciones->antihack_mysqli(isset($_GET["pagina"]) ? $_GET["pagina"] : '0');
 $categoria_get = $funciones->antihack_mysqli(isset($_GET["categoria"]) ? $_GET["categoria"] : '');
@@ -54,7 +54,7 @@ if ($_GET) {
 $filter = array("variable2='1'");
 
 if (!empty($categoria_get)) {
-    if (!empty($subcategoria_get)){
+    if (!empty($subcategoria_get)) {
         $categoria->set("cod", $categoria_get);
         $categoria_data_filtro = $categoria->view();
         $cod = $categoria_data_filtro['cod'];
@@ -62,7 +62,7 @@ if (!empty($categoria_get)) {
         $subcategoria_data_filtro = $subcategoria->view();
         $cod_sub = $subcategoria_data_filtro['cod'];
         array_push($filter, "categoria='$cod' AND subcategoria='$cod_sub'");
-    }else{
+    } else {
         $categoria->set("cod", $categoria_get);
         $categoria_data_filtro = $categoria->view();
         $cod = $categoria_data_filtro['cod'];
@@ -168,7 +168,8 @@ $template->themeInit();
                             </a>
                             <h1 class="tituloProducto">
                                 <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>"
-                                   style="font-size:25px"><?= ucfirst($prod['data']['titulo']); ?></a>
+                                   style="font-size:25px"><?= ucfirst($prod['data']['titulo']); ?>
+                                </a>
                             </h1>
                             <span class="precioProducto">
                             <b>Categoría: </b>
@@ -206,7 +207,9 @@ $template->themeInit();
                                 </span>
                                 <?php
                                 if ($prod['data']['stock'] == 0) {
-                                    echo "<div class='label label-danger'>* sin stock</div>";
+                                    ?>
+                                    <div class='label label-danger'>* sin stock</div>
+                                    <?php
                                 }
                             }
                             ?>

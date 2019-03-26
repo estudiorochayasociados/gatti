@@ -17,7 +17,7 @@ foreach ($categorias_banners as $catB) {
     }
 }
 //Categorias
-$categorias_data = $categoria->listForCount('');
+$categorias_data = $categoria->listForCount('0','');
 //Productos
 $pagina = $funciones->antihack_mysqli(isset($_GET["pagina"]) ? $_GET["pagina"] : '0');
 $categoria_get = $funciones->antihack_mysqli(isset($_GET["categoria"]) ? $_GET["categoria"] : '');

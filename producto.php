@@ -40,7 +40,7 @@ $url_limpia = str_replace("?error", "", $url_limpia);
 <div class="container cuerpoContenedor">
     <div class="row">
         <div class="col-md-12 col-xs-12" style="margin-top:10px">
-            <h1 class="tituloProducto"><?= ucfirst($producto_data['data']['titulo']); ?>
+            <h1 id="title" class="tituloProducto"><?= ucfirst($producto_data['data']['titulo']); ?>
             </h1>
             <br/><br/><br/>
             <div class="col-md-5">
@@ -51,26 +51,48 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                 <br/>
                 <div class="hidden-xs hidden-sm">
                     <?php
-                    if (is_file($data["imagen1_portfolio"])) {
-                        echo '<a href="' . BASE_URL . "/" . $data["imagen1_portfolio"] . '" data-lightbox="roadtrip" > <div class="col-md-3 thumbnail"><img src="' . BASE_URL . "/" . $data["imagen1_portfolio"] . '" style="width:100%" /></div></a>';
+                    if (!empty($producto_data['imagenes'])) {
+                        foreach ($producto_data['imagenes'] as $img) {
+                            if (is_file($img['ruta'])) {
+                                ?>
+                                <a href="<?= URL . '/' . $img['ruta']; ?>" data-lightbox="roadtrip">
+                                    <div class="col-md-3 thumbnail">
+                                        <img src="<?= URL . '/' . $img['ruta']; ?>" style="width:100%"/>
+                                    </div>
+                                </a>
+                                <?php
+                            }
+                        }
                     }
-                    if ($data["video1_portfolio"]) {
-                        echo '<a href="#" class="video" data-video="https://www.youtube.com/embed/' . $data["video1_portfolio"] . '" data-toggle="modal" data-target="#videoModal"> <div class="col-md-3 thumbnail"><img src="' . BASE_URL . '/img/video-producto.png" /></div></a>
-            <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-body">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <iframe width="100%" height="350" src="" frameborder="0" allowfullscreen></iframe>
-            </div>
-            </div>
-            </div>
-            </div>';
+
+                    if (!empty($producto_data['data']['variable9'])) {
+                        ?>
+                        <a href="#"
+                           class="video"
+                           data-video="https://www.youtube.com/embed/<?= $producto_data['data']['variable9']; ?>"
+                           data-toggle="modal"
+                           data-target="#videoModal">
+                            <div class="col-md-3 thumbnail"><img src="<?= URL ?>/assets/img/video-producto.png"/></div>
+                        </a>
+                        <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <iframe width="100%" height="350" src="" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
                     }
                     ?>
-                    <?php include("inc/socialfb.inc.php"); ?>
+                    <?php include("assets/inc/socialfb.inc.php"); ?>
                     <div class="clearfix"></div>
-                    <br/></div>
+                    <br/>
+                </div>
             </div>
             <div class="col-md-7">
                 <p><b>Categoría: </b>
@@ -83,55 +105,102 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                     <?php
                     if (!empty($producto_data['data']['precio_descuento']) && $producto_data['data']['precio_descuento'] > 0) {
                         ?>
-                        <h2 class="label label-danger" style="font-size: 20px">Precio antes: $<?=$producto_data['data']['precio']?></h2>
-                        <h2>Precio: $<?=$producto_data['data']['precio_descuento']?></h2>
+                        <h2 class="label label-danger" style="font-size: 20px">Precio antes: $<?= $producto_data['data']['precio'] ?></h2>
+                        <h2>Precio: $<?= $producto_data['data']['precio_descuento'] ?></h2>
                         <?php
-                    }else{
-                        ?>
-                        <h2>Precio: $<?=$producto_data['data']['precio']?></h2>
-                        <?php
-                    }
-                    ?>
-                    <h4 style="color:red"><?php echo "<i>10% de descuento en pago de contado: $" . ($precio - ($precio * 10 / 100)) . "</i>" ?></h4>
-                    <?php
-                    if ($data["stock_portfolio"] == 0) {
-                        echo "<br/><b>Stock: <div style='vertical-align:center;font-size:12px' class='label label-danger'>* sin stock</div><br/><br/></b>";
                     } else {
-                        echo "<br/><b>Stock: <div style='vertical-align:center;font-size:12px' class='label label-success'>" . $data["stock_portfolio"] . "</div><br/><br/></b>";
+                        ?>
+                        <h2>Precio: $<?= $producto_data['data']['precio'] ?></h2>
+                        <?php
                     }
                     ?>
+                    <h4 style="color:red">
+                        <?= "<i>10% de descuento en pago de contado: $" . ($producto_data['data']['precio'] - ($producto_data['data']['precio'] * 10 / 100)) . "</i>" ?>
+                    </h4>
                     <?php
-                    if (isset($_POST["agregar_carrito"])) {
-                        $cantidad = $_POST["cantidad"];
-                        if ($cantidad == '' || $data["stock_portfolio"] < $cantidad) {
-                            echo "<span class='alert alert-warning'>Ups!! No contamos con esa cantidad.</span><br/><br/>";
-                        } else {
-                            $_SESSION["envioTipo"] = 'Seleccionar tipo de envio.';
-                            $_SESSION["envio"] = '';
-                            $idProducto = $_POST["id"];
-                            $var = $idProducto . "-" . $cantidad;
-                            array_push($_SESSION["carrito"], $var);
-                            header("location: " . BASE_URL . "/carrito");
-                            echo "<span class='alert btn-block alert-success'><i class='fa fa-cart-plus'></i> Excelente, añadiste un nuevo producto a tu carro. <a href='sesion.php?op=ver-carrito'>Ir al carro</a></span>";
+                    if ($producto_data['data']['stock'] > 0) {
+                        if (isset($_POST["agregar_carrito"])) {
+                            $carroEnvio = $carrito->checkEnvio();
+                            if ($carroEnvio != '') {
+                                $carrito->delete($carroEnvio);
+                            }
+
+                            $carroPago = $carrito->checkPago();
+                            if ($carroPago != '') {
+                                $carrito->delete($carroPago);
+                            }
+                            $carrito->set("id", $producto_data['data']['id']);
+                            $carrito->set("cantidad", $_POST["cantidad"]);
+                            $carrito->set("titulo", $producto_data['data']['titulo']);
+                            $carrito->set("precio", $producto_data['data']['precio']);
+                            $carrito->set("stock", $producto_data['data']['stock']);
+                            $carrito->set("peso", $producto_data['data']['variable4']);
+                            if (($producto_data['data']['precio_descuento'] <= 0) || $producto_data['data']["precio_descuento"] == '') {
+                                $carrito->set("precio", $producto_data['data']['precio']);
+                            } else {
+                                $carrito->set("precio", $producto_data['data']['precio_descuento']);
+                            }
+
+                            if ($carrito->add()) {
+                                $funciones->headerMove($url_limpia . "?success#title");
+                            } else {
+                                $funciones->headerMove($url_limpia . "?error#title");
+                            }
                         }
+                        ?>
+                        <br/>
+                        <b>Stock:
+                            <div style="vertical-align:center;font-size:12px" class="label label-success"><?= $producto_data['data']['stock']; ?></div>
+                            <br/>
+                            <br/>
+                        </b>
+                        <form class="row" method="post">
+                            <label class="col-md-4">
+                                ¿Cuántos necesitas?:<br/>
+                                <input type="number"
+                                       value="1"
+                                       name="cantidad"
+                                       min="1"
+                                       max="<?= $producto_data['data']['stock']; ?>"
+                                       class="cantidad form-control"
+                                       oninvalid="this.setCustomValidity('Ingresar un stock válido. Stock disponible: <?= $producto_data['data']['stock'] ?>')"
+                                       oninput="this.setCustomValidity('')"
+                                       onkeydown="return (event.keyCode!=13);"/>
+                            </label>
+                            <div class="precioFinal"></div>
+                            <div class="clearfix"></div>
+                            <br/>
+                            <div class="col-md-12">
+                                <?php
+                                if (strpos(CANONICAL, "success") == true) {
+                                    echo "<div class='alert alert-success'>Agregaste un producto a tu carrito, querés <a href='" . URL . "/carrito'><b>pasar por caja</b></a> o <a href='" . URL . "/tienda'><b>seguir comprando</b></a></div>";
+                                }
+                                if (strpos(CANONICAL, "error") == true) {
+                                    echo "<div class='alert alert-danger'>No se puede agregar por falta de stock, compruebe si ya posee este producto en su carrito.</div>";
+                                }
+                                ?>
+                                <button name="agregar_carrito" type="submit" class="btn btn-success">
+                                    <i class="fa fa-cart-plus"></i> AGREGAR A CARRITO
+                                </button>
+                                <a href="<?= URL . "/carrito"; ?>" class="btn btn-info">
+                                    <i class="fa fa-shopping-cart "></i> VER CARRITO
+                                </a>
+                            </div>
+                        </form>
+                        <?php
+                    } else {
+                        ?>
+                        <br/>
+                        <b>Stock:
+                            <div style='vertical-align:center;font-size:12px' class='label label-danger'>* sin stock</div>
+                            <br/>
+                            <br/>
+                        </b>
+                        <?php
                     }
                     ?>
-                    <form class="row" method="post">
-                        <input type="hidden" value="<?php echo $data["id_portfolio"] ?>" name="id"/>
-                        <label class="col-md-4">
-                            ¿Cuántos necesitas?:<br/>
-                            <input type="number" value="1" name="cantidad" min="1" class="cantidad form-control"/>
-                        </label>
-                        <div class="precioFinal"></div>
-                        <div class="clearfix"></div>
-                        <br/>
-                        <div class="col-md-12">
-                            <button name="agregar_carrito" class="btn btn-success"><i class="fa fa-cart-plus"></i> AGREGAR A CARRITO</button>
-                            <a href="<?= BASE_URL . "/sesion.php?op=ver-carrito"; ?>" class="btn btn-info"><i class="fa fa-shopping-cart "></i> VER CARRITO</a>
-                        </div>
-                    </form>
                     <br/>
-                    <img src="<?php echo BASE_URL ?>/img/mp.jpg" width="90%"/><br/>
+                    <img src="<?= URL ?>/assets/img/mp.jpg" width="90%"/><br/>
                     <!-- PROMOS -->
                     <hr/>
                     <a data-toggle="modal" data-target="#promo">Promociones con Mercadopago</a>
@@ -149,73 +218,96 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                     <!-- FIN PROMOS -->
                     <?php
                 } else {
-                    echo $data["descripcion_portfolio"];
-                    if ($data["pdf_portfolio"] != '') {
+                    echo $producto_data['data']['desarrollo'];
+                    if ($producto_data['categorias']['titulo'] == 'AXIALES') {
                         ?>
                         <div class="clearfix"></div><br/>
-                        <a href="<?php echo BASE_URL; ?>/<?php echo $data["pdf_portfolio"] ?>" class="btn btn-default btn-block" target="_blank">FOLLETO DEL PRODUCTO</a>
-                    <?php } ?>
+                        <a href="<?= URL ?>/assets/archivos/MANUAL DE OPERACION Y MANTENIMIENTO AXIALES.pdf"
+                           class="btn btn-primary btn-block"
+                           target="_blank">
+                            MANUAL DE OPERACIÓN Y MANTENIMIENTO AXIALES
+                        </a>
+                        <?php
+                    }
+                    ?>
 
-                    <?php if ($data["categoria_portfolio"] == 'AXIALES') { ?>
+                    <?php
+                    if ($producto_data['categorias']['titulo'] == 'CENTRIFUGOS') {
+                        ?>
                         <div class="clearfix"></div><br/>
-                        <a href="archivos/MANUAL DE OPERACION Y MANTENIMIENTO AXIALES.pdf" class="btn btn-primary btn-block" target="_blank">MANUAL DE OPERACIÓN Y MANTENIMIENTO AXIALES</a>
-                    <?php } ?>
-
-                    <?php if ($data["categoria_portfolio"] == 'CENTRIFUGOS') { ?>
-                        <div class="clearfix"></div><br/>
-                        <a href="archivos/MANUAL DE OPERACION Y MANTENIMIENTO CENTRIFUGOS.pdf" class="btn btn-primary btn-block" target="_blank">MANUAL DE OPERACIÓN Y MANTENIMIENTO CENTRÍFUGOS</a>
+                        <a href="<?= URL ?>/assets/archivos/MANUAL DE OPERACION Y MANTENIMIENTO CENTRIFUGOS.pdf"
+                           class="btn btn-primary btn-block"
+                           target="_blank">
+                            MANUAL DE OPERACIÓN Y MANTENIMIENTO CENTRÍFUGOS
+                        </a>
                         <?php
                     }
                 }
                 ?>
                 <div class="clearfix"></div>
                 <br/><br/>
-                <img src="https://imgmp.mlstatic.com/org-img/banners/ar/medios/785X40.jpg" title="MercadoPago - Medios de pago" alt="MercadoPago - Medios de pago" width="100%"/>
+                <img src="https://imgmp.mlstatic.com/org-img/banners/ar/medios/785X40.jpg"
+                     title="MercadoPago - Medios de pago"
+                     alt="MercadoPago - Medios de pago"
+                     width="100%"/>
                 <br><br>
                 <br/><br/>
             </div>
         </div>
     </div>
 </div>
-
-
 <div class="container">
     <div class="col-md-12">
         <div>
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Descripción del Producto</a></li>
-                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Comentarios del Producto</a></li>
+                <li role="presentation" class="active">
+                    <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Descripción del Producto</a>
+                </li>
+                <!--
+                <li role="presentation">
+                    <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Comentarios del Producto</a>
+                </li>
+                -->
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="home">
                     <h3>Descripión del producto</h3>
                     <hr/>
                     <p>
-                        <?php echo $data["descripcion_portfolio"] ?>
-
-                        <?php if ($data["pdf_portfolio"] != '') { ?>
+                        <?php
+                        echo $producto_data['data']['desarrollo'];
+                        if ($producto_data['categorias']['titulo'] == 'AXIALES') {
+                        ?>
                     <div class="clearfix"></div>
                     <br/>
-                    <a href="<?php echo $data["pdf_portfolio"] ?>" class="btn btn-default btn-block" target="_blank">FOLLETO DEL PRODUCTO</a>
-                    <?php } ?>
-
-                    <?php if ($data["categoria_portfolio"] == 'AXIALES') { ?>
+                    <a href="<?= URL ?>/assets/archivos/MANUAL DE OPERACION Y MANTENIMIENTO AXIALES.pdf"
+                       class="btn btn-primary btn-block"
+                       target="_blank">
+                        MANUAL DE OPERACIÓN Y MANTENIMIENTO AXIALES
+                    </a>
+                    <?php
+                    }
+                    if ($producto_data['categorias']['titulo'] == 'CENTRIFUGOS') {
+                        ?>
                         <div class="clearfix"></div><br/>
-                        <a href="archivos/MANUAL DE OPERACION Y MANTENIMIENTO AXIALES.pdf" class="btn btn-primary btn-block" target="_blank">MANUAL DE OPERACIÓN Y MANTENIMIENTO AXIALES</a>
-                    <?php } ?>
-
-                    <?php if ($data["categoria_portfolio"] == 'CENTRIFUGOS') { ?>
-                        <div class="clearfix"></div><br/>
-                        <a href="archivos/MANUAL DE OPERACION Y MANTENIMIENTO CENTRIFUGOS.pdf" class="btn btn-primary btn-block" target="_blank">MANUAL DE OPERACIÓN Y MANTENIMIENTO CENTRÍFUGOS</a>
-                    <?php } ?>
+                        <a href="<?= URL ?>/assets/archivos/MANUAL DE OPERACION Y MANTENIMIENTO CENTRIFUGOS.pdf"
+                           class="btn btn-primary btn-block"
+                           target="_blank">
+                            MANUAL DE OPERACIÓN Y MANTENIMIENTO CENTRÍFUGOS
+                        </a>
+                        <?php
+                    }
+                    ?>
                     </p>
                     <br/>
                 </div>
+                <!--
                 <div role="tabpanel" class="tab-pane" id="profile">
                     <h3>Escribí comentarios o dudas</h3>
                     <hr/>
-                    <?php include("inc/comentariofb.inc.php"); ?>
+                    <?php // include("inc/comentariofb.inc.php"); ?>
                 </div>
+                -->
             </div>
         </div>
     </div>

@@ -70,9 +70,11 @@ if (isset($_GET['logout'])) {
                 }
                 ?>
 
-                <?php if (!empty($_SESSION["carrito"])) { ?>
+                <?php
+                if (!empty($_SESSION["carrito"])) {
+                    ?>
                     <li><span> / </span></li>
-                    <li><a href="<=URL ?>/carrito" title="carrito"><i class="fa fa-shopping-cart"></i> Ver carrito</a></li>
+                    <li><a href="<?= URL ?>/carrito" title="carrito"><i class="fa fa-shopping-cart"></i> Ver carrito</a></li>
                     <?php
                 }
                 ?>

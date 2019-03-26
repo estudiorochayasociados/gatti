@@ -139,14 +139,14 @@ class Categorias
         }
     }
 
-    function listForCount($limit) {
+    function listForCount($variable,$limit) {
         $array = array();
         if ($limit != '') {
             $limitSql = "LIMIT " . $limit;
         } else {
             $limitSql = '';
         }
-        $sql = " SELECT categorias.titulo,categorias.cod FROM `productos`,`categorias` WHERE `categoria` = categorias.cod GROUP BY categoria ORDER BY titulo ASC $limitSql";
+        $sql = " SELECT categorias.titulo,categorias.cod FROM `productos`,`categorias` WHERE `categoria` = categorias.cod AND productos.variable2='$variable' GROUP BY categoria ORDER BY titulo ASC $limitSql";
         $notas = $this->con->sqlReturn($sql);
         if ($notas) {
             while ($row = mysqli_fetch_assoc($notas)) {
