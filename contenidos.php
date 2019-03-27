@@ -29,6 +29,12 @@ if (empty($contenido_data)) {
             case 'obras':
                 echo "<h1>OBRAS INSTALADAS</h1>";
                 break;
+            case 'software':
+                echo "<h1>SOFTWARE DE VENTILADORES</h1>";
+                break;
+            case 'formularios':
+                echo "<h1>FORMULARIOS IMPOSITIVOS</h1>";
+                break;
         }
         ?>
     </div>
@@ -39,3 +45,4 @@ if (empty($contenido_data)) {
 <?php
 $template->themeEnd();
 ?>
+

@@ -19,7 +19,7 @@
 <div style="width:100%;background:#F8E002;">
     <center class="container">
         <a href="https://perfil.mercadolibre.com.ar/gattisa" target="_blank">
-            <img src="<?=URL ?>/assets/img/banner-mercadolibre.jpg" alt="mercadolibre" style="width: 60%">
+            <img src="<?= URL ?>/assets/img/banner-mercadolibre.jpg" alt="mercadolibre" style="width: 60%">
         </a>
     </center>
 </div>
@@ -27,36 +27,38 @@
 <footer>
     <div class="container">
         <div class="col-md-6 col-xs-12 col-sm-12">
-            <h3><i class="fa fa-caret-right"></i> redesSociales</h3>
-            <?php  //Traer_Contenidos("facebook"); ?>
+            <h3><i class="fa fa-caret-right"></i> Redes Sociales</h3>
+            <?php
+            include 'assets/inc/facebook.inc.php';
+            ?>
             <h3><i class="fa fa-caret-right"></i> menu</h3>
             <ul class="footerMenu">
                 <li>
-                    <a href="<?=URL ?>/index" title="index">inicio</a>
+                    <a href="<?= URL ?>/index" title="Index">Inicio</a>
                 </li>
                 <br/>
                 <li>
-                    <a href="<?=URL ?>/nosotros" title="nosotros">nosotros</a>
+                    <a href="<?= URL ?>/c/nosotros" title="Nosotros">Nosotros</a>
                 </li>
                 <br/>
                 <li>
-                    <a href="<?=URL ?>/productos" title="productos">productos</a>
+                    <a href="<?= URL ?>/tienda" title="Tienda">Tienda</a>
                 </li>
                 <br/>
                 <li>
-                    <a href="<?=URL ?>/novedades" title="novedades">novedades</a>
+                    <a href="<?= URL ?>/novedades" title="Novedades">Novedades</a>
                 </li>
                 <br/>
                 <li>
-                    <a href="<?=URL ?>/videos" title="videos">videos</a>
+                    <a href="<?= URL ?>/videos" title="Videos">Videos</a>
                 </li>
                 <br/>
                 <li>
-                    <a href="<?=URL ?>/contacto" title="contacto">contacto</a>
+                    <a href="<?= URL ?>/contacto" title="Contacto">Contacto</a>
                 </li>
                 <br/>
                 <br/>
-                <img src="<?=URL ?>/assets/img/exportadores.png" alt="exportadores de argentina" width="40%">
+                <img src="<?= URL ?>/assets/img/exportadores.png" alt="exportadores de argentina" width="40%">
             </ul>
         </div>
         <div class="col-md-6 col-xs-12 col-sm-12">
@@ -96,11 +98,12 @@
                href="https://www.instagram.com/gattiventilacion/">
                 <i style="font-size: 30px;margin-right: 10px;margin-top: 10px;color:#fff" class="fab fa-instagram"></i>
             </a>
+            <!--
             <a target="_blank"
                title="youtube"
                href="https://www.youtube.com/channel/UC7G9zR9o0vymBSb63dSvkLA">
                 <i style="font-size: 30px;margin-right: 10px;margin-top: 10px;color:#fff" class="fab fa-youtube-square"></i>
-            </a>
+            </a>-->
         </div>
     </div>
 </footer>
@@ -110,11 +113,11 @@
     </div>
 </div>
 
-<script src="<?=URL ?>/assets/js/bootstrap.min.js"></script>
-<script src="<?=URL ?>/assets/lightbox/lightbox.js"></script>
-<script type="text/javascript" src="<?=URL ?>/assets/js/slick.min.js"></script>
+<script src="<?= URL ?>/assets/js/bootstrap.min.js"></script>
+<script src="<?= URL ?>/assets/lightbox/lightbox.js"></script>
+<script type="text/javascript" src="<?= URL ?>/assets/js/slick.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('.masVistos').slick({
             dots: false,
             infinite: true,
@@ -145,7 +148,7 @@
             ]
         });
 
-        $('.galeriaInvestigacion').slick( {
+        $('.galeriaInvestigacion').slick({
             autoplay: true,
             autoplaySpeed: 2000,
         });
@@ -166,13 +169,13 @@
 </script>
 <script>var dolar = $('.dolar').text();</script>
 <script>
-    $(function() {
+    $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
 <!-- lightox video -->
 <script>
-    $(function() {
+    $(function () {
         $(".video").click(function () {
             var theModal = $(this).data("target"),
                 videoSRC = $(this).attr("data-video"),
@@ -185,13 +188,14 @@
     });
 </script>
 <script>    // local storage o cookie
-    if(localStorage.getItem('idChat') != '' && localStorage.getItem('idChat') !== null ) {
+    if (localStorage.getItem('idChat') != '' && localStorage.getItem('idChat') !== null) {
         sector(localStorage.getItem('idChat'));
         $(".headerTopProvincias").hide();
     }
-    function sector(id){
-        localStorage.setItem('idChat',id);
-        switch(id) {
+
+    function sector(id) {
+        localStorage.setItem('idChat', id);
+        switch (id) {
             case "1":
                 var codigo = "5accaf604b401e45400e8129";
                 break;
@@ -203,14 +207,37 @@
                 break;
         }
         $(".headerTopProvincias").hide();
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function (){
-            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-            s1.async=true;
-            s1.src='https://embed.tawk.to/'+codigo+'/default';
-            s1.charset='UTF-8';
-            s1.setAttribute('crossorigin','*');
-            s0.parentNode.insertBefore(s1,s0);
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/' + codigo + '/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
         })();
     }
+</script>
+<script>
+    $("#provincia").change(function () {
+        $("#provincia option:selected").each(function () {
+            elegido = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "<?=URL ?>/assets/inc/localidades.inc.php",
+                data: "elegido=" + elegido,
+                dataType: "html",
+                success: function (data) {
+                    $('#localidad option').remove();
+                    var substr = data.split(';');
+                    for (var i = 0; i < substr.length; i++) {
+                        var value = substr[i];
+                        $("#localidad").append(
+                            $("<option></option>").attr("value", value).text(value)
+                        );
+                    }
+                }
+            });
+        });
+    })
 </script>

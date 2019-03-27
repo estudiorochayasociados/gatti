@@ -733,3 +733,10 @@ footer h3 i {
 	margin-top: 3px;
 	margin-bottom: 3px;
 }
+.boton-cuenta{
+	background: linear-gradient(to bottom, rgba(239,126,26,1) 0%, rgba(223,82,17,1) 100%);
+	color:#fff;
+}
+.derecha{
+	text-align: right;
+}

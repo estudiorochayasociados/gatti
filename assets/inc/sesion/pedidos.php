@@ -97,10 +97,10 @@ if (empty($pedidosArrayAgrupados)) {
                                         <th>
                                             Producto
                                         </th>
-                                        <th class="hidden-xs">
+                                        <th class="hidden-xs hidden-sm">
                                             Cantidad
                                         </th>
-                                        <th class="hidden-xs">
+                                        <th class="hidden-xs hidden-sm">
                                             Precio
                                         </th>
                                         <th>
@@ -116,8 +116,8 @@ if (empty($pedidosArrayAgrupados)) {
                                                     <p class="visible-xs">Cantidad: <?= $value2["cantidad"] ?></p>
                                                     <p class="visible-xs">Precio: $<?= $value2["precio"] ?></p>
                                                 </td>
-                                                <td class="hidden-xs"><?= $value2["cantidad"] ?></td>
-                                                <td class="hidden-xs">$<?= $value2["precio"] ?></td>
+                                                <td class="hidden-xs hidden-sm"><?= $value2["cantidad"] ?></td>
+                                                <td class="hidden-xs hidden-sm">$<?= $value2["precio"] ?></td>
                                                 <td>$<?= $value2["precio"] * $value2["cantidad"] ?></td>
                                                 <?php $precioTotal = $precioTotal + ($value2["precio"] * $value2["cantidad"]); ?>
                                             </tr>
@@ -125,8 +125,8 @@ if (empty($pedidosArrayAgrupados)) {
                                     <?php endforeach; ?>
                                     <tr>
                                         <td><b>TOTAL DE LA COMPRA</b></td>
-                                        <td class="hidden-xs"></td>
-                                        <td class="hidden-xs"></td>
+                                        <td class="hidden-xs hidden-sm"></td>
+                                        <td class="hidden-xs hidden-sm"></td>
                                         <td><b>$<?= $precioTotal ?></b></td>
                                     </tr>
                                     </tbody>

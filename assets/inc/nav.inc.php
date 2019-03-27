@@ -47,38 +47,48 @@ if (isset($_GET['logout'])) {
     <div class="">
         <div class="container">
             <div class="navTop hidden-xs hidden-sm" style="float:left;">
-                <a target="_blank" href="<?= URL ?>/Catalogo_Digital.pdf" title="catalogo digital">CATÁLOGO</a>
+                <a target="_blank" href="<?= URL ?>/assets/archivos/Catalogo_Digital.pdf" title="catalogo digital">CATÁLOGO</a>
                 <li><span> / </span></li>
-                <a target="_blank" href="<?= URL ?>/software.php" title="software">SOFTWARE DE VENTILADORES</a>
+                <a target="_blank" href="<?= URL ?>/c/software" title="software">SOFTWARE DE VENTILADORES</a>
                 <li><span> / </span></li>
-                <a target="_blank" href="<?= URL ?>/archivos/COMO VENTILAR.pdf" title="GUÍA PARA UNA CORRECTA VENTILACIÓN">GUÍA PARA UNA CORRECTA VENTILACIÓN</a>
+                <a target="_blank" href="<?= URL ?>/assets/archivos/COMO VENTILAR.pdf" title="GUÍA PARA UNA CORRECTA VENTILACIÓN">GUÍA PARA UNA CORRECTA VENTILACIÓN</a>
                 <li><span> / </span></li>
-                <a href="<?= URL ?>/formularios" title="formularios IMPOSITIVOs">IMPOSITIVO</a>
+                <a href="<?= URL ?>/c/formularios" title="formularios IMPOSITIVOs">IMPOSITIVO</a>
             </div>
             <div class="navTop  align-right">
                 <?php
-                if (empty($_SESSION["user"]["id"])) {
+                if (empty($_SESSION['usuarios'])) {
                     ?>
-                    <li><a href="<?= URL ?>/usuarios" title="iniciar sesion">iniciar sesión</a></li>
-                    <li><span> / </span></li>
-                    <li><a href="<?= URL ?>/usuarios" title="registrarme">registrarme</a></li>
+                    <li>
+                        <a href="<?= URL ?>/usuarios" title="iniciar sesion">iniciar sesión</a>
+                    </li>
+                    <li>
+                        <span> / </span>
+                    </li>
+                    <li>
+                        <a href="<?= URL ?>/usuarios" title="registrarme">registrarme</a>
+                    </li>
                     <?php
                 } else {
                     ?>
-                    <li><a href="usuarios.php" title="usuarios"><i class="fa fa-user"></i> <?php echo $_SESSION["user"]["nombre"] ?></a></li>
+                    <li>
+                        <a href="<?= URL ?>/sesion" title="usuarios"><i class="fa fa-user"></i> <?= $_SESSION["usuarios"]["nombre"] ?></a>
+                    </li>
                     <?php
                 }
                 ?>
-
                 <?php
                 if (!empty($_SESSION["carrito"])) {
                     ?>
-                    <li><span> / </span></li>
-                    <li><a href="<?= URL ?>/carrito" title="carrito"><i class="fa fa-shopping-cart"></i> Ver carrito</a></li>
+                    <li>
+                        <span> / </span>
+                    </li>
+                    <li>
+                        <a href="<?= URL ?>/carrito" title="carrito"><i class="fa fa-shopping-cart"></i> Ver carrito</a>
+                    </li>
                     <?php
                 }
                 ?>
-
             </div>
         </div>
     </div>

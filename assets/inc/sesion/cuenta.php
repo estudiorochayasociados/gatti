@@ -45,27 +45,29 @@ $usuarioData = $usuario->view();
         $funciones->headerMove(URL . '/sesion/cuenta');
     endif;
     ?>
+    <br>
     <form class="login_form" id="registro" method="post" autocomplete="off">
         <div class="row">
             <div class="col-md-6">Nombre
                 <div class="input-group">
-                    <input class="form-control h40" value="<?= $usuarioData['nombre'] ?>" type="text"
-                           placeholder="Nombre" name="nombre"
+                    <input class="form-control h40"
+                           value="<?= $usuarioData['nombre'] ?>"
+                           type="text"
+                           placeholder="Nombre"
+                           name="nombre"
                            required/>
-                    <span class="input-group-addon">
-                                            <i class="login_icon glyphicon glyphicon-user"></i>
-                                        </span>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-user"></i></span>
                 </div>
             </div>
             <div class="col-md-6">Apellido
                 <div class="input-group">
-                    <input class="form-control h40" value="<?= $usuarioData['apellido'] ?>" type="text"
+                    <input class="form-control h40"
+                           value="<?= $usuarioData['apellido'] ?>"
+                           type="text"
                            placeholder="Apellido"
                            name="apellido"
                            required/>
-                    <span class="input-group-addon">
-                                            <i class="login_icon glyphicon glyphicon-user"></i>
-                                        </span>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-user"></i></span>
                 </div>
             </div>
         </div>
@@ -73,23 +75,24 @@ $usuarioData = $usuario->view();
         <div class="row">
             <div class="col-md-6">Email
                 <div class="input-group">
-                    <input class="form-control h40" value="<?= $usuarioData['email'] ?>" type="email"
-                           placeholder="Email" name="email"
+                    <input class="form-control h40"
+                           value="<?= $usuarioData['email'] ?>"
+                           type="email"
+                           placeholder="Email"
+                           name="email"
                            required/>
-                    <span class="input-group-addon">
-                                    <i class="login_icon glyphicon glyphicon-envelope"></i>
-                                </span>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-envelope"></i></span>
                 </div>
             </div>
             <div class="col-md-6">Teléfono
                 <div class="input-group">
-                    <input class="form-control h40" value="<?= $usuarioData['telefono'] ?>" type="number"
+                    <input class="form-control h40"
+                           value="<?= $usuarioData['telefono'] ?>"
+                           type="number"
                            placeholder="Teléfono"
                            name="telefono"
                            required/>
-                    <span class="input-group-addon">
-                                    <i class="login_icon glyphicon glyphicon-phone"></i>
-                                </span>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-phone"></i></span>
                 </div>
             </div>
         </div>
@@ -102,8 +105,7 @@ $usuarioData = $usuario->view();
                         <option value="" disabled>Provincia</option>
                         <?php $funciones->provincias() ?>
                     </select>
-                    <span class="input-group-addon"><i
-                                class="login_icon glyphicon glyphicon-map-marker"></i></span>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-map-marker"></i></span>
                 </div>
             </div>
             <div class="col-md-6">Localidad
@@ -122,54 +124,48 @@ $usuarioData = $usuario->view();
         <div class="row">
             <div class="col-md-6">Dirección
                 <div class="input-group">
-                    <input class="form-control h40" value="<?= $usuarioData['direccion'] ?>" type="text"
-                           placeholder="Dirección" name="direccion"
+                    <input class="form-control h40"
+                           value="<?= $usuarioData['direccion'] ?>"
+                           type="text"
+                           placeholder="Dirección"
+                           name="direccion"
                            required/>
-                    <span class="input-group-addon">
-                                    <i class="login_icon glyphicon glyphicon-map-marker"></i>
-                                </span>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-map-marker"></i></span>
                 </div>
             </div>
             <div class="col-md-6">Código Postal
                 <div class="input-group">
-                    <input class="form-control h40" value="<?= $usuarioData['postal'] ?>" type="text"
+                    <input class="form-control h40"
+                           value="<?= $usuarioData['postal'] ?>"
+                           type="text"
                            placeholder="Código Postal"
                            name="postal"
                            required/>
-                    <span class="input-group-addon">
-                                    <i class="login_icon glyphicon glyphicon-map-marker"></i>
-                                </span>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-map-marker"></i></span>
                 </div>
             </div>
         </div>
         <br/>
+        <hr>
+        <sup>*Dejar vacion si no se desea cambiar la contraseña</sup>
+        <br>
         <div class="row">
             <div class="col-md-6">Contraseña
                 <div class="input-group">
-                    <input type="password" name="password" id="password_fake" class="hidden" autocomplete="off"
-                           style="display: none;">
-                    <input autocomplete="off" class="form-control h40" value=""
-                           type="password" placeholder="Contraseña"
-                           name="password"
-                           />
-                    <span class="input-group-addon">
-                                    <i class="login_icon glyphicon glyphicon-lock"></i>
-                                </span>
+                    <input type="password" name="password" id="password_fake" class="hidden" autocomplete="off" style="display: none;">
+                    <input autocomplete="off" class="form-control h40" value="" type="password" placeholder="Contraseña" name="password"/>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-lock"></i></span>
                 </div>
             </div>
             <div class="col-md-6">Confirmar Contraseña
                 <div class="input-group">
-                    <input class="form-control h40" value="" type="password"
-                           placeholder="Confirmar Contraseña"
-                           name="password2"
-                           />
-                    <span class="input-group-addon">
-                                    <i class="login_icon glyphicon glyphicon-lock"></i>
-                                </span>
+                    <input class="form-control h40" value="" type="password" placeholder="Confirmar Contraseña" name="password2"/>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-lock"></i></span>
                 </div>
             </div>
         </div>
         <br/>
-        <button style="width: 100%;" type="submit" name="guardar" class="button-buy">Guardar</button>
+        <button style="width: 100%;" type="submit" name="guardar" class="btn btn-success">Guardar</button>
     </form>
+        <br>
 </div>

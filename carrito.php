@@ -6,7 +6,6 @@ $funciones = new Clases\PublicFunction();
 $template->set("title", TITULO . " | Carrito de compra");
 $template->set("description", "Carrito de compra " . TITULO);
 $template->set("keywords", "Carrito de compra " . TITULO);
-$template->set("favicon", FAVICON);
 $template->themeInit();
 //Clases
 $productos = new Clases\Productos();
@@ -18,6 +17,7 @@ $envios = new Clases\Envios();
 $pagos = new Clases\Pagos();
 $carro = $carrito->return();
 $carroEnvio = $carrito->checkEnvio();
+var_dump($_SESSION['carrito']);
 if (count($carro) == 0) {
     $funciones->headerMove(URL . "/tienda");
 }
@@ -147,6 +147,16 @@ if (count($carro) == 0) {
                 <?php
             }
         }
+        if (!empty($carroEnvio)) {
+            $carroPago = $carrito->checkPago();
+            if (empty($carroPago)) {
+                ?>
+                <div id="formEnvio" class="alert alert-danger animated fadeIn">
+                    Selecciona un método de pago para poder finalizar la compra.
+                </div>
+                <?php
+            }
+        }
         //Eliminar
         if (isset($_GET["remover"])) {
             $carroPago = $carrito->checkPago();
@@ -164,7 +174,7 @@ if (count($carro) == 0) {
         <table class="table table-striped">
             <thead>
             <th>Nombre producto</th>
-            <th>Cantidad</th>
+            <th class="hidden-xs hidden-sm">Cantidad</th>
             <th>Precio unidad</th>
             <th>Precio total</th>
             <th></th>
@@ -188,14 +198,15 @@ if (count($carro) == 0) {
                 <tr>
                     <td>
                         <?= mb_strtoupper($carroItem["titulo"]); ?>
+                        <span class="amount hidden-md hidden-lg <?= $none ?>">Cantidad: <?= $carroItem["cantidad"]; ?>
                     </td>
-                    <td>
+                    <td class="hidden-xs hidden-sm">
                         <span class="amount <?= $none ?>"><?= $carroItem["cantidad"]; ?>
                     </td>
-                    <td class="hidden-xs">
+                    <td>
                         <span class="amount <?= $none ?>"><?= "$" . $carroItem["precio"]; ?></span>
                     </td>
-                    <td class="hidden-xs ">
+                    <td>
                         <?php
                         if ($carroItem["precio"] != 0) {
                             echo "$" . ($carroItem["precio"] * $carroItem["cantidad"]);
@@ -215,139 +226,140 @@ if (count($carro) == 0) {
             }
             ?>
         </table>
-    </div>
-
-
-    <!-- Cart Main Area Start -->
-    <div class="cart-main-area mt-15">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 mb-10">
-                    <div class="envio">
-                    </div>
+        <hr>
+        <div class="col-md-12">
+            <form method="post" class="row">
+                <div class="col-md-6 text-right">
+                    <p style="margin-top: 7px"><b>¿Tenés algún código de descuento para tus compras?</b></p>
                 </div>
-                <div class="col-md-12 col-sm-12">
-                    <!-- Form Start -->
-                    <!-- Table Content Start -->
-                    <!-- Table Content Start -->
-                    <div class="row mb-10">
-                        <!-- Cart Button Start -->
-                        <div class="col-md-8 col-sm-12">
-                            <form class="" method="post">
-                                <!---->
-                                <?php
-                                $metodo = $funciones->antihack_mysqli(isset($_POST["metodos-pago"]) ? $_POST["metodos-pago"] : '');
-                                $metodo_get = $funciones->antihack_mysqli(isset($_GET["metodos-pago"]) ? $_GET["metodos-pago"] : '');
+                <div class="col-md-4">
+                    <input type="text" name="codigoDescuento" class="form-control" placeholder="CÓDIGO DE DESCUENTO">
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" value="USAR CÓDIGO" name="btn_codigo" class="btn btn-default"/>
+                </div>
+            </form>
+        </div>
+        <br>
+        <div class="row mb-5">
+            <div class="col-md-12 col-sm-12">
+                <div class="row mb-10">
+                    <!-- Cart Button Start -->
+                    <div class="col-md-8 col-sm-12">
+                        <form class="" method="post">
+                            <!---->
+                            <?php
+                            $metodo = $funciones->antihack_mysqli(isset($_POST["metodos-pago"]) ? $_POST["metodos-pago"] : '');
+                            $metodo_get = $funciones->antihack_mysqli(isset($_GET["metodos-pago"]) ? $_GET["metodos-pago"] : '');
 
-                                if ($metodo != '') {
-                                    $key_metodo = $carrito->checkPago();
-                                    $carrito->delete($key_metodo);
-                                    $pagos->set("cod", $metodo);
-                                    $pago__ = $pagos->view();
-                                    $precio_final_metodo = $carrito->precio_total();
-                                    if ($pago__["aumento"] != 0 || $pago__["disminuir"] != '') {
-                                        if ($pago__["aumento"]) {
-                                            $numero = (($precio_final_metodo * $pago__["aumento"]) / 100);
-                                            $carrito->set("id", "Metodo-Pago");
-                                            $carrito->set("cantidad", 1);
-                                            $carrito->set("titulo", "CARGO +" . $pago__['aumento'] . "% / " . mb_strtoupper($pago__["titulo"]));
-                                            $carrito->set("precio", $numero);
-                                            $carrito->add();
-                                        } else {
-                                            $numero = (($precio_final_metodo * $pago__["disminuir"]) / 100);
-                                            $carrito->set("id", "Metodo-Pago");
-                                            $carrito->set("cantidad", 1);
-                                            $carrito->set("titulo", "DESCUENTO -" . $pago__['disminuir'] . "% / " . mb_strtoupper($pago__["titulo"]));
-                                            $carrito->set("precio", "-" . $numero);
-                                            $carrito->add();
-                                        }
-
-                                        $funciones->headerMove(CANONICAL . "/" . $metodo);
+                            if ($metodo != '') {
+                                $key_metodo = $carrito->checkPago();
+                                $carrito->delete($key_metodo);
+                                $pagos->set("cod", $metodo);
+                                $pago__ = $pagos->view();
+                                $precio_final_metodo = $carrito->precio_total();
+                                if ($pago__["aumento"] != 0 || $pago__["disminuir"] != '') {
+                                    if ($pago__["aumento"]) {
+                                        $numero = (($precio_final_metodo * $pago__["aumento"]) / 100);
+                                        $carrito->set("id", "Metodo-Pago");
+                                        $carrito->set("cantidad", 1);
+                                        $carrito->set("titulo", "CARGO +" . $pago__['aumento'] . "% / " . mb_strtoupper($pago__["titulo"]));
+                                        $carrito->set("precio", $numero);
+                                        $carrito->add();
+                                    } else {
+                                        $numero = (($precio_final_metodo * $pago__["disminuir"]) / 100);
+                                        $carrito->set("id", "Metodo-Pago");
+                                        $carrito->set("cantidad", 1);
+                                        $carrito->set("titulo", "DESCUENTO -" . $pago__['disminuir'] . "% / " . mb_strtoupper($pago__["titulo"]));
+                                        $carrito->set("precio", "-" . $numero);
+                                        $carrito->add();
                                     }
+                                    $funciones->headerMove(CANONICAL . "/" . $metodo . "#buy");
+                                }
+                            }
+                            ?>
+                            <div class="cart_totals_area">
+                                <?php
+                                if ($carroEnvio != '') {
+                                    ?>
+                                    <h3> Metodos de pago</h3>
+                                    <hr>
+                                    <?php
                                 }
                                 ?>
-                                <div class="cart_totals_area">
-                                    <?php
-                                    if ($carroEnvio != '') {
-                                        ?>
-                                        <h4 class="metodos">Metodos de pago</h4>
-                                        <?php
-                                    }
-                                    ?>
-                                    <div class="cart_t_list">
-                                        <div class="media">
-                                            <div class="media-body">
-                                                <?php
-                                                if ($carroEnvio == '') {
-                                                } else {
-                                                    $lista_pagos = $pagos->list(array(" estado = 0 "));
-                                                    foreach ($lista_pagos as $pago) {
-                                                        $precio_total = $carrito->precioSinMetodoDePago();
-                                                        if ($pago["aumento"] != 0 || $pago["disminuir"] != 0) {
-                                                            if ($pago["aumento"] > 0) {
-                                                                $precio_total = (($precio_total * $pago["aumento"]) / 100) + $precio_total;
-                                                            } else {
-                                                                $precio_total = $precio_total - (($precio_total * $pago["disminuir"]) / 100);
-                                                            }
+                                <div class="cart_t_list">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <?php
+                                            if ($carroEnvio == '') {
+                                            } else {
+                                                $lista_pagos = $pagos->list(array(" estado = 0 "));
+                                                foreach ($lista_pagos as $pago) {
+                                                    $precio_total = $carrito->precioSinMetodoDePago();
+                                                    if ($pago["aumento"] != 0 || $pago["disminuir"] != 0) {
+                                                        if ($pago["aumento"] > 0) {
+                                                            $precio_total = (($precio_total * $pago["aumento"]) / 100) + $precio_total;
+                                                        } else {
+                                                            $precio_total = $precio_total - (($precio_total * $pago["disminuir"]) / 100);
                                                         }
-                                                        ?>
-                                                        <div class="radioButtonPay mb-10 metodos">
-                                                            <input type="radio"
-                                                                   id="<?= ($pago["cod"]) ?>"
-                                                                   name="metodos-pago"
-                                                                   value="<?= ($pago["cod"]) ?>"
-                                                                   onclick="this.form.submit()" <?php if ($metodo_get === $pago["cod"]) {
-                                                                echo " checked ";
-                                                            } ?>>
-                                                            <label for="<?= ($pago["cod"]) ?>">
-                                                                <b><?= mb_strtoupper($pago["titulo"]) ?></b>
-                                                            </label>
-                                                            <p>
-                                                                <?= $pago["leyenda"] . " | Total: $" . $precio_total; ?>
-                                                            </p>
-                                                        </div>
-                                                        <?php
                                                     }
                                                     ?>
+                                                    <div class="radioButtonPay mb-10 metodos">
+                                                        <input type="radio"
+                                                               id="<?= ($pago["cod"]) ?>"
+                                                               name="metodos-pago"
+                                                               value="<?= ($pago["cod"]) ?>"
+                                                               onclick="this.form.submit()" <?php if ($metodo_get === $pago["cod"]) {
+                                                            echo " checked ";
+                                                        } ?>>
+                                                        <label for="<?= ($pago["cod"]) ?>">
+                                                            <b><?= mb_strtoupper($pago["titulo"]) ?></b>
+                                                        </label>
+                                                        <p>
+                                                            <?= $pago["leyenda"] . " | Total: $" . $precio_total; ?>
+                                                        </p>
+                                                    </div>
                                                     <?php
                                                 }
-                                                ?>
-                                            </div>
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
-                                <!---->
-                            </form>
-                        </div>
-                        <!-- Cart Button Start -->
-                        <!-- Cart Totals Start -->
-                        <div class="col-md-4 col-sm-12">
+                            </div>
+                            <!---->
+                        </form>
+                    </div>
+                    <!-- Cart Button Start -->
+                    <!-- Cart Totals Start -->
+                    <div class="col-md-4 col-sm-12 mb-15" id="buy">
+                        <div class="cart_totals float-md-right text-md-right" style="text-align: center;">
+                            <hr>
+                            <br/>
+                            <div>
+                                <strong style="font-size: 26px;">Total: $<?= number_format($carrito->precio_total(), "2", ",", "."); ?></strong>
+                            </div>
                             <?php if ($metodo_get != '') { ?>
-                                <div class="cart_totals float-md-right text-md-right">
-                                    <br/>
-                                    <table class="float-md-right">
-                                        <tbody>
-                                        <tr class="order-total">
-                                            <th>Total</th>
-                                            <td>
-                                                <strong><span class="amount">$ <?= number_format($carrito->precio_total(), "2", ",", "."); ?></span></strong>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="wc-proceed-to-checkout">
-                                        <a href="<?= URL ?>/pagar/<?= $metodo_get ?>">PAGAR EL CARRITO</a>
-                                    </div>
+                                <div class="wc-proceed-to-checkout">
+                                    <a class="btn btn-success" href="<?= URL ?>/pagar/<?= $metodo_get ?>" style="width: 100%;">
+                                        <i class="fa fa-check"></i>Finalizar Carrito
+                                    </a>
                                 </div>
                             <?php } ?>
                         </div>
-                        <!-- Cart Totals End -->
+                        <hr>
+                        <div>
+                            <a href="<?= URL ?>/tienda" class="btn btn-info" style="width: 100%;">
+                                <i class="fa fa-shopping-cart"></i> Seguir comprando
+                            </a>
+                        </div>
                     </div>
-                    <!-- Row End -->
-                    <!-- Form End -->
+                    <br>
+                    <!-- Cart Totals End -->
                 </div>
+                <!-- Row End -->
+                <!-- Form End -->
             </div>
-            <!-- Row End -->
         </div>
     </div>
 <?php

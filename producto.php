@@ -42,7 +42,6 @@ $url_limpia = str_replace("?error", "", $url_limpia);
         <div class="col-md-12 col-xs-12" style="margin-top:10px">
             <h1 id="title" class="tituloProducto"><?= ucfirst($producto_data['data']['titulo']); ?>
             </h1>
-            <br/><br/><br/>
             <div class="col-md-5">
                 <div class='zoom' id='ex3'>
                     <img src="<?= URL . '/' . $producto_data['imagenes'][0]['ruta']; ?>" style="width:100% !important"/>
@@ -100,9 +99,6 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                 </p>
                 <?php
                 if ($producto_data['data']['variable2'] != 0) {
-                    ?>
-                    <br/>
-                    <?php
                     if (!empty($producto_data['data']['precio_descuento']) && $producto_data['data']['precio_descuento'] > 0) {
                         ?>
                         <h2 class="label label-danger" style="font-size: 20px">Precio antes: $<?= $producto_data['data']['precio'] ?></h2>
