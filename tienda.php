@@ -194,16 +194,18 @@ $template->themeInit();
                                     </div>
                                     <div class="clearfix"></div>
                                     <?php
+                                    $desc_=$prod['data']['precio_descuento'];
                                 } else {
                                     ?>
                                     <span class="precioProducto"><?= "<b>Precio: </b>$" . ($prod['data']['precio']) ?>
                                     </span>
                                     <br/>
                                     <?php
+                                    $desc_=$prod['data']['precio'];
                                 }
                                 ?>
                                 <span class="precioProducto" style="color:red">
-                                    <?= "<i>Precio de contado: $" . ($prod['data']['precio'] - ($prod['data']['precio'] * 10 / 100)) . "</i>" ?>
+                                    <?= "<i>Precio de contado: $" . ($desc_ - ($desc_ * 10 / 100)) . "</i>" ?>
                                 </span>
                                 <?php
                                 if ($prod['data']['stock'] == 0) {

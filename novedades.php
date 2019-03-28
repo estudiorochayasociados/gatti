@@ -8,15 +8,15 @@ $novedades = new Clases\Novedades();
 $imagen = new Clases\Imagenes();
 $categoria = new Clases\Categorias();
 //
-$template->set("title", TITULO . " | Blogs");
-$template->set("description", "Blog de " . TITULO);
-$template->set("keywords", "Blog de " . TITULO);
+$template->set("title", TITULO . " | Novedades");
+$template->set("description", "Novedades de " . TITULO);
+$template->set("keywords", "Novedades de " . TITULO);
 $template->set("favicon", FAVICON);
 $template->themeInit();
 
 $pagina = $funciones->antihack_mysqli(isset($_GET["pagina"]) ? $_GET["pagina"] : '0');
 
-$cantidad = 1;
+$cantidad = 4;
 
 if ($pagina > 0) {
     $pagina = $pagina - 1;
@@ -60,13 +60,13 @@ $numeroPaginas = $novedades->paginador("", $cantidad);
                 ?>
                 <div class="col-md-12 blog-post">
                     <div class="blog-thumbnail">
-                        <a href="<?= URL . '/blog/' . $funciones->normalizar_link($nov['data']["titulo"]) . '/' . $nov['data']['cod'] ?>">
+                        <a href="<?= URL . '/novedad/' . $funciones->normalizar_link($nov['data']["titulo"]) . '/' . $nov['data']['cod'] ?>">
                             <div style="height:300px;background:url(<?= $nov['imagenes']['0']['ruta']; ?>) no-repeat center center/cover;">
                             </div>
                         </a>
                     </div>
                     <h2 class="blog-title">
-                        <a href="<?= URL . '/blog/' . $funciones->normalizar_link($nov['data']["titulo"]) . '/' . $nov['data']['cod'] ?>">
+                        <a href="<?= URL . '/novedad/' . $funciones->normalizar_link($nov['data']["titulo"]) . '/' . $nov['data']['cod'] ?>">
                             <?= ucfirst($nov['data']['titulo']); ?>
                         </a>
                     </h2>
@@ -77,7 +77,7 @@ $numeroPaginas = $novedades->paginador("", $cantidad);
                     </div>
                     <div class="blog-content">
                         <p><?= ucfirst(substr(strip_tags($nov['data']['desarrollo']), 0, 150)); ?>...</p>
-                        <a href="<?= URL . '/blog/' . $funciones->normalizar_link($nov['data']["titulo"]) . '/' . $nov['data']['cod'] ?>"
+                        <a href="<?= URL . '/novedad/' . $funciones->normalizar_link($nov['data']["titulo"]) . '/' . $nov['data']['cod'] ?>"
                            class="btn btn-default">
                             <i class="fa fa-caret-right"></i> Ver más
                         </a>

@@ -55,15 +55,13 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                             if (is_file($img['ruta'])) {
                                 ?>
                                 <a href="<?= URL . '/' . $img['ruta']; ?>" data-lightbox="roadtrip">
-                                    <div class="col-md-3 thumbnail">
-                                        <img src="<?= URL . '/' . $img['ruta']; ?>" style="width:100%"/>
+                                    <div class="col-md-3 thumbnail" style=" height: 100px; background: url(<?= URL . '/' . $img['ruta'] ?>) no-repeat center center/contain;">
                                     </div>
                                 </a>
                                 <?php
                             }
                         }
                     }
-
                     if (!empty($producto_data['data']['variable9'])) {
                         ?>
                         <a href="#"
@@ -71,7 +69,8 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                            data-video="https://www.youtube.com/embed/<?= $producto_data['data']['variable9']; ?>"
                            data-toggle="modal"
                            data-target="#videoModal">
-                            <div class="col-md-3 thumbnail"><img src="<?= URL ?>/assets/img/video-producto.png"/></div>
+                            <div class="col-md-3 thumbnail" style=" height: 100px; background: url(<?= URL ?>'/assets/img/video-producto.png') no-repeat center center/contain;">
+                            </div>
                         </a>
                         <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -97,21 +96,26 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                 <p><b>Categoría: </b>
                     <a href="<?= URL . '/tienda?categoria=' . $producto_data['data']['categoria'] ?>"><?= $producto_data['categorias']['titulo'] ?></a>
                 </p>
+                <br>
                 <?php
                 if ($producto_data['data']['variable2'] != 0) {
                     if (!empty($producto_data['data']['precio_descuento']) && $producto_data['data']['precio_descuento'] > 0) {
                         ?>
-                        <h2 class="label label-danger" style="font-size: 20px">Precio antes: $<?= $producto_data['data']['precio'] ?></h2>
+                        <h2 class="label label-danger" style="font-size: 20px;">
+                            Precio antes: <label style="text-decoration: line-through;">$<?= $producto_data['data']['precio'] ?></label>
+                        </h2>
                         <h2>Precio: $<?= $producto_data['data']['precio_descuento'] ?></h2>
                         <?php
+                        $desc_=$producto_data['data']['precio_descuento'];
                     } else {
                         ?>
                         <h2>Precio: $<?= $producto_data['data']['precio'] ?></h2>
                         <?php
+                        $desc_=$producto_data['data']['precio'];
                     }
                     ?>
                     <h4 style="color:red">
-                        <?= "<i>10% de descuento en pago de contado: $" . ($producto_data['data']['precio'] - ($producto_data['data']['precio'] * 10 / 100)) . "</i>" ?>
+                        <?= "<i>10% de descuento en pago de contado: $" . ($desc_ - ($desc_ * 10 / 100)) . "</i>" ?>
                     </h4>
                     <?php
                     if ($producto_data['data']['stock'] > 0) {

@@ -118,7 +118,7 @@ if (!empty($sliders_data)) {
                         echo 'active';
                         $active++;
                     } ?>"
-                         style="background:url('<?= URL . '/' . $sli['imagenes']['0']['ruta']; ?>') center center/cover;height:520px">
+                         style="background:url('<?= URL . '/' . $sli['imagenes']['0']['ruta']; ?>') center center/cover;height:400px">
                         <?php
                         if (!empty($sli['data']['titulo'])) {
                             ?>
@@ -251,14 +251,14 @@ if (!empty($sliders_data)) {
                         ?>
                         <div class="col-md-4">
                             <div class="notasMasVistos">
-                                <a href="<?= URL . '/blog/' . $funciones->normalizar_link($nov['data']["titulo"]) . '/' . $nov['data']['cod'] ?>">
+                                <a href="<?= URL . '/novedad/' . $funciones->normalizar_link($nov['data']["titulo"]) . '/' . $nov['data']['cod'] ?>">
                                     <div style="height:200px;background:url(<?= $nov['imagenes']['0']['ruta']; ?>) no-repeat center center/cover;"></div>
                                 </a>
                                 <div class="infoIndexNews">
                                     <p style="font-size:17px;padding: 10px 10px;text-align:left;margin-top:5px">
                                         <b style="font-size:18px;"><?= ucfirst($nov['data']['titulo']); ?></b>
                                     <div class="clearfix"></div>
-                                    <a href="<?= URL . '/blog/' . $funciones->normalizar_link($nov['data']["titulo"]) . '/' . $nov['data']['cod'] ?>"
+                                    <a href="<?= URL . '/novedad/' . $funciones->normalizar_link($nov['data']["titulo"]) . '/' . $nov['data']['cod'] ?>"
                                        class="btn btn-info fright">ver nota</a>
                                     </p>
                                 </div>

@@ -17,7 +17,6 @@ $envios = new Clases\Envios();
 $pagos = new Clases\Pagos();
 $carro = $carrito->return();
 $carroEnvio = $carrito->checkEnvio();
-var_dump($_SESSION['carrito']);
 if (count($carro) == 0) {
     $funciones->headerMove(URL . "/tienda");
 }
@@ -32,9 +31,10 @@ if (count($carro) == 0) {
             <h3> Carrito de compra</h3>
         </div>
         <?php
-        $metodos_de_envios = $envios->list(array("peso >= " . $carrito->peso_final() . " OR peso = 0"));
-        $precioFinal = $carrito->precio_total();
         $pesoFinal = $carrito->peso_final();
+        $tope=$envios->peso($pesoFinal);
+        $metodos_de_envios = $envios->list(array("peso BETWEEN " . $carrito->peso_final() . " AND " . $tope . " OR peso = 0"));
+        $precioFinal = $carrito->precio_total();
         if ($carroEnvio == '') {
             if (($precioFinal > 500 && $precioFinal < 1500) || ($precioFinal > 3500 && $precioFinal < 7000)) {
                 $carrito->set("id", "Envio-Seleccion");
@@ -74,47 +74,7 @@ if (count($carro) == 0) {
                                     } else {
                                         $metodos_de_envio_precio = "$" . $metodos_de_envio_["precio"];
                                     }
-                                    if ($metodos_de_envio_['titulo'] == "CORREO ARGENTINO A SUCURSAL" || $metodos_de_envio_['titulo'] == "Correo Argentino a Domicilio") {
-                                        if ($metodos_de_envio_['titulo'] == "CORREO ARGENTINO A SUCURSAL") {
-                                            if ($pesoFinal <= 1 && $metodos_de_envio_['peso'] == 1) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 1 && $pesoFinal <= 3 && $metodos_de_envio_['peso'] == 3) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 3 && $pesoFinal <= 5 && $metodos_de_envio_['peso'] == 5) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 5 && $pesoFinal <= 10 && $metodos_de_envio_['peso'] == 10) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 10 && $pesoFinal <= 15 && $metodos_de_envio_['peso'] == 15) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 15 && $pesoFinal <= 20 && $metodos_de_envio_['peso'] == 20) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 20 && $pesoFinal <= 25 && $metodos_de_envio_['peso'] == 25) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 25 && $pesoFinal <= 30 && $metodos_de_envio_['peso'] == 30) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            }
-                                        } else {
-                                            if ($pesoFinal <= 1 && $metodos_de_envio_['peso'] == 1) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 1 && $pesoFinal <= 3 && $metodos_de_envio_['peso'] == 3) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 3 && $pesoFinal <= 5 && $metodos_de_envio_['peso'] == 5) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 5 && $pesoFinal <= 10 && $metodos_de_envio_['peso'] == 10) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 10 && $pesoFinal <= 15 && $metodos_de_envio_['peso'] == 15) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 15 && $pesoFinal <= 20 && $metodos_de_envio_['peso'] == 20) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 20 && $pesoFinal <= 25 && $metodos_de_envio_['peso'] == 25) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            } elseif ($pesoFinal > 25 && $pesoFinal <= 30 && $metodos_de_envio_['peso'] == 30) {
-                                                echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                            }
-                                        }
-                                    } else {
-                                        echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
-                                    }
+                                    echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
                                 }
                                 ?>
                             </select>
@@ -151,8 +111,55 @@ if (count($carro) == 0) {
             $carroPago = $carrito->checkPago();
             if (empty($carroPago)) {
                 ?>
-                <div id="formEnvio" class="alert alert-danger animated fadeIn">
-                    Selecciona un método de pago para poder finalizar la compra.
+                <div id="formEnvio" class="alert alert-warning animated fadeIn">
+                    <?php
+                    $metodo = $funciones->antihack_mysqli(isset($_POST["metodos-pago"]) ? $_POST["metodos-pago"] : '');
+                    if ($metodo != '') {
+                        $key_metodo = $carrito->checkPago();
+                        $carrito->delete($key_metodo);
+                        $pagos->set("cod", $metodo);
+                        $pago__ = $pagos->view();
+                        $precio_final_metodo = $carrito->precio_total();
+                        if ($pago__["aumento"] != 0 || $pago__["disminuir"] != '') {
+                            if ($pago__["aumento"]) {
+                                $numero = (($precio_final_metodo * $pago__["aumento"]) / 100);
+                                $carrito->set("id", "Metodo-Pago");
+                                $carrito->set("cantidad", 1);
+                                $carrito->set("titulo", "CARGO +" . $pago__['aumento'] . "% / " . mb_strtoupper($pago__["titulo"]));
+                                $carrito->set("precio", $numero);
+                                $carrito->add();
+                            } else {
+                                $numero = (($precio_final_metodo * $pago__["disminuir"]) / 100);
+                                $carrito->set("id", "Metodo-Pago");
+                                $carrito->set("cantidad", 1);
+                                $carrito->set("titulo", "DESCUENTO -" . $pago__['disminuir'] . "% / " . mb_strtoupper($pago__["titulo"]));
+                                $carrito->set("precio", "-" . $numero);
+                                $carrito->add();
+                            }
+                            $funciones->headerMove(CANONICAL . "/" . $metodo);
+                        }
+                    }
+                    ?>
+                    <b>Elegí el medio de pago que desea relizar.  </b><i style="float:right;font-size:12px">* Seleccionar la mejor opción y presionar Finalizar Carrito</i><br/>
+                    <form method="post">
+                        <select name="metodos-pago" class="form-control" id="pago" onchange="this.form.submit()">
+                            <option value="" selected disabled>Elegir envío</option>
+                            <?php
+                            $lista_pagos = $pagos->list(array(" estado = 0 "));
+                            foreach ($lista_pagos as $pago) {
+                                $precio_total = $carrito->precioSinMetodoDePago();
+                                if ($pago["aumento"] != 0 || $pago["disminuir"] != 0) {
+                                    if ($pago["aumento"] > 0) {
+                                        $precio_total = (($precio_total * $pago["aumento"]) / 100) + $precio_total;
+                                    } else {
+                                        $precio_total = $precio_total - (($precio_total * $pago["disminuir"]) / 100);
+                                    }
+                                }
+                                echo "<option value='" . $pago["cod"] . "'>" . $pago["titulo"] . " -> Total: $" . $precio_total . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </form>
                 </div>
                 <?php
             }
@@ -246,89 +253,6 @@ if (count($carro) == 0) {
                 <div class="row mb-10">
                     <!-- Cart Button Start -->
                     <div class="col-md-8 col-sm-12">
-                        <form class="" method="post">
-                            <!---->
-                            <?php
-                            $metodo = $funciones->antihack_mysqli(isset($_POST["metodos-pago"]) ? $_POST["metodos-pago"] : '');
-                            $metodo_get = $funciones->antihack_mysqli(isset($_GET["metodos-pago"]) ? $_GET["metodos-pago"] : '');
-
-                            if ($metodo != '') {
-                                $key_metodo = $carrito->checkPago();
-                                $carrito->delete($key_metodo);
-                                $pagos->set("cod", $metodo);
-                                $pago__ = $pagos->view();
-                                $precio_final_metodo = $carrito->precio_total();
-                                if ($pago__["aumento"] != 0 || $pago__["disminuir"] != '') {
-                                    if ($pago__["aumento"]) {
-                                        $numero = (($precio_final_metodo * $pago__["aumento"]) / 100);
-                                        $carrito->set("id", "Metodo-Pago");
-                                        $carrito->set("cantidad", 1);
-                                        $carrito->set("titulo", "CARGO +" . $pago__['aumento'] . "% / " . mb_strtoupper($pago__["titulo"]));
-                                        $carrito->set("precio", $numero);
-                                        $carrito->add();
-                                    } else {
-                                        $numero = (($precio_final_metodo * $pago__["disminuir"]) / 100);
-                                        $carrito->set("id", "Metodo-Pago");
-                                        $carrito->set("cantidad", 1);
-                                        $carrito->set("titulo", "DESCUENTO -" . $pago__['disminuir'] . "% / " . mb_strtoupper($pago__["titulo"]));
-                                        $carrito->set("precio", "-" . $numero);
-                                        $carrito->add();
-                                    }
-                                    $funciones->headerMove(CANONICAL . "/" . $metodo . "#buy");
-                                }
-                            }
-                            ?>
-                            <div class="cart_totals_area">
-                                <?php
-                                if ($carroEnvio != '') {
-                                    ?>
-                                    <h3> Metodos de pago</h3>
-                                    <hr>
-                                    <?php
-                                }
-                                ?>
-                                <div class="cart_t_list">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <?php
-                                            if ($carroEnvio == '') {
-                                            } else {
-                                                $lista_pagos = $pagos->list(array(" estado = 0 "));
-                                                foreach ($lista_pagos as $pago) {
-                                                    $precio_total = $carrito->precioSinMetodoDePago();
-                                                    if ($pago["aumento"] != 0 || $pago["disminuir"] != 0) {
-                                                        if ($pago["aumento"] > 0) {
-                                                            $precio_total = (($precio_total * $pago["aumento"]) / 100) + $precio_total;
-                                                        } else {
-                                                            $precio_total = $precio_total - (($precio_total * $pago["disminuir"]) / 100);
-                                                        }
-                                                    }
-                                                    ?>
-                                                    <div class="radioButtonPay mb-10 metodos">
-                                                        <input type="radio"
-                                                               id="<?= ($pago["cod"]) ?>"
-                                                               name="metodos-pago"
-                                                               value="<?= ($pago["cod"]) ?>"
-                                                               onclick="this.form.submit()" <?php if ($metodo_get === $pago["cod"]) {
-                                                            echo " checked ";
-                                                        } ?>>
-                                                        <label for="<?= ($pago["cod"]) ?>">
-                                                            <b><?= mb_strtoupper($pago["titulo"]) ?></b>
-                                                        </label>
-                                                        <p>
-                                                            <?= $pago["leyenda"] . " | Total: $" . $precio_total; ?>
-                                                        </p>
-                                                    </div>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!---->
-                        </form>
                     </div>
                     <!-- Cart Button Start -->
                     <!-- Cart Totals Start -->
@@ -339,20 +263,20 @@ if (count($carro) == 0) {
                             <div>
                                 <strong style="font-size: 26px;">Total: $<?= number_format($carrito->precio_total(), "2", ",", "."); ?></strong>
                             </div>
-                            <?php if ($metodo_get != '') { ?>
+                            <?php
+                            $metodo_get = $funciones->antihack_mysqli(isset($_GET["metodos-pago"]) ? $_GET["metodos-pago"] : '');
+                            if ($metodo_get != '') {
+                                ?>
                                 <div class="wc-proceed-to-checkout">
                                     <a class="btn btn-success" href="<?= URL ?>/pagar/<?= $metodo_get ?>" style="width: 100%;">
                                         <i class="fa fa-check"></i>Finalizar Carrito
                                     </a>
                                 </div>
-                            <?php } ?>
+                            <?php
+                            }
+                            ?>
                         </div>
                         <hr>
-                        <div>
-                            <a href="<?= URL ?>/tienda" class="btn btn-info" style="width: 100%;">
-                                <i class="fa fa-shopping-cart"></i> Seguir comprando
-                            </a>
-                        </div>
                     </div>
                     <br>
                     <!-- Cart Totals End -->
@@ -362,6 +286,7 @@ if (count($carro) == 0) {
             </div>
         </div>
     </div>
+    <br>
 <?php
 $template->themeEnd();
 ?>

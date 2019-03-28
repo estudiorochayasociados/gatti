@@ -108,7 +108,7 @@ if (isset($_POST["agregar"])) {
         <div class="col-md-12">
             <div class="row">
                 <?php
-                $imagenes->imagenesAdmin();
+                $imagenes->imagenesAdminV2();
                 ?>
             </div>
         </div>

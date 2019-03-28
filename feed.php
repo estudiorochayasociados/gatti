@@ -10,7 +10,6 @@ $contenido_data = $contenido->view();
 $template->set("title", TITULO . " | Redes sociales");
 $template->set("description", "Redes sociales de ".TITULO);
 $template->set("keywords", "");
-$template->set("favicon", FAVICON);
 $template->themeInit();
 ?>
 <div class="headerTitular">

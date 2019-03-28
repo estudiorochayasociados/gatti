@@ -80,15 +80,14 @@ $pages = ["ecommerce", "contenidos", "novedades", "multimedia", "usuarios", "ban
                         <a class="dropdown-item" href="<?= URL ?>/index.php?op=novedades&accion=ver">
                             Novedades
                         </a>
-                        <!--<a class="dropdown-item" href="<?= URL ?>/index.php?op=videos&accion=ver">
+                        <a class="dropdown-item" href="<?= URL ?>/index.php?op=videos&accion=ver">
                             Videos
-                        </a>-->
+                        </a>
                         <a class="dropdown-item" href="<?= URL ?>/index.php?op=sliders&accion=ver">
                             Sliders
-                        </a>
-                        <!--<a class="dropdown-item" href="<?= URL ?>/index.php?op=galerias&accion=ver">
+                        </a><a class="dropdown-item" href="<?= URL ?>/index.php?op=galerias&accion=ver">
                             Galerias
-                        </a>-->
+                        </a>
                         <a class="dropdown-item" href="<?= URL ?>/index.php?op=banners&accion=ver">
                             Banners
                         </a>

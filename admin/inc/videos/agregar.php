@@ -22,7 +22,7 @@ if (isset($_POST["agregar"])) {
         </label>
         <label class="col-md-12" >Link Video:
             <br/>
-            <input type="url" name="link" value=""  />
+            <input type="text" name="link" value=""  />
         </label>
         <div class="clearfix"></div>
         <div class="col-md-12">

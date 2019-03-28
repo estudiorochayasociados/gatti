@@ -5,8 +5,8 @@ $portfolio = new Clases\Portfolio();
 $productos = new Clases\Productos();
 $img = new  Clases\Imagenes();
 $categoria = new Clases\Categorias();
-$ok = 1;
-if ($ok == 1) {
+$ok = 0;
+if ($ok === 1) {
     $portfolio_data = $portfolio->list('');
     foreach ($portfolio_data as $port) {
         $cod = substr(md5(uniqid(rand())), 0, 10);

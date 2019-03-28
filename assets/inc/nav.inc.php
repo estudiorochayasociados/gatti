@@ -199,7 +199,7 @@ if (isset($_GET['logout'])) {
                             </a>
                         </li>
                         <li>
-                            <a title="alquileres" href="<?= URL ?>/alquileres">
+                            <a title="alquileres" href="<?= URL ?>/productos?categoria=7b90340746">
                                 <img alt="alquileres" src="<?= URL ?>/assets/img/floor-fan.png" width="20"/> Alquileres
                             </a>
                         </li>

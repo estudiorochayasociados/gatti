@@ -171,4 +171,32 @@ class Imagenes
         };
     }
 
+    public function imagenesAdminV2()
+    {
+        $sql = "SELECT * FROM `imagenes` WHERE cod = '{$this->cod}' ORDER BY orden DESC";
+        $imagenes = $this->con->sqlReturn($sql);
+
+        while ($row = mysqli_fetch_assoc($imagenes)) {
+            ?>
+            <div class='col-md-2 mb-20 mt-20'>
+                <div style="height:200px;background:url(<?= '../'.$row['ruta']; ?>) no-repeat center center/contain;">
+                </div>
+                <a href="<?= URL . '/index.php?op=' . $this->link . '&cod=' . $row['cod'] . '&borrarImg=' . $row['id'] ?>" class="btn btn-sm pull-left btn-danger">BORRAR IMAGEN</a>
+                <?php
+                if ($row["orden"] == 0) {
+                    ?>
+                    <a href="<?= URL . '/index.php?op=' . $this->link . '&cod=' . $row['cod'] . '&ordenImg=' . $row['id'] ?>" class="btn btn-sm pull-right btn-warning"><i class="fa fa-star"></i></a>
+                    <?php
+                } else {
+                    ?>
+                    <a href="#" class="btn btn-sm pull-right btn-success"><i class="fa fa-star"></i></a>
+                    <?php
+                }
+                ?>
+                <div class="clearfix"></div>
+            </div>
+            <?php
+        };
+    }
+
 }

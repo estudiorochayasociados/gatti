@@ -67,6 +67,26 @@ class Envios
         return $row;
     }
 
+    public function peso($peso){
+        if ($peso <= 1) {
+            return $tope = 1;
+        } elseif ($peso > 1 && $peso <= 3) {
+            return $tope = 3;
+        } elseif ($peso > 3 && $peso <= 5) {
+            return $tope = 5;
+        } elseif ($peso > 5 && $peso <= 10) {
+            return $tope = 10;
+        } elseif ($peso > 10 && $peso <= 15) {
+            return $tope = 15;
+        } elseif ($peso > 15 && $peso <= 20) {
+            return $tope = 20;
+        } elseif ($peso > 20 && $peso <= 25) {
+            return $tope = 25;
+        } elseif ($peso > 25 && $peso <= 30) {
+            return $tope = 30;
+        }
+    }
+
     function list($filter)
     {
         $array = array();
