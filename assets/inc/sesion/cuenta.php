@@ -1,6 +1,7 @@
 <?php
 //Clases
 $usuario = new Clases\Usuarios();
+$hub = new Clases\Hubspot();
 $usuario->set("cod", $_SESSION["usuarios"]["cod"]);
 $usuarioData = $usuario->view();
 ?>
@@ -16,6 +17,8 @@ $usuarioData = $usuario->view();
         $localidad = $funciones->antihack_mysqli(!empty($_POST["localidad"]) ? $_POST["localidad"] : '');
         $direccion = $funciones->antihack_mysqli(!empty($_POST["direccion"]) ? $_POST["direccion"] : '');
         $telefono = $funciones->antihack_mysqli(!empty($_POST["telefono"]) ? $_POST["telefono"] : '');
+        $celular = $funciones->antihack_mysqli(!empty($_POST["celular"]) ? $_POST["celular"] : '');
+        $pais = $funciones->antihack_mysqli(!empty($_POST["pais"]) ? $_POST["pais"] : '');
         $postal = $funciones->antihack_mysqli(!empty($_POST["postal"]) ? $_POST["postal"] : '');
 
         if (!empty($_POST["password"]) && !empty($_POST["password2"])):
@@ -37,12 +40,35 @@ $usuarioData = $usuario->view();
         $usuario->set("localidad", $localidad);
         $usuario->set("direccion", $direccion);
         $usuario->set("telefono", $telefono);
+        $usuario->set("celular", $celular);
         $usuario->set("postal", $postal);
+        $usuario->set("pais", $pais);
         $usuario->set("password", $password);
         $usuario->set("fecha", $usuarioData['fecha']);
 
+        $hub->set("nombre", $nombre);
+        $hub->set("apellido", $apellido);
+        $hub->set("email", $email);
+        $hub->set("direccion", $direccion);
+        $hub->set("telefono", $telefono);
+        $hub->set("celular", $celular);
+        $hub->set("localidad", $localidad);
+        $hub->set("provincia", $provincia);
+        $hub->set("postal",$postal);
+        $hub->set("pais", $pais);
+
+        if ($email!=$usuarioData['email']){
+            $hub->set("email",$usuarioData['email']);
+            $response = $hub->getContactByEmail();
+            var_dump($response);
+            if ($response!=false){
+                $hub->set("vid",$response['vid']);
+                $hub->updateContact();
+            }
+        }
+
         $usuario->edit();
-        $funciones->headerMove(URL . '/sesion/cuenta');
+        //$funciones->headerMove(URL . '/sesion/cuenta');
     endif;
     ?>
     <br>
@@ -73,7 +99,7 @@ $usuarioData = $usuario->view();
         </div>
         <br/>
         <div class="row">
-            <div class="col-md-6">Email
+            <div class="col-md-12">Email
                 <div class="input-group">
                     <input class="form-control h40"
                            value="<?= $usuarioData['email'] ?>"
@@ -84,6 +110,9 @@ $usuarioData = $usuario->view();
                     <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-envelope"></i></span>
                 </div>
             </div>
+        </div>
+        <br/>
+        <div class="row">
             <div class="col-md-6">Teléfono
                 <div class="input-group">
                     <input class="form-control h40"
@@ -93,6 +122,31 @@ $usuarioData = $usuario->view();
                            name="telefono"
                            required/>
                     <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-phone"></i></span>
+                </div>
+            </div>
+            <div class="col-md-6">Celular
+                <div class="input-group">
+                    <input class="form-control h40"
+                           value="<?= $usuarioData['celular'] ?>"
+                           type="number"
+                           placeholder="Celular"
+                           name="celular"
+                           required/>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-phone"></i></span>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-12">País
+                <div class="input-group">
+                    <input class="form-control h40"
+                           value="<?= $usuarioData['pais'] ?>"
+                           type="text"
+                           placeholder="País"
+                           name="pais"
+                           required/>
+                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-map-marker"></i></span>
                 </div>
             </div>
         </div>

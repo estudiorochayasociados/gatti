@@ -65,16 +65,6 @@ if (is_array($pedido)) {
 switch ($pago["tipo"]) {
     case 0:
         ?>
-        <section class="error_area pt-150 pb-150 mt-150">
-            <div class="container">
-                <div class="error_inner centro">
-                    <img src="<?=LOGO?>" width="200">
-                    <h5>¡Procesando tu pedido!</h5>
-                    <h5 class="fs16">No cierres ésta pestaña</h5>
-                    <i class="mt-10 fa fa-2x fa-spinner  fa-spin"></i>
-                </div>
-            </div>
-        </section>
         <?php
         $pedidos->set("cod", $cod_pedido);
         $pedidos->set("estado", $pago["defecto"]);
@@ -83,7 +73,7 @@ switch ($pago["tipo"]) {
         break;
     case 1:
         include("vendor/mercadopago/sdk/lib/mercadopago.php");
-        $mp = new MP ("7077260206047943", "ocqTWXCjVekoxQRf2cVkrZWX1m5QCHj9");
+        $mp = new MP ("3087431389449841", "8V6jXmINfMLcpoEqV1cnVGQbEMnVwyjK");
         $preference_data = array(
             "items" => array(
                 array(

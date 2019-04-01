@@ -9,6 +9,15 @@ if (isset($_GET['logout'])) {
     $usuario->logout();
 }
 ?>
+<div id="load" style="background: rgba(255,255,255,0.5);position: fixed;top:0;text-align: center;height: 100vh;width: 100%;z-index: 999;padding-top:25%">
+    <div class="container">
+        <div class="error_inner centro">
+            <img src="<?= LOGO ?>" width="200">
+            <br>
+            <i class="mt-10 fa fa-2x fa-spinner  fa-spin"></i>
+        </div>
+    </div>
+</div>
 <div class="botonera headerTopProvincias text-center" style="padding-top: 6px">
     <label style="color:#fff">
         ¿De dónde nos estás visitando?
@@ -70,11 +79,25 @@ if (isset($_GET['logout'])) {
                     </li>
                     <?php
                 } else {
-                    ?>
-                    <li>
-                        <a href="<?= URL ?>/sesion" title="usuarios"><i class="fa fa-user"></i> <?= $_SESSION["usuarios"]["nombre"] ?></a>
-                    </li>
-                    <?php
+                    if ($_SESSION['usuarios']['invitado'] == 0) {
+                        ?>
+                        <li>
+                            <a href="<?= URL ?>/sesion" title="usuarios"><i class="fa fa-user"></i> <?= $_SESSION["usuarios"]["nombre"] ?></a>
+                        </li>
+                        <?php
+                    } else {
+                        ?>
+                        <li>
+                            <a href="<?= URL ?>/usuarios" title="iniciar sesion">iniciar sesión</a>
+                        </li>
+                        <li>
+                            <span> / </span>
+                        </li>
+                        <li>
+                            <a href="<?= URL ?>/usuarios" title="registrarme">registrarme</a>
+                        </li>
+                        <?php
+                    }
                 }
                 ?>
                 <?php
@@ -97,16 +120,20 @@ if (isset($_GET['logout'])) {
     <div class="row" style="padding:5px 0px;">
         <div class="col-md-3 col-xs-12 col-sm-12" style="z-index: 0;">
             <center class="hidden-md hidden-lg">
-                <a href="index.php" title="inicio"><img alt="inicio" alt="LOGO GATTI SA" src="<?= LOGO ?>" class="logo"/></a>
+                <a href="index.php" title="inicio">
+                    <img alt="LOGO GATTI SA" src="<?= LOGO ?>" class="logo"/>
+                </a>
             </center>
             <div class="hidden-xs hidden-sm">
-                <a href="index.php" title="inicio"><img alt="inicio" alt="LOGO GATTI SA" src="<?= LOGO ?>" class="logo"/></a>
+                <a href="index.php" title="inicio">
+                    <img alt="LOGO GATTI SA" src="<?= LOGO ?>" class="logo"/>
+                </a>
             </div>
         </div>
         <div class="col-md-4 pull-right hidden-xs hidden-sm">
             <a href="https://wa.me/5493564589747" title="whatsapp de gatti" style="margin: 0" target="_blank">
                 <div class="pull-right text-right">
-                    <h2 style="font-size: 17px">VENTAS CASA CENTRAL<br/><span style="font-size:31px">3564 589747</span></h2>
+                    <h2 style="font-size: 17px">VENTAS CASA CENTRAL<br/><span style="font-size:31px"><?= TELEFONO ?></span></h2>
                 </div>
                 <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:10px;width: 70px"/>
             </a>
@@ -125,7 +152,7 @@ if (isset($_GET['logout'])) {
                                 data-target="#navbar"
                                 aria-expanded="false"
                                 aria-controls="navbar">
-                            menu <i class="fa fa-bars"></i>
+                            MENU <i class="fa fa-bars"></i>
                         </button>
                     </center>
                 </div>
@@ -138,14 +165,14 @@ if (isset($_GET['logout'])) {
                         </li>
                         <li class="dropdown">
                             <a href="#"
-                               class="dropdown-toggle"
+                               class="dropdown-toggle back-a"
                                data-toggle="dropdown"
                                role="button"
                                aria-haspopup="true"
                                aria-expanded="false">
                                 <img src="<?= URL ?>/assets/img/factory.png" width="20"/> GATTI
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu back-ul">
                                 <li>
                                     <a title="NUESTRA HISTORIA" href="<?= URL ?>/c/nosotros"> NUESTRA HISTORIA</a>
                                 </li>
@@ -159,14 +186,14 @@ if (isset($_GET['logout'])) {
                         </li>
                         <li class="dropdown">
                             <a href="#"
-                               class="dropdown-toggle"
+                               class="dropdown-toggle back-a"
                                data-toggle="dropdown"
                                role="button"
                                aria-haspopup="true"
                                aria-expanded="false">
                                 <img src="<?= URL ?>/assets/img/floor-fan.png" width="20"/> Productos
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu back-ul">
                                 <li>
                                     <a href="<?= URL ?>/tienda" title="tienda online">COMPRA ONLINE</a>
                                 </li>
@@ -177,14 +204,14 @@ if (isset($_GET['logout'])) {
                         </li>
                         <li class="dropdown">
                             <a href="#"
-                               class="dropdown-toggle"
+                               class="dropdown-toggle back-a"
                                data-toggle="dropdown"
                                role="button"
                                aria-haspopup="true"
                                aria-expanded="false">
                                 <img src="<?= URL ?>/assets/img/heart.png" width="20"/> Novedades
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu back-ul">
                                 <li>
                                     <a href="<?= URL ?>/novedades" title="novedades">Novedades</a>
                                 </li>
@@ -216,15 +243,15 @@ if (isset($_GET['logout'])) {
                         <div class="hidden-md hidden-lg">
                             <hr/>
                             <li class="hidden-md hidden-lg">
-                                <a target="_blank" title="catalogo" href="<?= URL ?>/catalogo digital/">CATÁLOGO DE LA EMPRESA</a>
+                                <a target="_blank" title="catalogo" href="<?= URL ?>/assets/archivos/Catalogo_Digital.pdf">CATÁLOGO DE LA EMPRESA</a>
                             </li>
                             <br/>
                             <li class="hidden-md hidden-lg">
-                                <a target="_blank" title="software" href="<?= URL ?>/software">SOFTWARE DE SELECCIÓN DE VENTILADORES</a>
+                                <a target="_blank" title="software" href="<?= URL ?>/c/software">SOFTWARE DE SELECCIÓN DE VENTILADORES</a>
                             </li>
                             <br/>
                             <li class="hidden-md hidden-lg">
-                                <a target="_blank" title="archivos" href="<?= URL ?>/archivos/COMO VENTILAR.pdf">GUÍA PARA UNA CORRECTA VENTILACIÓN</a>
+                                <a target="_blank" title="archivos" href="<?= URL ?>/assets/archivos/COMO VENTILAR.pdf">GUÍA PARA UNA CORRECTA VENTILACIÓN</a>
                             </li>
                             <br/>
                         </div>

@@ -18,7 +18,7 @@ foreach ($categorias_banners as $catB) {
     }
 }
 //Categorias
-$categorias_data = $categoria->listForCount('1','');
+$categorias_data = $categoria->listForCount('1', '');
 //Productos
 $pagina = $funciones->antihack_mysqli(isset($_GET["pagina"]) ? $_GET["pagina"] : '0');
 $categoria_get = $funciones->antihack_mysqli(isset($_GET["categoria"]) ? $_GET["categoria"] : '');
@@ -194,14 +194,14 @@ $template->themeInit();
                                     </div>
                                     <div class="clearfix"></div>
                                     <?php
-                                    $desc_=$prod['data']['precio_descuento'];
+                                    $desc_ = $prod['data']['precio_descuento'];
                                 } else {
                                     ?>
                                     <span class="precioProducto"><?= "<b>Precio: </b>$" . ($prod['data']['precio']) ?>
                                     </span>
                                     <br/>
                                     <?php
-                                    $desc_=$prod['data']['precio'];
+                                    $desc_ = $prod['data']['precio'];
                                 }
                                 ?>
                                 <span class="precioProducto" style="color:red">
@@ -233,42 +233,41 @@ $template->themeInit();
                 }
                 ?>
             </div>
-            <div class="col-md-12 blog-pagination centro" style="margin-bottom: 10px;">
-                <div class="row">
-                    <div class="Zebra_Pagination">
-                        <ul>
-                            <?php
-                            // <li><a href="javascript:void(0)" class="navigation previous disabled" rel="prev"><i class="fa fa-arrow-left"></i></a></li>
-                            // <li><a href="/tienda?page=2" class="navigation next" rel="next"><i class="fa fa-arrow-right"></i></a></li>
-                            if (!empty($numeroPaginas)) {
-                                if ($numeroPaginas != 1 && $numeroPaginas != 0) {
-                                    $url_final = $funciones->eliminar_get(CANONICAL, "pagina");
-                                    $links = '';
-                                    $links .= "<li><a class='page-numbers' href='" . $url_final . $anidador . "pagina=1'>1</a></li>";
-                                    $i = max(2, $pagina - 5);
+            <div class="clearfix"></div>
+            <div class="row centro mb-10">
+                <div class="Zebra_Pagination">
+                    <ul>
+                        <?php
+                        // <li><a href="javascript:void(0)" class="navigation previous disabled" rel="prev"><i class="fa fa-arrow-left"></i></a></li>
+                        // <li><a href="/tienda?page=2" class="navigation next" rel="next"><i class="fa fa-arrow-right"></i></a></li>
+                        if (!empty($numeroPaginas)) {
+                            if ($numeroPaginas != 1 && $numeroPaginas != 0) {
+                                $url_final = $funciones->eliminar_get(CANONICAL, "pagina");
+                                $links = '';
+                                $links .= "<li class='mt-30'><a class='page-numbers' href='" . $url_final . $anidador . "pagina=1'>1</a></li>";
+                                $i = max(2, $pagina - 5);
 
-                                    if ($i > 2) {
-                                        $links .= "<li><a href='#'>...</a></li>";
-                                    }
-                                    for (; $i <= min($pagina + 6, $numeroPaginas); $i++) {
-                                        if ($pagina + 1 == $i) {
-                                            $current = "current";
-                                        } else {
-                                            $current = "";
-                                        }
-                                        $links .= "<li><a class='$current' href='" . $url_final . $anidador . "pagina=" . $i . "'>" . $i . "</a></li>";
-                                    }
-                                    if ($i - 1 != $numeroPaginas) {
-                                        $links .= "<li><a href='#'>...</a></li>";
-                                        $links .= "<li><a href='" . $url_final . $anidador . "pagina=" . $numeroPaginas . "'>" . $numeroPaginas . "</a></li>";
-                                    }
-                                    echo $links;
-                                    echo "";
+                                if ($i > 2) {
+                                    $links .= "<li class='mt-30'><a href='#'>...</a></li>";
                                 }
+                                for (; $i <= min($pagina + 6, $numeroPaginas); $i++) {
+                                    if ($pagina + 1 == $i) {
+                                        $current = "current";
+                                    } else {
+                                        $current = "";
+                                    }
+                                    $links .= "<li class='mt-30'><a class='$current' href='" . $url_final . $anidador . "pagina=" . $i . "'>" . $i . "</a></li>";
+                                }
+                                if ($i - 1 != $numeroPaginas) {
+                                    $links .= "<li class='mt-30'><a href='#'>...</a></li>";
+                                    $links .= "<li class='mt-30'><a href='" . $url_final . $anidador . "pagina=" . $numeroPaginas . "'>" . $numeroPaginas . "</a></li>";
+                                }
+                                echo $links;
+                                echo "";
                             }
-                            ?>
-                        </ul>
-                    </div>
+                        }
+                        ?>
+                    </ul>
                 </div>
             </div>
         </div>

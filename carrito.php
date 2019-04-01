@@ -31,8 +31,9 @@ if (count($carro) == 0) {
             <h3> Carrito de compra</h3>
         </div>
         <?php
+        $envio_ok = 0;
         $pesoFinal = $carrito->peso_final();
-        $tope=$envios->peso($pesoFinal);
+        $tope = $envios->peso($pesoFinal);
         $metodos_de_envios = $envios->list(array("peso BETWEEN " . $carrito->peso_final() . " AND " . $tope . " OR peso = 0"));
         $precioFinal = $carrito->precio_total();
         if ($carroEnvio == '') {
@@ -43,6 +44,7 @@ if (count($carro) == 0) {
                 $carrito->set("precio", 0);
                 $carrito->add();
                 $funciones->headerMove(CANONICAL . "");
+                $envio_ok = 1;
             } else {
                 if ($pesoFinal <= 30) {
                     ?>
@@ -91,7 +93,7 @@ if (count($carro) == 0) {
                 }
             }
         }
-        if (($precioFinal > 500 && $precioFinal < 1500) || ($precioFinal > 3500 && $precioFinal < 7000)) {
+        if ($envio_ok == 1) {
             ?>
             <div id="formEnvio" class="alert alert-success animated fadeIn">
                 <b>¡Te regalamos tu envío, porque tu pedido se encuentra entre $550 a $1500 o de $3500 a $7000.</b>
@@ -140,7 +142,7 @@ if (count($carro) == 0) {
                         }
                     }
                     ?>
-                    <b>Elegí el medio de pago que desea relizar.  </b><i style="float:right;font-size:12px">* Seleccionar la mejor opción y presionar Finalizar Carrito</i><br/>
+                    <b>Elegí el medio de pago que desea relizar. </b><i style="float:right;font-size:12px">* Seleccionar la mejor opción y presionar Finalizar Carrito</i><br/>
                     <form method="post">
                         <select name="metodos-pago" class="form-control" id="pago" onchange="this.form.submit()">
                             <option value="" selected disabled>Elegir envío</option>
@@ -272,7 +274,7 @@ if (count($carro) == 0) {
                                         <i class="fa fa-check"></i>Finalizar Carrito
                                     </a>
                                 </div>
-                            <?php
+                                <?php
                             }
                             ?>
                         </div>

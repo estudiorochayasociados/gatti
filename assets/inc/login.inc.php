@@ -66,6 +66,7 @@ if (isset($_POST["registrar"])):
         $apellido = $funcionesNav->antihack_mysqli(isset($_POST["apellido"]) ? $_POST["apellido"] : '');
         $email = $funcionesNav->antihack_mysqli(isset($_POST["email"]) ? $_POST["email"] : '');
         $telefono = $funcionesNav->antihack_mysqli(isset($_POST["telefono"]) ? $_POST["telefono"] : '');
+        $celular = $funcionesNav->antihack_mysqli(isset($_POST["celular"]) ? $_POST["celular"] : '');
         $password = $funcionesNav->antihack_mysqli(isset($_POST["password"]) ? $_POST["password"] : '');
         $cod = substr(md5(uniqid(rand())), 0, 10);
         $fecha = getdate();
@@ -76,8 +77,17 @@ if (isset($_POST["registrar"])):
         $usuario->set("apellido", $apellido);
         $usuario->set("email", $email);
         $usuario->set("telefono", $telefono);
+        $usuario->set("celular", $celular);
         $usuario->set("password", $password);
         $usuario->set("fecha", $fecha);
+
+        $hub->set("nombre",$nombre);
+        $hub->set("apellido",$apellido);
+        $hub->set("email",$email);
+        $hub->set("telefono",$telefono);
+        $hub->set("celular",$celular);
+
+
 
         if ($usuario->add() == 0):
             ?>
@@ -89,28 +99,42 @@ if (isset($_POST["registrar"])):
             </script>
         <?php
         else:
-            $usuario->login();
-            //Envio de mail al usuario
-            $mensaje = 'Gracias por registrarse ' . ucfirst($nombre) . '<br/>';
-            $asunto = TITULO . ' - Registro';
-            $receptor = $email;
-            $emisor = EMAIL;
-            $enviar->set("asunto", $asunto);
-            $enviar->set("receptor", $receptor);
-            $enviar->set("emisor", $emisor);
-            $enviar->set("mensaje", $mensaje);
-            $enviar->emailEnviar();
-            //Envio de mail a la empresa
-            $mensaje2 = 'El usuario ' . ucfirst($nombre) . ' ' . ucfirst($apellido) . ' acaba de registrarse en nuestra plataforma' . '<br/>';
-            $asunto2 = TITULO . ' - Registro';
-            $receptor2 = EMAIL;
-            $emisor2 = EMAIL;
-            $enviar->set("asunto", $asunto2);
-            $enviar->set("receptor", $receptor2);
-            $enviar->set("emisor", $emisor2);
-            $enviar->set("mensaje", $mensaje2);
-            $enviar->emailEnviar();
-            $funcionesNav->headerMove(CANONICAL);
+            $result=$hub->addContact();
+            if ($result){
+                $usuario->login();
+                //Envio de mail al usuario
+                $mensaje = 'Gracias por registrarse ' . ucfirst($nombre) . '<br/>';
+                $asunto = TITULO . ' - Registro';
+                $receptor = $email;
+                $emisor = EMAIL;
+                $enviar->set("asunto", $asunto);
+                $enviar->set("receptor", $receptor);
+                $enviar->set("emisor", $emisor);
+                $enviar->set("mensaje", $mensaje);
+                $enviar->emailEnviar();
+                //Envio de mail a la empresa
+                $mensaje2 = 'El usuario ' . ucfirst($nombre) . ' ' . ucfirst($apellido) . ' acaba de registrarse en nuestra plataforma' . '<br/>';
+                $asunto2 = TITULO . ' - Registro';
+                $receptor2 = EMAIL;
+                $emisor2 = EMAIL;
+                $enviar->set("asunto", $asunto2);
+                $enviar->set("receptor", $receptor2);
+                $enviar->set("emisor", $emisor2);
+                $enviar->set("mensaje", $mensaje2);
+                $enviar->emailEnviar();
+
+                $funcionesNav->headerMove(CANONICAL);
+            }else{
+                ?>
+                <script>
+                    $(document).ready(function () {
+                        $("#errorRegistro").html('<br/><div class="alert alert-warning" role="alert"><?=ucfirst($result)?></div>');
+                        $('#registrar').modal("show");
+                    });
+                </script>
+                <?php
+            }
+
         endif;
     else:
         ?>
@@ -145,8 +169,12 @@ endif;
                         <input class="form-control" type="email" placeholder="Email" data-validation="email" name="email"
                                required>
                     </div>
-                    <div class="col-lg-12 form-group">
+                    <div class="col-lg-6 form-group">
                         <input class="form-control" type="number" placeholder="Teléfono" name="telefono"
+                               required>
+                    </div>
+                    <div class="col-lg-6 form-group">
+                        <input class="form-control" type="number" placeholder="Celular" name="celular"
                                required>
                     </div>
                     <div class="col-lg-6 form-group">

@@ -26,7 +26,7 @@ $template->themeInit();
             $imagenes_data = $imagenes->list($filtro);
             foreach ($imagenes_data as $img) {
                 ?>
-                <div class="col-md-2">
+                <div class="col-md-2 mt-5">
                     <div style="background:url('<?= $img['ruta']; ?>') no-repeat center center/contain;height:200px;">
                     </div>
                 </div>

@@ -117,9 +117,9 @@ if (empty($_SESSION["carrito"])) {
             <div class="ps-404">
                 <div>
                     <div class="well well-lg pt-50 pb-50">
-                        <h2>
-                            CÓDIGO: <span> <?= $cod_pedido ?></span>
-                        </h2>
+                        <h1>
+                            CÓDIGO: <?= $cod_pedido ?>
+                        </h1>
                         <hr>
                         <p>
                             <b>Estado:</b> <?= $estado ?><br/>

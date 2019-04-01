@@ -10,6 +10,9 @@ $carrito = new Clases\Carrito();
 $cod = $funciones->antihack_mysqli(isset($_GET["cod"]) ? $_GET["cod"] : '');
 $producto->set("cod", $cod);
 $producto_data = $producto->view_();
+if ($producto_data['data'] == null) {
+    $funciones->headerMove(URL);
+}
 //Productos relacionados
 $categoria_cod = $producto_data['data']['categoria'];
 $filter = array("categoria='$categoria_cod'", "cod!='$cod'");
@@ -49,47 +52,53 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                 <div class="clearfix"></div>
                 <br/>
                 <div class="hidden-xs hidden-sm">
-                    <?php
-                    if (!empty($producto_data['imagenes'])) {
-                        foreach ($producto_data['imagenes'] as $img) {
-                            if (is_file($img['ruta'])) {
-                                ?>
-                                <a href="<?= URL . '/' . $img['ruta']; ?>" data-lightbox="roadtrip">
-                                    <div class="col-md-3 thumbnail" style=" height: 100px; background: url(<?= URL . '/' . $img['ruta'] ?>) no-repeat center center/contain;">
-                                    </div>
-                                </a>
-                                <?php
+                    <div class="row">
+                        <?php
+                        if (!empty($producto_data['imagenes'])) {
+                            foreach ($producto_data['imagenes'] as $img) {
+                                if (is_file($img['ruta'])) {
+                                    ?>
+                                    <a href="<?= URL . '/' . $img['ruta']; ?>" data-lightbox="roadtrip">
+
+                                        <div class="col-md-3">
+                                            <div class=""
+                                                 style="height: 100px; background: url(<?= URL . '/' . $img['ruta'] ?>) no-repeat center center/contain;">
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <?php
+                                }
                             }
                         }
-                    }
-                    if (!empty($producto_data['data']['variable9'])) {
-                        ?>
-                        <a href="#"
-                           class="video"
-                           data-video="https://www.youtube.com/embed/<?= $producto_data['data']['variable9']; ?>"
-                           data-toggle="modal"
-                           data-target="#videoModal">
-                            <div class="col-md-3 thumbnail" style=" height: 100px; background: url(<?= URL ?>'/assets/img/video-producto.png') no-repeat center center/contain;">
-                            </div>
-                        </a>
-                        <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        <iframe width="100%" height="350" src="" frameborder="0" allowfullscreen></iframe>
+                        if (!empty($producto_data['data']['variable9'])) {
+                            ?>
+                            <a href="#"
+                               class="video"
+                               data-video="https://www.youtube.com/embed/<?= $producto_data['data']['variable9']; ?>"
+                               data-toggle="modal"
+                               data-target="#videoModal">
+                                <div class="col-md-3 thumbnail" style=" height: 100px; background: url(<?= URL ?>'/assets/img/video-producto.png') no-repeat center center/contain;">
+                                </div>
+                            </a>
+                            <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <iframe width="100%" height="350" src="" frameborder="0" allowfullscreen></iframe>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <?php
-                    }
-                    ?>
-                    <?php include("assets/inc/socialfb.inc.php"); ?>
-                    <div class="clearfix"></div>
-                    <br/>
+                            <?php
+                        }
+                        ?>
+                        <?php include("assets/inc/socialfb.inc.php"); ?>
+                        <div class="clearfix"></div>
+                        <br/>
+                    </div>
                 </div>
             </div>
             <div class="col-md-7">
@@ -106,12 +115,12 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                         </h2>
                         <h2>Precio: $<?= $producto_data['data']['precio_descuento'] ?></h2>
                         <?php
-                        $desc_=$producto_data['data']['precio_descuento'];
+                        $desc_ = $producto_data['data']['precio_descuento'];
                     } else {
                         ?>
                         <h2>Precio: $<?= $producto_data['data']['precio'] ?></h2>
                         <?php
-                        $desc_=$producto_data['data']['precio'];
+                        $desc_ = $producto_data['data']['precio'];
                     }
                     ?>
                     <h4 style="color:red">
@@ -155,14 +164,14 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                             <br/>
                         </b>
                         <form class="row" method="post">
-                            <label class="col-md-4">
+                            <label class="col-md-4 col-xs-12 col-sm-12">
                                 ¿Cuántos necesitas?:<br/>
                                 <input type="number"
                                        value="1"
                                        name="cantidad"
                                        min="1"
                                        max="<?= $producto_data['data']['stock']; ?>"
-                                       class="cantidad form-control"
+                                       class="cantidad form-control centro"
                                        oninvalid="this.setCustomValidity('Ingresar un stock válido. Stock disponible: <?= $producto_data['data']['stock'] ?>')"
                                        oninput="this.setCustomValidity('')"
                                        onkeydown="return (event.keyCode!=13);"/>
@@ -179,10 +188,10 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                                     echo "<div class='alert alert-danger'>No se puede agregar por falta de stock, compruebe si ya posee este producto en su carrito.</div>";
                                 }
                                 ?>
-                                <button name="agregar_carrito" type="submit" class="btn btn-success">
+                                <button name="agregar_carrito" type="submit" class="btn btn-success largo">
                                     <i class="fa fa-cart-plus"></i> AGREGAR A CARRITO
                                 </button>
-                                <a href="<?= URL . "/carrito"; ?>" class="btn btn-info">
+                                <a href="<?= URL . "/carrito"; ?>" class="btn btn-info largo">
                                     <i class="fa fa-shopping-cart "></i> VER CARRITO
                                 </a>
                             </div>

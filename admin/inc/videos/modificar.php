@@ -23,7 +23,7 @@ if (isset($_POST["agregar"])) {
         </label>
         <label class="col-md-12" >Link de youtube:
             <br/>
-            <input type="text" name="link" value="<?=strtoupper($data["link"]);?>" />
+            <input type="text" name="link" value="<?=$data["link"];?>" />
         </label>
         <div class="clearfix"></div>
         <div class="col-md-12">

@@ -184,8 +184,8 @@ $template->themeInit();
                 }
                 ?>
             </div>
-            <div class="col-md-12 blog-pagination centro" style="margin-bottom: 10px;">
-                <div class="row">
+            <div class="clearfix"></div>
+                <div class="row centro mb-10">
                     <div class="Zebra_Pagination">
                         <ul>
                             <?php
@@ -219,7 +219,6 @@ $template->themeInit();
                             }
                             ?>
                         </ul>
-                    </div>
                 </div>
             </div>
         </div>

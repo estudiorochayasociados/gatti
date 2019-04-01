@@ -1,13 +1,44 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
- CKEDITOR.editorConfig = function( config ) {
- 	config.extraPlugins = 'widgetselection,lineutils,imageuploader,dialog,btgrid,bootstrapTabs,accordionList,collapsibleItem,lightbox';
- 	config.language = 'es';	
- 	config.extraAllowedContent = 'a[data-lightbox,data-title,data-lightbox-saved]';
- 	config.protectedSource.push(/<\?[\s\S]*?\?>/g); 
- 	config.entities = false;
- };
- 
+CKEDITOR.editorConfig = function( config ) {
+	// Define changes to default configuration here.
+	// For complete reference see:
+	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
+
+	// The toolbar groups arrangement, optimized for two toolbar rows.
+	config.toolbarGroups = [
+		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
+		{ name: 'links' },
+		{ name: 'insert' },
+		{ name: 'tools' },
+		{ name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
+		{ name: 'others' },
+		'/',
+		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+		{ name: 'paragraph',   groups: [ 'align','list', 'indent', 'blocks',  'bidi' ] },
+		{ name: 'styles' },
+		{ name: 'colors' },
+		{ name: 'tools' },
+		{ name: 'others' }
+	];
+
+	// Remove some buttons provided by the standard plugins, which are
+	// not needed in the Standard(s) toolbar.
+	config.removeButtons = 'Underline,Subscript,Superscript';
+
+	// Set the most common block elements.
+	config.format_tags = 'p;h1;h2;h3;pre';
+
+	// Simplify the dialog windows.
+	config.removeDialogTabs = 'image:advanced;link:advanced';
+
+
+	config.extraPlugins = 'widgetselection,lineutils,dialog,btgrid,bootstrapTabs,accordionList,collapsibleItem,lightbox,youtube,justify,colorbutton,panelbutton,floatpanel,font';
+	config.language = 'es';
+	config.extraAllowedContent = 'a[data-lightbox,data-title,data-lightbox-saved]';
+	config.protectedSource.push(/<\?[\s\S]*?\?>/g);
+};

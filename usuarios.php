@@ -6,6 +6,8 @@ $template = new Clases\TemplateSite();
 $funciones = new Clases\PublicFunction();
 $usuario = new Clases\Usuarios();
 $enviar = new Clases\Email();
+$hub = new Clases\Hubspot();
+
 //
 $template->set("title", TITULO . " | Usuarios");
 $template->set("description", TITULO);
@@ -63,10 +65,12 @@ $template->themeInit();
                 $apellido = $funciones->antihack_mysqli(isset($_POST["apellido"]) ? $_POST["apellido"] : '');
                 $email = $funciones->antihack_mysqli(isset($_POST["email"]) ? $_POST["email"] : '');
                 $telefono = $funciones->antihack_mysqli(isset($_POST["telefono"]) ? $_POST["telefono"] : '');
+                $celular = $funciones->antihack_mysqli(isset($_POST["celular"]) ? $_POST["celular"] : '');
                 $password = $funciones->antihack_mysqli(isset($_POST["password"]) ? $_POST["password"] : '');
                 $direccion = $funciones->antihack_mysqli(isset($_POST["direccion"]) ? $_POST["direccion"] : '');
                 $localidad = $funciones->antihack_mysqli(isset($_POST["localidad"]) ? $_POST["localidad"] : '');
                 $provincia = $funciones->antihack_mysqli(isset($_POST["provincia"]) ? $_POST["provincia"] : '');
+                $pais = $funciones->antihack_mysqli(isset($_POST["pais"]) ? $_POST["pais"] : '');
                 $postal = $funciones->antihack_mysqli(isset($_POST["postal"]) ? $_POST["postal"] : '');
                 $cod = substr(md5(uniqid(rand())), 0, 10);
                 $fecha = getdate();
@@ -78,18 +82,33 @@ $template->themeInit();
                 $usuario->set("email", $email);
                 $usuario->set("direccion", $direccion);
                 $usuario->set("telefono", $telefono);
+                $usuario->set("celular", $celular);
                 $usuario->set("localidad", $localidad);
                 $usuario->set("provincia", $provincia);
-                $usuario->set("posta", $postal);
+                $usuario->set("pais", $pais);
+                $usuario->set("postal", $postal);
                 $usuario->set("password", $password);
                 $usuario->set("fecha", $fecha);
 
-                if ($usuario->add() == 0) {
+                $hub->set("nombre", $nombre);
+                $hub->set("apellido", $apellido);
+                $hub->set("email", $email);
+                $hub->set("direccion", $direccion);
+                $hub->set("telefono", $telefono);
+                $hub->set("celular", $celular);
+                $hub->set("localidad", $localidad);
+                $hub->set("provincia", $provincia);
+                $hub->set("postal",$postal);
+                $hub->set("pais", $pais);
+
+                if ($usuario->validate() == "string" || $hub->getContactByEmail()!=false) {
                     ?>
                     <br/>
                     <div class="alert alert-danger" role="alert">El email ya está registrado.</div>
                     <?php
                 } else {
+                    $hub->addContact();
+                    $usuario->add();
                     $usuario->set("password", $password);
                     $usuario->login();
 
@@ -164,20 +183,28 @@ $template->themeInit();
                            name="password2"
                            required/>
                 </label>
-                <label class="col-md-6 col-xs-6">Telefono:<br/>
+                <label class="col-md-6 col-xs-6">Teléfono:<br/>
                     <input class="form-control"
                            type="text"
                            value="<?= $funciones->antihack_mysqli((isset($_POST["telefono"]) ? $_POST["telefono"] : '')); ?>"
-                           placeholder="Escribir telefono"
+                           placeholder="Escribir teléfono"
                            name="telefono"
                            required/>
                 </label>
-                <label class="col-md-6 col-xs-6">Direccion:<br/>
+                <label class="col-md-6 col-xs-6">Celular:<br/>
                     <input class="form-control"
                            type="text"
-                           value="<?= $funciones->antihack_mysqli((isset($_POST["direccion"]) ? $_POST["direccion"] : '')); ?>"
-                           placeholder="Escribir direccion"
-                           name="direccion"
+                           value="<?= $funciones->antihack_mysqli((isset($_POST["celular"]) ? $_POST["celular"] : '')); ?>"
+                           placeholder="Escribir celular"
+                           name="celular"
+                           required/>
+                </label>
+                <label class="col-md-6 col-xs-6">País:<br/>
+                    <input class="form-control"
+                           type="text"
+                           value="<?= $funciones->antihack_mysqli((isset($_POST["pais"]) ? $_POST["pais"] : '')); ?>"
+                           placeholder="Escribir país"
+                           name="pais"
                            required/>
                 </label>
                 <label class="col-md-6 col-xs-6">Provincia:<br/>
@@ -191,12 +218,20 @@ $template->themeInit();
                         <option value="" disabled>Localidad</option>
                     </select>
                 </label>
-                <label class="col-md-12 col-xs-12">Código postal:<br/>
+                <label class="col-md-6 col-xs-6">Código postal:<br/>
                     <input class="form-control"
                            type="text"
                            value="<?= $funciones->antihack_mysqli((isset($_POST["postal"]) ? $_POST["postal"] : '')); ?>"
                            placeholder="Escribir código postal"
                            name="postal"
+                           required/>
+                </label>
+                <label class="col-md-12 col-xs-12">Direccion:<br/>
+                    <input class="form-control"
+                           type="text"
+                           value="<?= $funciones->antihack_mysqli((isset($_POST["direccion"]) ? $_POST["direccion"] : '')); ?>"
+                           placeholder="Escribir direccion"
+                           name="direccion"
                            required/>
                 </label>
 

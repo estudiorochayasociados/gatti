@@ -88,42 +88,41 @@ $numeroPaginas = $novedades->paginador("", $cantidad);
             }
         }
         ?>
-        <div class="col-md-12 blog-pagination centro" style="margin-bottom: 10px;margin-top:15px;">
-            <div class="row">
-                <div class="Zebra_Pagination">
-                    <ul>
-                        <?php
-                        // <li><a href="javascript:void(0)" class="navigation previous disabled" rel="prev"><i class="fa fa-arrow-left"></i></a></li>
-                        // <li><a href="/tienda?page=2" class="navigation next" rel="next"><i class="fa fa-arrow-right"></i></a></li>
-                        if (!empty($numeroPaginas)) {
-                            if ($numeroPaginas != 1 && $numeroPaginas != 0) {
-                                $url_final = $funciones->eliminar_get(CANONICAL, "pagina");
-                                $links = '';
-                                $links .= "<li><a class='page-numbers' href='" . $url_final . $anidador . "pagina=1'>1</a></li>";
-                                $i = max(2, $pagina - 5);
+        <div class="clearfix"></div>
+        <div class="row centro mb-10 mt-20">
+            <div class="Zebra_Pagination">
+                <ul>
+                    <?php
+                    // <li><a href="javascript:void(0)" class="navigation previous disabled" rel="prev"><i class="fa fa-arrow-left"></i></a></li>
+                    // <li><a href="/tienda?page=2" class="navigation next" rel="next"><i class="fa fa-arrow-right"></i></a></li>
+                    if (!empty($numeroPaginas)) {
+                        if ($numeroPaginas != 1 && $numeroPaginas != 0) {
+                            $url_final = $funciones->eliminar_get(CANONICAL, "pagina");
+                            $links = '';
+                            $links .= "<li><a class='page-numbers' href='" . $url_final . $anidador . "pagina=1'>1</a></li>";
+                            $i = max(2, $pagina - 5);
 
-                                if ($i > 2) {
-                                    $links .= "<li><a href='#'>...</a></li>";
-                                }
-                                for (; $i <= min($pagina + 6, $numeroPaginas); $i++) {
-                                    if ($pagina + 1 == $i) {
-                                        $current = "current";
-                                    } else {
-                                        $current = "";
-                                    }
-                                    $links .= "<li><a class='$current' href='" . $url_final . $anidador . "pagina=" . $i . "'>" . $i . "</a></li>";
-                                }
-                                if ($i - 1 != $numeroPaginas) {
-                                    $links .= "<li><a href='#'>...</a></li>";
-                                    $links .= "<li><a href='" . $url_final . $anidador . "pagina=" . $numeroPaginas . "'>" . $numeroPaginas . "</a></li>";
-                                }
-                                echo $links;
-                                echo "";
+                            if ($i > 2) {
+                                $links .= "<li><a href='#'>...</a></li>";
                             }
+                            for (; $i <= min($pagina + 6, $numeroPaginas); $i++) {
+                                if ($pagina + 1 == $i) {
+                                    $current = "current";
+                                } else {
+                                    $current = "";
+                                }
+                                $links .= "<li><a class='$current' href='" . $url_final . $anidador . "pagina=" . $i . "'>" . $i . "</a></li>";
+                            }
+                            if ($i - 1 != $numeroPaginas) {
+                                $links .= "<li><a href='#'>...</a></li>";
+                                $links .= "<li><a href='" . $url_final . $anidador . "pagina=" . $numeroPaginas . "'>" . $numeroPaginas . "</a></li>";
+                            }
+                            echo $links;
+                            echo "";
                         }
-                        ?>
-                    </ul>
-                </div>
+                    }
+                    ?>
+                </ul>
             </div>
         </div>
     </div>

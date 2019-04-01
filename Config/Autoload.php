@@ -7,13 +7,13 @@ class autoload
     {
         //require_once "Config/Minify.php";
         session_start();
-        $_SESSION["cod_pedido"] = isset($_SESSION["cod_pedido"]) ? $_SESSION["cod_pedido"] : substr(md5(uniqid(rand())), 0, 10);
+        $_SESSION["cod_pedido"] = isset($_SESSION["cod_pedido"]) ? $_SESSION["cod_pedido"] : strtoupper(substr(md5(uniqid(rand())), 0, 7));
         define('SALT', hash("sha256", "salt@estudiorochayasoc.com.ar"));
         define('URL', "http://" . $_SERVER['HTTP_HOST'] . "/Gatti2");
         define('CANONICAL', "http://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
         define('GOOGLE_TAG', "");
         define('TITULO', "GATTI SA");
-        define('TELEFONO', "03564 422291");
+        define('TELEFONO', "3564 589747");
         define('CIUDAD', "San Francisco");
         define('PROVINCIA', "Cordoba");
         define('PAIS', "Argentina");
@@ -23,6 +23,7 @@ class autoload
         define('DIRECCION', "Av. 9 de Septiembre 3203");
         define('LOGO', URL . "/assets/img/logo.png");
         define('FAVICON', URL . "/assets/img/favicon.png");
+        define('HUBKEY', "9d0a9974-0576-4494-9798-22e3300e4b21");
         define('APP_ID_FB', "");
         spl_autoload_register(function ($clase) {
             $ruta = str_replace("\\", "/", $clase) . ".php";
@@ -45,8 +46,8 @@ class autoload
         define('URL', "http://" . $_SERVER['HTTP_HOST'] . "/Gatti2/admin");
         define('CANONICAL', "http://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
         define('LOGO', URL . "/assets/img/logo/logo.png");
-        define('MELI_ID', "7999670077552792");
-        define('MELI_SECRET', "obJyQzXFSXH0H4FqCbz6tJAR2ARakJNb");
+        define('MELI_ID', "5737861010581482");
+        define('MELI_SECRET', "eVbx5m7ynhVosyvbHrME9s7RYKy27nbY");
         require_once "../Clases/Zebra_Image.php";
         spl_autoload_register(function ($clase) {
             $ruta = str_replace("\\", "/", $clase) . ".php";

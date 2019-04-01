@@ -11,7 +11,7 @@ $template->set("favicon", FAVICON);
 $template->themeInit();
 $usuarios = new Clases\Usuarios();
 $usuarioSesion = $usuarios->view_sesion();
-if (empty($usuarioSesion)) {
+if (empty($usuarioSesion)||$usuarioSesion['invitado']==1) {
     $funciones->headerMove(URL . "/index");
 }
 ?>

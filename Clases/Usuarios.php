@@ -188,6 +188,26 @@ class Usuarios
             return $array;
         }
     }
+    function listV($filter)
+    {
+        $array = array();
+        if (is_array($filter)) {
+            $filterSql = "WHERE ";
+            $filterSql .= implode(" AND ", $filter);
+        } else {
+            $filterSql = '';
+        }
+
+        $sql = "SELECT * FROM `usuariosvieja` $filterSql  ORDER BY id DESC";
+        $notas = $this->con->sqlReturn($sql);
+
+        if ($notas) {
+            while ($row = mysqli_fetch_assoc($notas)) {
+                $array[] = $row;
+            }
+            return $array;
+        }
+    }
 
     function validarVendedor(){
         $sql = "SELECT vendedor FROM `usuarios`WHERE cod = '{$this->cod}' AND vendedor='1' ORDER BY id DESC";

@@ -176,7 +176,6 @@ class PublicFunction
             default:
                 if ($data) $url = sprintf("%s?%s", $url, http_build_query($data));
         }
-
         // OPTIONS:
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json',));
@@ -185,11 +184,15 @@ class PublicFunction
 
         // EXECUTE:
         $result = curl_exec($curl);
-        if (!$result) {
-            die("Connection Failure");
-        }
+        $status_code = @curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        $response=array(
+          "Status"=>$status_code,
+          "Data"=>$result
+        );
+
         curl_close($curl);
-        return $result;
+        return $response;
     }
 
 

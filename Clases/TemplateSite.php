@@ -75,7 +75,7 @@ class TemplateSite
         echo '<link href="' . FAVICON . '" rel="Shortcut Icon" />';
         include 'assets/inc/header.inc.php';
         echo '</head>';
-        echo '<body ' . $this->body . '>';
+        echo '<body ' . $this->body . ' onload="hideLoad()">';
         include 'assets/inc/nav.inc.php';
     }
 

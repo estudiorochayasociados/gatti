@@ -35,52 +35,31 @@ if (empty($pedidosArrayAgrupados)) {
                 <a data-toggle="collapse" href="#collapse<?= $value["cod"] ?>" aria-expanded="false" aria-controls="collapse<?= $value["cod"] ?>" class="collapsed color_a">
                     <div class="panel-heading boton-cuenta" role="tab" id="heading">
                         <div class="row">
-                            <div class="col-md-10">
+                            <div class="col-md-10 dis">
                                 <span class="blanco">Pedido <?= $value["cod"] ?></span>
                                 <span class="hidden-xs hidden-sm blanco">- Fecha <?= $fecha ?></span>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 dis">
                                 <?php if ($value["estado"] == 0): ?>
-                                    <br class="visible-xs">
-                                    <button class="btn btn-lg btn-danger bm-30 boton hidden-xs">
+                                    <b>
                                         Estado: Carrito no cerrado
-                                    </button>
-                                    <button class="btn-danger pull-right boton-mobile visible-xs">
-                                        Estado: Carrito no cerrado
-                                    </button>
+                                    </b>
                                 <?php elseif ($value["estado"] == 1): ?>
-                                    <br class="visible-xs">
-                                    <button style="padding:5px;font-size:13px"
-                                            class="btn btn-lg btn-warning bm-30 boton hidden-xs">
+                                    <b>
                                         Estado: Pago pendiente
-                                    </button>
-                                    <button class="btn btn-lg btn-warning boton-mobile bm-30 pull-right visible-xs">
-                                        Estado: Pago pendiente
-                                    </button>
+                                    </b>
                                 <?php elseif ($value["estado"] == 2): ?>
-                                    <br class="visible-xs">
-                                    <button class="btn btn-lg btn-success bm-30 boton hidden-xs">
+                                    <b>
                                         Estado: Pago aprobado
-                                    </button>
-                                    <button class="btn btn-lg btn-success bm-30 boton-mobile pull-right visible-xs">
-                                        Estado: Pago aprobado
-                                    </button>
+                                    </b>
                                 <?php elseif ($value["estado"] == 3): ?>
-                                    <br class="visible-xs">
-                                    <button class="btn btn-lg btn-primary bm-30 boton hidden-xs">
+                                    <b>
                                         Estado: Pago enviado
-                                    </button>
-                                    <button class="btn btn-lg btn-primary bm-30 boton-mobile pull-right visible-xs">
-                                        Estado: Pago enviado
-                                    </button>
+                                    </b>
                                 <?php elseif ($value["estado"] == 4): ?>
-                                    <br class="visible-xs">
-                                    <button class="btn btn-lg btn-danger bm-30 boton hidden-xs">
+                                    <b>
                                         Estado: Pago rechazado
-                                    </button>
-                                    <button class="btn btn-lg btn-danger bm-30 boton-mobile pull-right visible-xs">
-                                        Estado: Pago rechazado
-                                    </button>
+                                    </b>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -88,7 +67,7 @@ if (empty($pedidosArrayAgrupados)) {
                 </a>
                 <div id="collapse<?= $value["cod"] ?>" class="collapse" role="tabpanel"
                      aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
-                    <div class="panel-body" style="height: auto;">
+                    <div class="panel-body panel-over" style="height: auto;">
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table table-striped table-hover">

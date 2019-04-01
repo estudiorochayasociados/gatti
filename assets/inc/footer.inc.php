@@ -117,6 +117,10 @@
 <script src="<?= URL ?>/assets/lightbox/lightbox.js"></script>
 <script type="text/javascript" src="<?= URL ?>/assets/js/slick.min.js"></script>
 <script type="text/javascript">
+    function hideLoad(){
+        $("#load").hide();
+    }
+
     $(document).ready(function () {
         $('.masVistos').slick({
             dots: false,
