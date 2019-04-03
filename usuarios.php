@@ -70,7 +70,6 @@ $template->themeInit();
                 $direccion = $funciones->antihack_mysqli(isset($_POST["direccion"]) ? $_POST["direccion"] : '');
                 $localidad = $funciones->antihack_mysqli(isset($_POST["localidad"]) ? $_POST["localidad"] : '');
                 $provincia = $funciones->antihack_mysqli(isset($_POST["provincia"]) ? $_POST["provincia"] : '');
-                $pais = $funciones->antihack_mysqli(isset($_POST["pais"]) ? $_POST["pais"] : '');
                 $postal = $funciones->antihack_mysqli(isset($_POST["postal"]) ? $_POST["postal"] : '');
                 $cod = substr(md5(uniqid(rand())), 0, 10);
                 $fecha = getdate();
@@ -85,7 +84,6 @@ $template->themeInit();
                 $usuario->set("celular", $celular);
                 $usuario->set("localidad", $localidad);
                 $usuario->set("provincia", $provincia);
-                $usuario->set("pais", $pais);
                 $usuario->set("postal", $postal);
                 $usuario->set("password", $password);
                 $usuario->set("fecha", $fecha);
@@ -99,7 +97,6 @@ $template->themeInit();
                 $hub->set("localidad", $localidad);
                 $hub->set("provincia", $provincia);
                 $hub->set("postal",$postal);
-                $hub->set("pais", $pais);
 
                 if ($usuario->validate() == "string" || $hub->getContactByEmail()!=false) {
                     ?>
@@ -197,14 +194,6 @@ $template->themeInit();
                            value="<?= $funciones->antihack_mysqli((isset($_POST["celular"]) ? $_POST["celular"] : '')); ?>"
                            placeholder="Escribir celular"
                            name="celular"
-                           required/>
-                </label>
-                <label class="col-md-6 col-xs-6">País:<br/>
-                    <input class="form-control"
-                           type="text"
-                           value="<?= $funciones->antihack_mysqli((isset($_POST["pais"]) ? $_POST["pais"] : '')); ?>"
-                           placeholder="Escribir país"
-                           name="pais"
                            required/>
                 </label>
                 <label class="col-md-6 col-xs-6">Provincia:<br/>

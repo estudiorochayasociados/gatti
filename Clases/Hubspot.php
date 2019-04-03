@@ -16,7 +16,15 @@ class Hubspot
     public $localidad;
     public $provincia;
     public $postal;
-    public $pais;
+
+    public $deal;
+    public $titulo;
+    public $estado;
+    public $tipo;
+    public $contacto;
+    public $total;
+    public $fecha;
+    public $descripcion;
 
     public $publicFunction;
 
@@ -61,10 +69,6 @@ class Hubspot
                     'value' => $this->celular
                 ),
                 array(
-                    'property' => 'country',
-                    'value' => $this->pais
-                ),
-                array(
                     'property' => 'state',
                     'value' => $this->provincia
                 ),
@@ -104,7 +108,6 @@ class Hubspot
 
     public function updateContact(){
         $url = 'https://api.hubapi.com/contacts/v1/contact/vid/' . $this->vid . '/profile?hapikey=' . HUBKEY;
-        echo $url;
         $data_ = array(
             'properties' => array(
                 array(
@@ -126,10 +129,6 @@ class Hubspot
                 array(
                     'property' => 'mobilephone',
                     'value' => $this->celular
-                ),
-                array(
-                    'property' => 'country',
-                    'value' => $this->pais
                 ),
                 array(
                     'property' => 'state',
@@ -184,7 +183,6 @@ class Hubspot
         $url = 'https://api.hubapi.com/contacts/v1/contact/email/' . $this->email . '/profile?hapikey=' . HUBKEY;
         $response = $this->publicFunction->curl("", $url, '');
         $data = json_decode($response['Data'], true);
-
         //Responses Types:
         //200:Success
         //404:Email Not Found
@@ -205,5 +203,126 @@ class Hubspot
         }
     }
 
+    public function createDeal()
+    {
+        $url = 'https://api.hubapi.com/deals/v1/deal?hapikey='. HUBKEY;
+        $data_ = array(
+            'associations' => array(
+                'associatedVids' => array(
+                        $this->vid
+                )
+            ),
+            'properties' => array(
+                array(
+                    'name' => 'dealname',
+                    'value' => $this->titulo
+                ),
+                array(
+                    'name' => 'dealstage',
+                    'value' => $this->estado
+                ),
+                array(
+                    'name' => 'pipeline',
+                    'value' => 'default'
+                ),
+                array(
+                    'name' => 'closedate',
+                    'value' => $this->fecha
+                ),
+                array(
+                    'name' => 'amount',
+                    'value' => $this->total
+                ),
+                array(
+                    'name' => 'dealtype',
+                    'value' => 'sitioweb'
+                ),
+                array(
+                    'name' => 'description',
+                    'value' => $this->descripcion
+                )
+            )
+        );
+        $data = json_encode($data_);
+        $response = $this->publicFunction->curl("POST", $url, $data);
+        $response_ = json_decode($response['Data'], true);
+        //Responses Types:
+        //200:Success
+        //404:Email Not Found
+        switch ($response['Status']){
+            case 200:
+               return $response_;
+                break;
+            default:
+                return false;
+                break;
+        }
+    }
 
+    public function updateStage(){
+        $url = 'https://api.hubapi.com/deals/v1/deal/' . $this->deal . '?hapikey=' . HUBKEY;
+        $data_ = array(
+            'properties' => array(
+                array(
+                    'name' => 'dealstage',
+                    'value' => $this->estado
+                )
+            )
+        );
+        $data = json_encode($data_);
+        $response = $this->publicFunction->curl("PUT", $url, $data);
+        $response_ = json_decode($response['Data'], true);
+         var_dump($response);
+        //Responses Types:
+        //200:Success
+        //404:Email Not Found
+        switch ($response['Status']){
+            case 200:
+                return $response_;
+                break;
+            default:
+                return false;
+                break;
+        }
+    }
+
+    public function getStage($stage){
+        switch ($stage) {
+            //Carrito no cerrado
+            case 0:
+                return "closedwon";
+                break;
+            //Pendiente
+            case 1:
+                return "decisionmakerboughtin";
+                break;
+            //Aprobado
+            case 2:
+                return "closedwon";
+                break;
+            //Enviado
+            case 3:
+                return "closedwon";
+                break;
+            //Rechazado
+            case 4:
+                return "closedlost";
+                break;
+        }
+    }
+
+    public function getDealId(){
+        $url = 'https://api.hubapi.com/deals/v1/deal/' . $this->deal . '?hapikey=' . HUBKEY;
+        $response = $this->publicFunction->curl('', $url, '');
+        $response_ = json_decode($response['Data'], true);
+
+        switch ($response['Status']){
+            case 200:
+                return $response_;
+                break;
+            default:
+                return false;
+                break;
+        }
+    }
 }

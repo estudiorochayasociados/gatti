@@ -15,21 +15,21 @@ $contenido = new Clases\Contenidos();
 $correo = new Clases\Email();
 $producto = new Clases\Productos();
 $usuarios = new Clases\Usuarios();
+$hub = new Clases\Hubspot();
 $cod_pedido = $_SESSION["cod_pedido"];
 $pedidos->set("cod", $cod_pedido);
-$pedido_info = $pedidos->info();
+$pedido_info = $pedidos->view();
 if (empty($_SESSION["carrito"])) {
     $funciones->headerMove(URL . "/index");
 } else {
-
     $usuarios->set("cod", $_SESSION["usuarios"]["cod"]);
     $usuario_data = $usuarios->view();
 
     if ($estado_get != '') {
         $pedidos->set("estado", $estado_get);
         $pedidos->set("cod", $cod_pedido);
-        $pedidos->cambiar_estado();
-        $pedido_info = $pedidos->info();
+        $pedidos->changeState();
+        $pedido_info = $pedidos->view();
     }
 
     switch ($pedido_info["estado"]) {
@@ -72,7 +72,7 @@ if (empty($_SESSION["carrito"])) {
     if ($_SESSION["usuarios"]["doc"] != '') {
         $datos_usuario .= "<b>SOLICITÓ FACTURA A CON EL CUIT:</b> " . $_SESSION["usuarios"]["doc"] . "<br/>";
         $pedidos->set("detalle", "<b>SOLICITÓ FACTURA A CON EL CUIT:</b> " . $_SESSION["usuarios"]["doc"]);
-        $pedidos->cambiar_valor("detalle");
+        $pedidos->changeValue("detalle");
     }
 
 

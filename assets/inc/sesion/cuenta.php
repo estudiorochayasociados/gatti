@@ -18,7 +18,6 @@ $usuarioData = $usuario->view();
         $direccion = $funciones->antihack_mysqli(!empty($_POST["direccion"]) ? $_POST["direccion"] : '');
         $telefono = $funciones->antihack_mysqli(!empty($_POST["telefono"]) ? $_POST["telefono"] : '');
         $celular = $funciones->antihack_mysqli(!empty($_POST["celular"]) ? $_POST["celular"] : '');
-        $pais = $funciones->antihack_mysqli(!empty($_POST["pais"]) ? $_POST["pais"] : '');
         $postal = $funciones->antihack_mysqli(!empty($_POST["postal"]) ? $_POST["postal"] : '');
 
         if (!empty($_POST["password"]) && !empty($_POST["password2"])):
@@ -42,7 +41,6 @@ $usuarioData = $usuario->view();
         $usuario->set("telefono", $telefono);
         $usuario->set("celular", $celular);
         $usuario->set("postal", $postal);
-        $usuario->set("pais", $pais);
         $usuario->set("password", $password);
         $usuario->set("fecha", $usuarioData['fecha']);
 
@@ -55,12 +53,16 @@ $usuarioData = $usuario->view();
         $hub->set("localidad", $localidad);
         $hub->set("provincia", $provincia);
         $hub->set("postal",$postal);
-        $hub->set("pais", $pais);
 
         if ($email!=$usuarioData['email']){
             $hub->set("email",$usuarioData['email']);
             $response = $hub->getContactByEmail();
-            var_dump($response);
+            if ($response!=false){
+                $hub->set("vid",$response['vid']);
+                $hub->updateContact();
+            }
+        }else{
+            $response = $hub->getContactByEmail();
             if ($response!=false){
                 $hub->set("vid",$response['vid']);
                 $hub->updateContact();
@@ -68,7 +70,7 @@ $usuarioData = $usuario->view();
         }
 
         $usuario->edit();
-        //$funciones->headerMove(URL . '/sesion/cuenta');
+        $funciones->headerMove(URL . '/sesion/cuenta');
     endif;
     ?>
     <br>
@@ -133,20 +135,6 @@ $usuarioData = $usuario->view();
                            name="celular"
                            required/>
                     <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-phone"></i></span>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="col-md-12">País
-                <div class="input-group">
-                    <input class="form-control h40"
-                           value="<?= $usuarioData['pais'] ?>"
-                           type="text"
-                           placeholder="País"
-                           name="pais"
-                           required/>
-                    <span class="input-group-addon"><i class="login_icon glyphicon glyphicon-map-marker"></i></span>
                 </div>
             </div>
         </div>

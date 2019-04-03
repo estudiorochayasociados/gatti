@@ -2,10 +2,11 @@
 $code_mercadolibre = isset($_GET["code"]) ? $_GET["code"] : '';
 
 $productos = new Clases\Productos();
-$imagenes  = new Clases\Imagenes();
-$zebra     = new Clases\Zebra_Image();
+$imagenes = new Clases\Imagenes();
+$zebra = new Clases\Zebra_Image();
 
 $categorias = new Clases\Categorias();
+$subcategorias = new Clases\Subcategorias();
 $data = $categorias->list(array("area = 'productos'"));
 
 $appId = MELI_ID;
@@ -13,27 +14,14 @@ $secretKey = MELI_SECRET;
 $redirectURI = URL . "/index.php?op=productos&accion=agregar";
 $siteId = 'MLA';
 $url = 'https://api.mercadolibre.com/oauth/token';
-$context = stream_context_create(array(
-    'http' => array(
-        'method' => 'POST',
-        'header' => 'Content-type: application/x-www-form-urlencoded',
-        'content' => http_build_query(
-            array(
-                'grant_type' => 'client_credentials',
-                'client_id' => $appId,
-                'client_secret' => $secretKey,
-            )
-        ),
-        'timeout' => 60,
-    ),
-));
+$context = stream_context_create(array('http' => array('method' => 'POST', 'header' => 'Content-type: application/x-www-form-urlencoded', 'content' => http_build_query(array('grant_type' => 'client_credentials', 'client_id' => $appId, 'client_secret' => $secretKey,)), 'timeout' => 60,),));
 
 $resp = json_decode(file_get_contents($url, false, $context));
 $meli = new Meli($appId, $secretKey, $resp->access_token, $resp->refresh_token);
 
 if (isset($_POST["agregar"])) {
     $count = 0;
-    $cod   = substr(md5(uniqid(rand())), 0, 10);
+    $cod = substr(md5(uniqid(rand())), 0, 10);
 
     $productos->set("cod", $funciones->antihack_mysqli(isset($cod) ? $cod : ''));
     $productos->set("titulo", $funciones->antihack_mysqli(isset($_POST["titulo"]) ? $_POST["titulo"] : ''));
@@ -114,10 +102,35 @@ if (isset($_POST["agregar"])) {
         <label class="col-md-4">
             Categoría:<br/>
             <select name="categoria">
-                <option value="" disabled selected>-- categorías --</option> 
+                <option value="" selected>-- categorías --</option>
                 <?php
                 foreach ($data as $categoria) {
-                    echo "<option value='".$categoria["cod"]."'>".$categoria["titulo"]."</option>";
+                    echo "<option value='" . $categoria["cod"] . "'>" . $categoria["titulo"] . "</option>";
+                }
+                ?>
+            </select>
+        </label>
+        <label class="col-md-4">
+            Sub Categoría:<br/>
+            <select name="subcategoria">
+                <option value="" disabled selected>-- Sin subcategoría --</option>
+                <?php
+                foreach ($data as $categoria) {
+                    ?>
+                    <optgroup label="<?= ucfirst($categoria['titulo']) ?>">
+                        <?php
+                        $filtro = array("categoria='" . $categoria['cod'] . "'");
+                        $data_sub = $subcategorias->list($filtro);
+                        if (!empty($data_sub)) {
+                            foreach ($data_sub as $sub) {
+                                ?>
+                                <option value="<?= $sub['cod']; ?>"><?= ucfirst($sub['titulo']); ?></option>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </optgroup>
+                    <?php
                 }
                 ?>
             </select>
@@ -140,19 +153,20 @@ if (isset($_POST["agregar"])) {
         <label class="col-md-3">
             Precio mayorista:<br/>
             <input type="text" name="precio_mayorista">
-        </label>
-        <label class="col-md-3">
+        </label>-->
+        <label class="col-md-4">
             Peso:<br/>
             <input type="text" name="peso">
-        </label>-->
+        </label>
         <label class="col-md-4">
             Precio Descuento:<br/>
             <input type="text" name="precio_descuento">
         </label>
-        <label class="col-md-12">
+        <!--
+        <label class="col-md-4">
             Url:<br/>
             <input type="text" name="url" id="url">
-        </label>
+        </label>-->
         <label class="col-md-12">
             Desarrollo:<br/>
             <textarea name="desarrollo" class="ckeditorTextarea">
@@ -200,16 +214,16 @@ if (isset($_POST["agregar"])) {
                 ?>
             </div>
         </div>
-        
+
         <label class="col-md-7">
             Imágenes:<br/>
-            <input type="file" id="file" name="files[]" multiple="multiple" accept="image/*" />
+            <input type="file" id="file" name="files[]" multiple="multiple" accept="image/*"/>
         </label>
         <div class="clearfix">
         </div>
         <br/>
         <div class="col-md-12">
-            <input type="submit" class="btn btn-primary" name="agregar" value="Crear Productos" />
+            <input type="submit" class="btn btn-primary" name="agregar" value="Crear Productos"/>
         </div>
     </form>
 </div>

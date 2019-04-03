@@ -39,6 +39,8 @@ if ($_GET) {
     if (@count($_GET) > 1) {
         if (isset($_GET["pagina"])) {
             $anidador = "&";
+        }else{
+            $anidador="&";
         }
     } else {
         if (isset($_GET["pagina"])) {

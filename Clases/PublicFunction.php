@@ -185,10 +185,9 @@ class PublicFunction
         // EXECUTE:
         $result = curl_exec($curl);
         $status_code = @curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
         $response=array(
           "Status"=>$status_code,
-          "Data"=>$result
+          "Data"=>$result,
         );
 
         curl_close($curl);

@@ -17,6 +17,7 @@ $imagenes->set("cod", $producto["cod"]);
 $imagenes->set("link", "productos&accion=modificar");
 
 $categorias = new Clases\Categorias();
+$subcategorias = new Clases\Subcategorias();
 $data = $categorias->list(array("area = 'productos'"));
 
 if (isset($_GET["ordenImg"]) && isset($_GET["cod"])) {
@@ -81,6 +82,7 @@ if (isset($_POST["agregar"])) {
 
             $imagenes->set("cod", $cod);
             $imagenes->set("ruta", str_replace("../", "", $destinoRecortado));
+            $img_meli .= '{"source":"' . URLSITE . str_replace("../", "/", $destinoRecortado) . '"},';
             $imagenes->add();
         }
 
@@ -124,6 +126,33 @@ if (isset($_POST["agregar"])) {
                 ?>
             </select>
         </label>
+        <label class="col-md-4">
+            Sub Categoría:<br/>
+            <select name="subcategoria">
+                <option value="" disabled <?php if (empty($producto['subcategoria'])){ echo "selected"; } ?>>-- Sin subcategoría --</option>
+                <?php
+                foreach ($data as $categoria) {
+                    ?>
+                    <optgroup label="<?= ucfirst($categoria['titulo']) ?>">
+                        <?php
+                        $filtro = array("categoria='" . $categoria['cod'] . "'");
+                        $data_sub = $subcategorias->list($filtro);
+                        if (!empty($data_sub)) {
+                            foreach ($data_sub as $sub) {
+                                ?>
+                                <option value="<?= $sub['cod']; ?>" <?php if ($producto['subcategoria']==$sub['cod']){ echo "selected"; } ?>>
+                                    <?= ucfirst($sub['titulo']); ?>
+                                </option>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </optgroup>
+                    <?php
+                }
+                ?>
+            </select>
+        </label>
         <label class="col-md-4">Stock:<br/>
             <input type="number" name="stock" value="<?= $producto["stock"] ?>">
         </label>
@@ -133,6 +162,9 @@ if (isset($_POST["agregar"])) {
         </label>
         <label class="col-md-4">Precio:<br/>
             <input type="text" name="precio" value="<?= $producto["precio"] ?>">
+        </label>
+        <label class="col-md-4">Peso:<br/>
+            <input type="text" name="peso" value="<?= $producto["variable4"] ?>">
         </label>
         <label class="col-md-4">Precio descuento:<br/>
             <input type="text" name="precio_descuento" value="<?= $producto["precio_descuento"] ?>">

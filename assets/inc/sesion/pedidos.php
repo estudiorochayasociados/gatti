@@ -6,15 +6,11 @@ $pedidos = new Clases\Pedidos();
 $usuario->set("cod", $_SESSION["usuarios"]["cod"]);
 $usuarioData = $usuario->view();
 
-$filterPedidosAgrupados = array("usuario = '" . $usuarioData['cod'] . "' GROUP BY cod");
-$pedidosArrayAgrupados = $pedidos->list($filterPedidosAgrupados);
-
-$filterPedidosSinAgrupar = array("usuario = '" . $usuarioData['cod'] . "'");
-$pedidosArraySinAgrupar = $pedidos->list($filterPedidosSinAgrupar);
-asort($pedidosArraySinAgrupar);
+$filter = array("usuario = '".$usuarioData['cod']."'");
+$pedidosData=$pedidos->listWithOps($filter,'','');
 ?>
 <?php
-if (empty($pedidosArrayAgrupados)) {
+if (empty($pedidosData)) {
     ?>
     <div class="container centro">
         <h4>No hay pedidos todavía.</h4>
@@ -23,40 +19,42 @@ if (empty($pedidosArrayAgrupados)) {
 } else {
     ?>
     <div class="col-md-12 mb-10" style="margin-top:10px;">
-        <?php foreach ($pedidosArrayAgrupados as $key => $value): ?>
-            <?php $usuarios->set("cod", $value["usuario"]); ?>
-            <?php $usuarioData = $usuarios->view(); ?>
+        <?php foreach ($pedidosData as $value): ?>
             <?php $precioTotal = 0; ?>
-            <?php $fecha = explode(" ", $value["fecha"]); ?>
+            <?php $fecha = explode(" ", $value['data']["fecha"]); ?>
             <?php $fecha1 = explode("-", $fecha[0]); ?>
             <?php $fecha1 = $fecha1[2] . '-' . $fecha1[1] . '-' . $fecha1[0] . '-'; ?>
             <?php $fecha = $fecha1 . $fecha[1]; ?>
             <div class="panel panel-default">
-                <a data-toggle="collapse" href="#collapse<?= $value["cod"] ?>" aria-expanded="false" aria-controls="collapse<?= $value["cod"] ?>" class="collapsed color_a">
+                <a data-toggle="collapse"
+                   href="#collapse<?= $value['data']["cod"] ?>"
+                   aria-expanded="false"
+                   aria-controls="collapse<?= $value['data']["cod"] ?>"
+                   class="collapsed color_a">
                     <div class="panel-heading boton-cuenta" role="tab" id="heading">
                         <div class="row">
                             <div class="col-md-10 dis">
-                                <span class="blanco">Pedido <?= $value["cod"] ?></span>
+                                <span class="blanco">Pedido <?= $value['data']["cod"] ?></span>
                                 <span class="hidden-xs hidden-sm blanco">- Fecha <?= $fecha ?></span>
                             </div>
                             <div class="col-md-2 dis">
-                                <?php if ($value["estado"] == 0): ?>
+                                <?php if ($value['data']["estado"] == 0): ?>
                                     <b>
                                         Estado: Carrito no cerrado
                                     </b>
-                                <?php elseif ($value["estado"] == 1): ?>
+                                <?php elseif ($value['data']["estado"] == 1): ?>
                                     <b>
                                         Estado: Pago pendiente
                                     </b>
-                                <?php elseif ($value["estado"] == 2): ?>
+                                <?php elseif ($value['data']["estado"] == 2): ?>
                                     <b>
                                         Estado: Pago aprobado
                                     </b>
-                                <?php elseif ($value["estado"] == 3): ?>
+                                <?php elseif ($value['data']["estado"] == 3): ?>
                                     <b>
                                         Estado: Pago enviado
                                     </b>
-                                <?php elseif ($value["estado"] == 4): ?>
+                                <?php elseif ($value['data']["estado"] == 4): ?>
                                     <b>
                                         Estado: Pago rechazado
                                     </b>
@@ -65,8 +63,12 @@ if (empty($pedidosArrayAgrupados)) {
                         </div>
                     </div>
                 </a>
-                <div id="collapse<?= $value["cod"] ?>" class="collapse" role="tabpanel"
-                     aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
+                <div id="collapse<?= $value['data']["cod"] ?>"
+                     class="collapse"
+                     role="tabpanel"
+                     aria-labelledby="headingOne"
+                     aria-expanded="false"
+                     style="height: 0px;">
                     <div class="panel-body panel-over" style="height: auto;">
                         <div class="row">
                             <div class="col-md-12">
@@ -88,8 +90,8 @@ if (empty($pedidosArrayAgrupados)) {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($pedidosArraySinAgrupar as $key2 => $value2): ?>
-                                        <?php if ($value2['cod'] == $value["cod"]): ?>
+                                    <?php foreach ($value['detail'] as $value2): ?>
+                                        <?php if ($value2['cod'] == $value['data']["cod"]): ?>
                                             <tr>
                                                 <td><?= $value2["producto"] ?>
                                                     <p class="visible-xs">Cantidad: <?= $value2["cantidad"] ?></p>
@@ -116,11 +118,11 @@ if (empty($pedidosArrayAgrupados)) {
                         <span style="font-size:16px">
                     <b class="mb-10">FORMA DE PAGO:</b>
                         <br class="visible-xs">
-                        <?php if ($value["tipo"] == 0): ?>
+                        <?php if ($value['data']["tipo"] == 0): ?>
                             Transferencia bancaria
-                        <?php elseif ($value["tipo"] == 1): ?>
+                        <?php elseif ($value['data']["tipo"] == 1): ?>
                             Coordinar con vendedor
-                        <?php elseif ($value["tipo"] == 2): ?>
+                        <?php elseif ($value['data']["tipo"] == 2): ?>
                             Tarjeta de crédito o débito
                         <?php endif; ?>
                 </span>
