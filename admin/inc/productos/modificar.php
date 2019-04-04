@@ -5,19 +5,19 @@ $zebra = new Clases\Zebra_Image();
 $categorias = new Clases\Categorias();
 $subcategorias = new Clases\Subcategorias();
 
-$img_ = $imagenes->list(array("cod = '".$producto['cod']."'"));
-
-$img_meli = '';
-
-foreach ($img_ as $img) {
-    $img_meli .= '{"source":"' . URLSITE . "/" .$img["ruta"] . '"},';
-}
-
 $cod = $funciones->antihack_mysqli(isset($_GET["cod"]) ? $_GET["cod"] : '');
 $borrarImg = $funciones->antihack_mysqli(isset($_GET["borrarImg"]) ? $_GET["borrarImg"] : '');
 
 $productos->set("cod", $cod);
 $producto = $productos->view();
+
+$img_ = $imagenes->list(array("cod = '" . $producto['cod'] . "'"));
+
+$img_meli = '';
+
+foreach ($img_ as $img) {
+    $img_meli .= '{"source":"' . URLSITE . "/" . $img["ruta"] . '"},';
+}
 
 $variable_1_explode = explode("||", $producto["variable1"]);
 $variable_2_explode = explode("||", $producto["variable2"]);
@@ -97,7 +97,7 @@ if (isset($_POST["agregar"])) {
         $count++;
     }
 
-
+    $error = '';
     if (isset($_POST['meli'])) {
         if (isset($_SESSION['access_token'])) {
             if ($producto["meli"] == '') {
@@ -115,7 +115,7 @@ if (isset($_POST["agregar"])) {
                 $funciones->headerMove(URL . "/index.php?op=productos");
             }
         } else {
-            echo "alerta no te logueaste en mercadolibre.";
+            $error = "No te logueaste con MercadoLibre.";
         }
     } else {
         $productos->edit();
@@ -127,6 +127,13 @@ if (isset($_POST["agregar"])) {
 <div class="col-md-12 ">
     <h4>Productos</h4>
     <hr/>
+    <?php
+    if (!empty($error)) {
+        ?>
+        <div class="alert alert-danger" role="alert"><?= $error; ?></div>
+        <?php
+    }
+    ?>
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">Título:<br/>
             <input type="text" name="titulo" value="<?= $producto["titulo"] ?>">
@@ -147,7 +154,10 @@ if (isset($_POST["agregar"])) {
         <label class="col-md-4">
             Sub Categoría:<br/>
             <select name="subcategoria">
-                <option value="" disabled <?php if (empty($producto['subcategoria'])){ echo "selected"; } ?>>-- Sin subcategoría --</option>
+                <option value="" disabled <?php if (empty($producto['subcategoria'])) {
+                    echo "selected";
+                } ?>>-- Sin subcategoría --
+                </option>
                 <?php
                 foreach ($data as $categoria) {
                     ?>
@@ -158,7 +168,9 @@ if (isset($_POST["agregar"])) {
                         if (!empty($data_sub)) {
                             foreach ($data_sub as $sub) {
                                 ?>
-                                <option value="<?= $sub['cod']; ?>" <?php if ($producto['subcategoria']==$sub['cod']){ echo "selected"; } ?>>
+                                <option value="<?= $sub['cod']; ?>" <?php if ($producto['subcategoria'] == $sub['cod']) {
+                                    echo "selected";
+                                } ?>>
                                     <?= ucfirst($sub['titulo']); ?>
                                 </option>
                                 <?php
@@ -189,14 +201,26 @@ if (isset($_POST["agregar"])) {
         </label>
         <label class="col-md-4">Estado:<br/>
             <select name="estado" required>
-                <option value="0" <?php if($producto['variable1']==0){echo "selected"; } ?>>Activo</option>
-                <option value="1" <?php if($producto['variable1']==1){echo "selected"; } ?>>Inactivo</option>
+                <option value="0" <?php if ($producto['variable1'] == 0) {
+                    echo "selected";
+                } ?>>Activo
+                </option>
+                <option value="1" <?php if ($producto['variable1'] == 1) {
+                    echo "selected";
+                } ?>>Inactivo
+                </option>
             </select>
         </label>
         <label class="col-md-4">Lugar:<br/>
             <select name="lugar" required>
-                <option value="1" <?php if($producto['variable2']==1){echo "selected"; } ?>>Tienda</option>
-                <option value="0" <?php if($producto['variable2']==0){echo "selected"; } ?>>Productos</option>
+                <option value="1" <?php if ($producto['variable2'] == 1) {
+                    echo "selected";
+                } ?>>Tienda
+                </option>
+                <option value="0" <?php if ($producto['variable2'] == 0) {
+                    echo "selected";
+                } ?>>Productos
+                </option>
             </select>
         </label>
         <label class="col-md-12">Desarrollo:<br/>

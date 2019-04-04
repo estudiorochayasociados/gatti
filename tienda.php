@@ -91,9 +91,9 @@ $productos_data = $producto->listWithOps($filter, '', ($cantidad * $pagina) . ',
 if (!empty($productos_data)) {
     $numeroPaginas = $producto->paginador($filter, $cantidad);
 }
-$template->set("title", TITULO . " | Productos");
-$template->set("description", "Todos los productos de " . TITULO);
-$template->set("keywords", "Todos los productos de " . TITULO);
+$template->set("title", TITULO . " | Tienda online");
+$template->set("description", "Todos los productos de la tienda online de  " . TITULO);
+$template->set("keywords", "Todos los productos de la tienda online de  " . TITULO);
 $template->set("body", "home3");
 $template->themeInit();
 ?>

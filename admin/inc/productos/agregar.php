@@ -81,7 +81,7 @@ if (isset($_POST["agregar"])) {
         $count++;
     }
 
-
+    $error='';
     if (isset($_POST['meli'])) {
         if (isset($_SESSION['access_token'])) {
             $productos->set("img", substr($img_meli, 0, -1));
@@ -90,7 +90,7 @@ if (isset($_POST["agregar"])) {
             $productos->add();
             $funciones->headerMove(URL . "/index.php?op=productos");
         } else {
-            echo "alerta no te logueaste en mercadolibre.";
+            $error = "No te logueaste con MercadoLibre.";
         }
     } else {
         $productos->add();
@@ -104,6 +104,13 @@ if (isset($_POST["agregar"])) {
         Productos
     </h4>
     <hr/>
+    <?php
+    if (!empty($error)) {
+        ?>
+        <div class="alert alert-danger" role="alert"><?= $error; ?></div>
+        <?php
+    }
+    ?>
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">
             Título:<br/>
