@@ -71,14 +71,14 @@ if ($response != false) {
     $hub->set("provincia", $_SESSION['usuarios']['provincia']);
     $hub->set("postal", $_SESSION['usuarios']['postal']);
     $hub->addContact();
+
     $response = $hub->getContactByEmail();
     $vid = $response['vid'];
 }
+$hub->set("vid", $vid);
 $hub->set("titulo", "Pedido: " . $cod_pedido);
 $stage = $hub->getStage(0);
 $hub->set("estado", $stage);
-$hub->set("vid", $vid);
-$hub->set("fecha", time());
 $hub->set("total", $precio);
 $hub->set("descripcion", $descripcion);
 $response = $hub->createDeal();
@@ -133,11 +133,16 @@ switch ($pago["tipo"]) {
         $pedidos->set("cod", $cod_pedido);
         $pedidos->set("estado", $pago["defecto"]);
         $pedidos->changeState();
+        $pedido_info = $pedidos->view();
+        $stage = $hub->getStage($pago["defecto"]);
+        $hub->set("deal",$pedido_info['data']['hub_cod']);
+        $hub->set("estado",$stage);
+        $hub->updateStage();
         $funciones->headerMove(URL . "/compra-finalizada");
         break;
     case 1:
         include("vendor/mercadopago/sdk/lib/mercadopago.php");
-        $mp = new MP ("3087431389449841", "8V6jXmINfMLcpoEqV1cnVGQbEMnVwyjK");
+        $mp = new MP (MP_ID, MP_SECRET);
         $preference_data = array("items" => array(array("id" => $cod_pedido, "title" => "COMPRA CÓDIGO N°:" . $cod_pedido, "quantity" => 1, "currency_id" => "ARS", "unit_price" => $precio)), "payer" => array("name" => $usuarioSesion["nombre"], "surname" => $usuarioSesion["apellido"], "email" => $usuarioSesion["email"]), "back_urls" => array("success" => URL . "/compra-finalizada.php?estado=2", "pending" => URL . "/compra-finalizada.php?estado=1", "failure" => URL . "/compra-finalizada.php?estado=0"), "external_reference" => $cod_pedido, "auto_return" => "all", //"client_id" => $usuarioSesion["cod"],
             "payment_methods" => array("excluded_payment_methods" => array(), "excluded_payment_types" => array(array("id" => "ticket"), array("id" => "atm"))));
         $preference = $mp->create_preference($preference_data);

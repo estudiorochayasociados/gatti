@@ -29,10 +29,14 @@ if (empty($_SESSION["carrito"])) {
         $pedidos->set("estado", $estado_get);
         $pedidos->set("cod", $cod_pedido);
         $pedidos->changeState();
+        $stage = $hub->getStage($estado_get);
+        $hub->set("deal",$pedido_info['data']['hub_cod']);
+        $hub->set("estado",$stage);
+        $hub->updateStage();
         $pedido_info = $pedidos->view();
     }
 
-    switch ($pedido_info["estado"]) {
+    switch ($pedido_info['data']["estado"]) {
         case 0:
             $estado = "CARRITO NO CERRADO";
             break;
@@ -80,7 +84,7 @@ if (empty($_SESSION["carrito"])) {
     $mensajeCompraUsuario = '¡Muchas gracias por tu nueva compra!<br/>En el transcurso de las 24 hs un operador se estará contactando con usted para pactar la entrega y/o pago del pedido. A continuación te dejamos el pedido que nos realizaste.<hr/> <h3>Pedido realizado:</h3>';
     $mensajeCompraUsuario .= $mensaje_carro;
     $mensajeCompraUsuario .= '<br/><hr/>';
-    $mensajeCompraUsuario .= '<h3>MÉTODO DE PAGO ELEGIDO: ' . mb_strtoupper($pedido_info["tipo"]) . '</h3>';
+    $mensajeCompraUsuario .= '<h3>MÉTODO DE PAGO ELEGIDO: ' . mb_strtoupper($pedido_info['data']["tipo"]) . '</h3>';
     $mensajeCompraUsuario .= '<br/><hr/>';
     $mensajeCompraUsuario .= '<h3>Tus datos:</h3>';
     $mensajeCompraUsuario .= $datos_usuario;
@@ -95,7 +99,7 @@ if (empty($_SESSION["carrito"])) {
     $mensajeCompra = '¡Nueva compra desde la web!<br/>A continuación te dejamos el detalle del pedido.<hr/> <h3>Pedido realizado:</h3>';
     $mensajeCompra .= $mensaje_carro;
     $mensajeCompra .= '<br/><hr/>';
-    $mensajeCompra .= '<h3>MÉTODO DE PAGO ELEGIDO: ' . mb_strtoupper($pedido_info["tipo"]) . '</h3>';
+    $mensajeCompra .= '<h3>MÉTODO DE PAGO ELEGIDO: ' . mb_strtoupper($pedido_info['data']["tipo"]) . '</h3>';
     $mensajeCompra .= '<br/><hr/>';
     $mensajeCompra .= '<h3>Datos de usuario:</h3>';
     $mensajeCompra .= $datos_usuario;
@@ -123,7 +127,7 @@ if (empty($_SESSION["carrito"])) {
                         <hr>
                         <p>
                             <b>Estado:</b> <?= $estado ?><br/>
-                            <b>Método de pago:</b> <?= mb_strtoupper($pedido_info["tipo"]); ?>
+                            <b>Método de pago:</b> <?= mb_strtoupper($pedido_info['data']["tipo"]); ?>
                         </p>
                         <table class="table table-hover text-left">
                             <thead>
@@ -143,7 +147,7 @@ if (empty($_SESSION["carrito"])) {
                                 } else {
                                     $producto->set("id", $carroItem['id']);
                                     $producto_data = $producto->view();
-                                    if ($pedido_info["estado"] == 1 || $pedido_info["estado"] == 2 || $pedido_info["estado"] == 3) {
+                                    if ($pedido_info['data']["estado"] == 1 || $pedido_info['data']["estado"] == 2 || $pedido_info['data']["estado"] == 3) {
                                         $producto->editUnico("stock", $producto_data['stock'] - $carroItem['cantidad']);
                                     }
                                     $clase = '';

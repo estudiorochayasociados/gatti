@@ -84,8 +84,8 @@ class Pedidos
         $details = $this->detallePedido->list($this->cod);
         $this->user->set("cod",$row['usuario']);
         $user = $this->user->view();
-        $array[] = array($row, "user" => $user, "detail" => $details);
-        return $row;
+        $array = array("data"=>$row, "user" => $user, "detail" => $details);
+        return $array;
     }
 
     function listWithOps($filter, $order, $limit)

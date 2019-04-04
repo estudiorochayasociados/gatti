@@ -32,6 +32,9 @@ class Hubspot
     public function __construct()
     {
         $this->publicFunction= new PublicFunction();
+        if(HUBKEY == '') {
+            die();
+        }
     }
 
     public function set($atributo, $valor)
@@ -226,10 +229,6 @@ class Hubspot
                     'value' => 'default'
                 ),
                 array(
-                    'name' => 'closedate',
-                    'value' => $this->fecha
-                ),
-                array(
                     'name' => 'amount',
                     'value' => $this->total
                 ),
@@ -246,6 +245,7 @@ class Hubspot
         $data = json_encode($data_);
         $response = $this->publicFunction->curl("POST", $url, $data);
         $response_ = json_decode($response['Data'], true);
+
         //Responses Types:
         //200:Success
         //404:Email Not Found
@@ -272,7 +272,7 @@ class Hubspot
         $data = json_encode($data_);
         $response = $this->publicFunction->curl("PUT", $url, $data);
         $response_ = json_decode($response['Data'], true);
-         var_dump($response);
+
         //Responses Types:
         //200:Success
         //404:Email Not Found

@@ -25,6 +25,8 @@ class autoload
         define('FAVICON', URL . "/assets/img/favicon.png");
         define('HUBKEY', "9d0a9974-0576-4494-9798-22e3300e4b21");
         define('APP_ID_FB', "");
+        define('MP_ID',"3087431389449841");
+        define('MP_SECRET',"8V6jXmINfMLcpoEqV1cnVGQbEMnVwyjK");
         spl_autoload_register(function ($clase) {
             $ruta = str_replace("\\", "/", $clase) . ".php";
             include_once $ruta;
@@ -45,6 +47,8 @@ class autoload
         define('URLSITE', "http://" . $_SERVER['HTTP_HOST'] . "/Gatti2");
         define('URL', "http://" . $_SERVER['HTTP_HOST'] . "/Gatti2/admin");
         define('CANONICAL', "http://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+        define('SALT', hash("sha256", "salt@estudiorochayasoc.com.ar"));
+        define('HUBKEY', "9d0a9974-0576-4494-9798-22e3300e4b21");
         define('LOGO', URL . "/assets/img/logo/logo.png");
         define('MELI_ID', "5737861010581482");
         define('MELI_SECRET', "eVbx5m7ynhVosyvbHrME9s7RYKy27nbY");

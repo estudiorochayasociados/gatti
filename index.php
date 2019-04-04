@@ -17,6 +17,8 @@ $template->themeInit();
 ///Productos
 $filter = array("variable2='1'");
 $productos_datarand = $producto->listWithOps($filter, 'RAND()', 10);
+$filter = array("variable2='0'");
+$productos_datarandV2 = $producto->listWithOps($filter, 'RAND()', 10);
 ///Blogs
 $novedades_datalast = $novedad->listWithOps('', '', 3);
 ///Banners
@@ -203,7 +205,7 @@ if (!empty($sliders_data)) {
         if (!empty($productos_datarand)) {
             ?>
             <div class="col-md-12 col-xs-12 col-sm-12">
-                <div class="titular"><h3>Productos visitados</h3></div>
+                <div class="titular"><h3>Tienda Online</h3></div>
                 <div class="masVistos">
                     <?php
                     foreach ($productos_datarand as $prod) {
@@ -219,8 +221,76 @@ if (!empty($sliders_data)) {
                                     <?= ucfirst($prod['data']['titulo']); ?>
                                 </a>
                             </h1>
+                            <br/>
+                            <?php
+                             if (!empty($prod['data']['precio_descuento']) && $prod['data']['precio_descuento'] > 0) {
+                                    ?>
+                                    <div class="label label-danger"
+                                         style="font-size: 12px;margin-bottom: 2px !important">
+                                        <?= "<b>Antes: </b>$" . ($prod['data']["precio"]) ?>
+                                    </div>
+                                    <div class="label label-success"
+                                         style="font-size: 12px;margin-bottom: 2px !important">
+                                        <?= "<b>Ahora: </b>$" . ($prod['data']['precio_descuento']) ?>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <?php
+                                    $desc_ = $prod['data']['precio_descuento'];
+                                } else {
+                                    ?>
+                                    <span class="precioProducto"><?= "<b>Precio: </b>$" . ($prod['data']['precio']) ?>
+                                    </span>
+                                    <br/>
+                                    <?php
+                                    $desc_ = $prod['data']['precio'];
+                                }
+                                ?>
+                                <span class="precioProducto" style="color:red">
+                                    <?= "<i>Precio de contado: $" . ($desc_ - ($desc_ * 10 / 100)) . "</i>" ?>
+                                </span>
+                                <?php
+                                if ($prod['data']['stock'] == 0) {
+                                    ?>
+                                    <br>
+                                    <div class='label label-danger'>* sin stock</div>
+                                    <?php
+                                }
+                            ?>
+                            <div class="clearfix"></div>
+                            <br/>
+                            <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>"
+                               class="btn btn-default">
+                                <i class="fa fa-plus"></i> VER MÁS
+                            </a>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <?php
+        }
+        if (!empty($productos_datarandV2)) {
+            ?>
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <div class="titular"><h3>Productos</h3></div>
+                <div class="masVistos">
+                    <?php
+                    foreach ($productos_datarandV2 as $prod) {
+                        ?>
+                        <div class="productosMasVistos">
+                            <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>">
+                                <div class="product-wrap"
+                                     style="height:200px;background:url(<?= $prod['imagenes']['0']['ruta']; ?>) no-repeat center center/contain;">
+                                </div>
+                            </a>
+                            <h1 class="tituloProducto">
+                                <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>">
+                                    <?= ucfirst($prod['data']['titulo']); ?>
+                                </a>
+                            </h1>
                             <span class="precioProducto"><b>Categoría: </b><br/>
-                                <a href="<?= URL . '/tienda?categoria=' . $prod['data']['categoria']; ?>">
+                                <a href="<?= URL . '/productos?categoria=' . $prod['data']['categoria']; ?>">
                                     <?= ucfirst($prod['categorias']['titulo']); ?>
                                 </a>
                             </span>

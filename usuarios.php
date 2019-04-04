@@ -7,6 +7,7 @@ $funciones = new Clases\PublicFunction();
 $usuario = new Clases\Usuarios();
 $enviar = new Clases\Email();
 $hub = new Clases\Hubspot();
+$link = $funciones->antihack_mysqli(isset($_GET["link"]) ? $_GET["link"] : '');
 
 //
 $template->set("title", TITULO . " | Usuarios");
@@ -36,7 +37,11 @@ $template->themeInit();
                 <div class="alert alert-danger" role="alert">Email o contraseña incorrecta.</div>
                 <?php
             } else {
-                $funciones->headerMove(URL . '/sesion');
+                if (!empty($link)) {
+                    $funciones->headerMove(URL . '/' . $link);
+                } else {
+                    $funciones->headerMove(URL . '/sesion');
+                }
             }
         }
         ?>
@@ -96,9 +101,9 @@ $template->themeInit();
                 $hub->set("celular", $celular);
                 $hub->set("localidad", $localidad);
                 $hub->set("provincia", $provincia);
-                $hub->set("postal",$postal);
+                $hub->set("postal", $postal);
 
-                if ($usuario->validate() == "string" || $hub->getContactByEmail()!=false) {
+                if ($usuario->validate() == "string" || $hub->getContactByEmail() != false) {
                     ?>
                     <br/>
                     <div class="alert alert-danger" role="alert">El email ya está registrado.</div>

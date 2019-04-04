@@ -2,6 +2,16 @@
 $productos = new Clases\Productos();
 $imagenes = new Clases\Imagenes();
 $zebra = new Clases\Zebra_Image();
+$categorias = new Clases\Categorias();
+$subcategorias = new Clases\Subcategorias();
+
+$img_ = $imagenes->list(array("cod = '".$producto['cod']."'"));
+
+$img_meli = '';
+
+foreach ($img_ as $img) {
+    $img_meli .= '{"source":"' . URLSITE . "/" .$img["ruta"] . '"},';
+}
 
 $cod = $funciones->antihack_mysqli(isset($_GET["cod"]) ? $_GET["cod"] : '');
 $borrarImg = $funciones->antihack_mysqli(isset($_GET["borrarImg"]) ? $_GET["borrarImg"] : '');
@@ -16,8 +26,6 @@ $variable_3_explode = explode("||", $producto["variable3"]);
 $imagenes->set("cod", $producto["cod"]);
 $imagenes->set("link", "productos&accion=modificar");
 
-$categorias = new Clases\Categorias();
-$subcategorias = new Clases\Subcategorias();
 $data = $categorias->list(array("area = 'productos'"));
 
 if (isset($_GET["ordenImg"]) && isset($_GET["cod"])) {
@@ -89,20 +97,30 @@ if (isset($_POST["agregar"])) {
         $count++;
     }
 
-    if ($meli != '') {
-        if ($producto["meli"] == '') {
-            $productos->set("img", substr($img_meli, 0, -1));
-            $_meli = $productos->add_meli();
-            $productos->set("meli", $_meli["id"]);
+
+    if (isset($_POST['meli'])) {
+        if (isset($_SESSION['access_token'])) {
+            if ($producto["meli"] == '') {
+                $productos->set("img", substr($img_meli, 0, -1));
+                $_meli = $productos->add_meli();
+                $productos->set("meli", $_meli["id"]);
+                $productos->edit();
+                $funciones->headerMove(URL . "/index.php?op=productos");
+            } else {
+                $img_meli = $imagenes->list_meli(array("cod = '$cod'"));
+                $productos->set("meli", $producto["meli"]);
+                $productos->set("img", substr($img_meli, 0, -1));
+                $_meli = $productos->edit_meli();
+                $productos->edit();
+                $funciones->headerMove(URL . "/index.php?op=productos");
+            }
         } else {
-            $img_meli = $imagenes->list_meli(array("cod = '$cod'"));
-            $productos->set("meli", $producto["meli"]);
-            $productos->set("img", substr($img_meli, 0, -1));
-            $_meli = $productos->edit_meli();
+            echo "alerta no te logueaste en mercadolibre.";
         }
+    } else {
+        $productos->edit();
+        $funciones->headerMove(URL . "/index.php?op=productos");
     }
-    $productos->edit();
-    $funciones->headerMove(URL . "/index.php?op=productos");
 }
 ?>
 
@@ -153,21 +171,33 @@ if (isset($_POST["agregar"])) {
                 ?>
             </select>
         </label>
-        <label class="col-md-4">Stock:<br/>
+        <label class="col-md-3">Stock:<br/>
             <input type="number" name="stock" value="<?= $producto["stock"] ?>">
         </label>
         <div class="clearfix"></div>
-        <label class="col-md-4">Código:<br/>
+        <label class="col-md-3">Código:<br/>
             <input type="text" name="cod_producto" value="<?= $producto["cod_producto"] ?>">
         </label>
-        <label class="col-md-4">Precio:<br/>
+        <label class="col-md-3">Precio:<br/>
             <input type="text" name="precio" value="<?= $producto["precio"] ?>">
         </label>
-        <label class="col-md-4">Peso:<br/>
+        <label class="col-md-3">Peso:<br/>
             <input type="text" name="peso" value="<?= $producto["variable4"] ?>">
         </label>
         <label class="col-md-4">Precio descuento:<br/>
             <input type="text" name="precio_descuento" value="<?= $producto["precio_descuento"] ?>">
+        </label>
+        <label class="col-md-4">Estado:<br/>
+            <select name="estado" required>
+                <option value="0" <?php if($producto['variable1']==0){echo "selected"; } ?>>Activo</option>
+                <option value="1" <?php if($producto['variable1']==1){echo "selected"; } ?>>Inactivo</option>
+            </select>
+        </label>
+        <label class="col-md-4">Lugar:<br/>
+            <select name="lugar" required>
+                <option value="1" <?php if($producto['variable2']==1){echo "selected"; } ?>>Tienda</option>
+                <option value="0" <?php if($producto['variable2']==0){echo "selected"; } ?>>Productos</option>
+            </select>
         </label>
         <label class="col-md-12">Desarrollo:<br/>
             <textarea name="desarrollo" class="ckeditorTextarea"><?= $producto["desarrollo"] ?></textarea>

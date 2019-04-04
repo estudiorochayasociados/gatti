@@ -31,6 +31,9 @@ if (isset($_POST["agregar"])) {
     $productos->set("stock", $funciones->antihack_mysqli(isset($_POST["stock"]) ? $_POST["stock"] : ''));
     $productos->set("desarrollo", $funciones->antihack_mysqli(isset($_POST["desarrollo"]) ? $_POST["desarrollo"] : ''));
 
+    $productos->set("variable1", $funciones->antihack_mysqli(isset($_POST["estado"]) ? $_POST["estado"] : ''));
+    $productos->set("variable2", $funciones->antihack_mysqli(isset($_POST["lugar"]) ? $_POST["lugar"] : ''));
+
     $productos->set("variable4", $funciones->antihack_mysqli(isset($_POST["peso"]) ? $_POST["peso"] : ''));
     $productos->set("variable5", $funciones->antihack_mysqli(isset($_POST["altura"]) ? $_POST["altura"] : ''));
     $productos->set("variable6", $funciones->antihack_mysqli(isset($_POST["ancho"]) ? $_POST["ancho"] : ''));
@@ -78,14 +81,21 @@ if (isset($_POST["agregar"])) {
         $count++;
     }
 
-    if ($meli != '') {
-        $productos->set("img", substr($img_meli, 0, -1));
-        $add_meli = $productos->add_meli();
-        $productos->set("meli", $add_meli["id"]);
-    }
 
-    $productos->add();
-    $funciones->headerMove(URL . "/index.php?op=productos");
+    if (isset($_POST['meli'])) {
+        if (isset($_SESSION['access_token'])) {
+            $productos->set("img", substr($img_meli, 0, -1));
+            $add_meli = $productos->add_meli();
+            $productos->set("meli", $add_meli["id"]);
+            $productos->add();
+            $funciones->headerMove(URL . "/index.php?op=productos");
+        } else {
+            echo "alerta no te logueaste en mercadolibre.";
+        }
+    } else {
+        $productos->add();
+        $funciones->headerMove(URL . "/index.php?op=productos");
+    }
 }
 ?>
 
@@ -97,7 +107,7 @@ if (isset($_POST["agregar"])) {
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">
             Título:<br/>
-            <input type="text" name="titulo">
+            <input type="text" name="titulo" required>
         </label>
         <label class="col-md-4">
             Categoría:<br/>
@@ -135,17 +145,17 @@ if (isset($_POST["agregar"])) {
                 ?>
             </select>
         </label>
-        <label class="col-md-4">
+        <label class="col-md-3">
             Stock:<br/>
             <input type="number" name="stock">
         </label>
         <div class="clearfix">
         </div>
-        <label class="col-md-4">
+        <label class="col-md-3">
             Código:<br/>
             <input type="text" name="cod_producto">
         </label>
-        <label class="col-md-4">
+        <label class="col-md-3">
             Precio:<br/>
             <input type="text" name="precio">
         </label>
@@ -154,7 +164,7 @@ if (isset($_POST["agregar"])) {
             Precio mayorista:<br/>
             <input type="text" name="precio_mayorista">
         </label>-->
-        <label class="col-md-4">
+        <label class="col-md-3">
             Peso:<br/>
             <input type="text" name="peso">
         </label>
@@ -162,6 +172,22 @@ if (isset($_POST["agregar"])) {
             Precio Descuento:<br/>
             <input type="text" name="precio_descuento">
         </label>
+        <label class="col-md-4">
+            Estado:<br/>
+            <select name="estado" required>
+                <option value="0">Activo</option>
+                <option value="1">Inactivo</option>
+            </select>
+        </label>
+        <label class="col-md-4">
+            Lugar:<br/>
+            <select name="lugar" required>
+                <option value="1">Tienda</option>
+                <option value="0">Productos</option>
+            </select>
+        </label>
+
+
         <!--
         <label class="col-md-4">
             Url:<br/>

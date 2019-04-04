@@ -21,6 +21,7 @@ if (!empty($usuarioSesion)) {
     $funciones->headerMove(URL . "/checkout/" . $cod_pedido . "/" . $tipo_pedido);
 }
 $error = '';
+$error2='';
 ?>
     <div class="headerTitular">
         <div class="container">
@@ -80,6 +81,7 @@ $error = '';
                         //pregunta si esta registrado
                         if ($email_data['invitado'] == 0) {
                             $error = "Ya existe un usuario registrado con este email.";
+                            $error2="<a href='".URL."/usuarios?link=pagar/".$tipo_pedido."'>Ingresar</a>";
                         } else {
                             //si invitado es 1
                             if ($password1 != $password2) {
@@ -112,6 +114,8 @@ $error = '';
                             $funciones->headerMove(URL . "/checkout/" . $cod_pedido . "/" . $tipo_pedido);
                         } else {
                             $error = "Ya existe un usuario registrado con este email.";
+                            //$funciones->headerMove(URL.'/usuarios?link=pagar/'.$tipo_pedido);
+                            $error2="<a href='".URL."/usuarios?link=pagar/".$tipo_pedido."'>Ingresar</a>";
                         }
                     } else {
                         //el email no existe
@@ -125,7 +129,7 @@ $error = '';
         <div class="col-md-12">
             <div class="<?php if (empty($error)) {
                 echo 'oculto';
-            } ?>alert alert-warning" role="alert"><?= $error; ?></div>
+            } ?>alert alert-warning" role="alert"><?= $error; ?> <?php if (!empty($error2)){ echo $error2;} ?></div>
             <form method="post" class="row">
                 <div class="row">
                     <input type="hidden" value="<?= $tipo_pedido ?>" name="metodos-pago"/>

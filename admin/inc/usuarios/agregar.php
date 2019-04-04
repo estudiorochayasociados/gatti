@@ -11,13 +11,14 @@ if (isset($_POST["agregar"])) {
     $usuarios->set("email", $funciones->antihack_mysqli(isset($_POST["email"]) ? $_POST["email"] : ''));
     $usuarios->set("password", $funciones->antihack_mysqli(isset($_POST["password"]) ? $_POST["password"] : ''));
     $usuarios->set("postal", $funciones->antihack_mysqli(isset($_POST["postal"]) ? $_POST["postal"] : ''));
+    $usuarios->set("direccion", $funciones->antihack_mysqli(isset($_POST["direccion"]) ? $_POST["direccion"] : ''));
     $usuarios->set("localidad", $funciones->antihack_mysqli(isset($_POST["localidad"]) ? $_POST["localidad"] : ''));
     $usuarios->set("provincia", $funciones->antihack_mysqli(isset($_POST["provincia"]) ? $_POST["provincia"] : ''));
     $usuarios->set("pais", $funciones->antihack_mysqli(isset($_POST["pais"]) ? $_POST["pais"] : ''));
     $usuarios->set("telefono", $funciones->antihack_mysqli(isset($_POST["telefono"]) ? $_POST["telefono"] : ''));
     $usuarios->set("celular", $funciones->antihack_mysqli(isset($_POST["celular"]) ? $_POST["celular"] : ''));
     $usuarios->set("invitado", $funciones->antihack_mysqli(isset($_POST["invitado"]) ? $_POST["invitado"] : '0'));
-    $usuarios->set("descuento", $funciones->antihack_mysqli(isset($_POST["descuento"]) ? $_POST["descuento"] : ''));
+    //$usuarios->set("descuento", $funciones->antihack_mysqli(isset($_POST["descuento"]) ? $_POST["descuento"] : ''));
     $usuarios->set("fecha", $funciones->antihack_mysqli(isset($_POST["fecha"]) ? $_POST["fecha"] : date("Y-m-d")));
 
     $usuarios->add();
@@ -53,8 +54,8 @@ if (isset($_POST["agregar"])) {
             <input type="password" class="form-control" name="password"  required/>
         </label>
         <label class="col-md-4">
-            Postal:<br/>
-            <input type="text" name="postal"  required/>
+            Dirección:<br/>
+            <input type="text" name="direccion"  required/>
         </label>
         <label class="col-md-4">
             Localidad:<br/>
@@ -81,9 +82,14 @@ if (isset($_POST["agregar"])) {
             <input type="number" min="0" max="1" name="invitado"  required/>
         </label>
         <label class="col-md-2">
+            Postal:<br/>
+            <input type="text" name="postal"  required/>
+        </label>
+        <!--
+        <label class="col-md-2">
             Tipo (1 Mayorista, 0 Minorista):<br/>
             <input type="number" min="0" max="1" name="descuento"  required/>
-        </label>
+        </label>-->
         <div class="clearfix">
         </div><br/>
         <div class="col-md-12">
