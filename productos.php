@@ -111,7 +111,7 @@ $template->themeInit();
                     ?>
                     Filtrá por la categoría que te interesa.
 
-                    <select class="form-control" name="buscar" onchange="this.form.submit()">
+                    <select class="form-control" name="categoria" onchange="this.form.submit()">
                         <?php if (!empty($categoria_get)) {
                             ?>
                             <option value="<?= $categoria_get ?>"><?= $categoria_data_filtro['titulo']; ?></option>

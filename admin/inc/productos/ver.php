@@ -13,6 +13,7 @@ $data      = $productos->list("");
         <table class="table  table-bordered  ">
             <thead>
             <th>Título</th>
+            <th>Tipo</th>
             <th>Ajustes</th>
             </thead>
              <tbody>
@@ -21,6 +22,13 @@ if (is_array($data)) {
     for ($i = 0; $i < count($data); $i++) {
         echo "<tr>";
         echo "<td>" . strtoupper($data[$i]["titulo"]) . "</td>";
+        echo "<td>";
+        if($data[$i]["variable2"] == 0) {
+            echo "Productos";
+        } else {
+            echo "Tienda";
+        }
+        echo "</td>";
         echo "<td>";
         echo '<a class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Modificar" href="' . URL . '/index.php?op=productos&accion=modificar&cod=' . $data[$i]["cod"] . '">
                     <i class="fa fa-cog"></i></a>';

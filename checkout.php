@@ -147,7 +147,7 @@ switch ($pago["tipo"]) {
             "payment_methods" => array("excluded_payment_methods" => array(), "excluded_payment_types" => array(array("id" => "ticket"), array("id" => "atm"))));
         $preference = $mp->create_preference($preference_data);
         //$funciones->headerMove($preference["response"]["sandbox_init_point"]);
-        echo "<iframe src='" . $preference["response"]["sandbox_init_point"] . "' width='100%' height='700px' style='border:0;margin:0'></iframe>";
+        echo "<iframe src='" . $preference["response"]["init_point"] . "' width='100%' height='700px' style='border:0;margin:0'></iframe>";
         break;
 }
 ?>

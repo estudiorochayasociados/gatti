@@ -17,7 +17,8 @@ class autoload
         define('CIUDAD', "San Francisco");
         define('PROVINCIA', "Cordoba");
         define('PAIS', "Argentina");
-        define('EMAIL', "web@estudiorochayasoc.com.ar");
+        define('EMAIL', "mkt@gattisa.com.ar");
+        define('EMAIL_NOTIFICACION','web@estudiorochayasoc.com.ar');
         define('PASS_EMAIL', "weAr2010");
         define('SMTP_EMAIL', "cs1008.webhostbox.net");
         define('DIRECCION', "Av. 9 de Septiembre 3203");
@@ -25,8 +26,8 @@ class autoload
         define('FAVICON', URL . "/assets/img/favicon.png");
         define('HUBKEY', "9d0a9974-0576-4494-9798-22e3300e4b21");
         define('APP_ID_FB', "");
-        define('MP_ID',"3087431389449841");
-        define('MP_SECRET',"8V6jXmINfMLcpoEqV1cnVGQbEMnVwyjK");
+        define('MP_ID',"1593771261124394");
+        define('MP_SECRET',"mYbUuN2PQG9DXBValCyEpxS1Avu7slFZ");
         spl_autoload_register(function ($clase) {
             $ruta = str_replace("\\", "/", $clase) . ".php";
             include_once $ruta;

@@ -148,7 +148,7 @@ class Productos
         "tags": [
         "immediate_payment"
         ],
-        "video_id": "BjNljwhxQPI",
+        "video_id": "onlvYuHOZtM",
         "attributes": [
         {     
           "id": "EAN",
@@ -158,7 +158,7 @@ class Productos
           "id": "BRAND",
           "name": "Marca",
           "value_id": null,
-          "value_name": "FUSSION",
+          "value_name": "GATTI",
           "value_struct": null,
           "attribute_group_id": "OTHERS",
           "attribute_group_name": "Otros"
@@ -185,7 +185,7 @@ class Productos
           "id": "MANUFACTURER",
           "name": "Fabricante",
           "value_id": null,
-          "value_name": "FUSSION",
+          "value_name": "GATTI",
           "value_struct": null,
           "attribute_group_id": "OTHERS",
           "attribute_group_name": "Otros"

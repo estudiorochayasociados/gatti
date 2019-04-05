@@ -35,7 +35,7 @@ class Email
             // Set mailer to use SMTP
             $mail->Host = SMTP_EMAIL;  // Specify main and backup SMTP servers
             $mail->SMTPAuth = true;                               // Enable SMTP authentication
-            $mail->Username = EMAIL;                 // SMTP username
+            $mail->Username = EMAIL_NOTIFICACION;                 // SMTP username
             $mail->Password = PASS_EMAIL;                           // SMTP password
             $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
             $mail->Port = 465;                                    // TCP port to connect to
