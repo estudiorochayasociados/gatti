@@ -37,9 +37,10 @@ class DBBackup
         } else {
             $tables = is_array($tables) ? $tables : explode(',', $tables);
         }
-        $sql = 'SET FOREIGN_KEY_CHECKS = 0;' . "\n" . 'CREATE DATABASE IF NOT EXISTS `' . $this->database . "`;\n";
+        $sql = "SET FOREIGN_KEY_CHECKS = 0; \n CREATE DATABASE IF NOT EXISTS `$this->database`;\n";
         $sql .= 'USE `' . $this->database . '`;';
         foreach ($tables as $table) {
+            $table = trim($table);
             $tableDetails = mysqli_query($this->link, "SELECT * FROM " . $table);
             $totalCols = mysqli_num_fields($tableDetails);
             $sql .= "\n\nDROP TABLE IF EXISTS `" . $table . "`;\n";

@@ -3,9 +3,16 @@ require_once "Config/Autoload.php";
 Config\Autoload::runSitio();
 
 $titulo = "backup-" . date("d-m-Y");
-$rootPath = realpath('assets');
 
+//BACKUP MYSQL
+$dbBackup = new Clases\DBBackup;
+$tables = 'admin,banners,categorias,contenidos,envios,galerias,imagenes,novedades,pagos,pedidos,portfolio,productos,servicios,sliders,subcategorias,usuarios,videos';
+$dbBackup->backupDatabase($tables, 'backup');
+
+
+ //ZIP CARPETA
 $zip = new ZipArchive();
+$rootPath = realpath('assets/archivos/recortadas');
 $zip->open('backup/' . $titulo . '.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
 $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($rootPath), RecursiveIteratorIterator::LEAVES_ONLY);
@@ -19,9 +26,7 @@ foreach ($files as $name => $file) {
 }
 
 $zip->close();
+ 
 
-$dbBackup = new Clases\DBBackup;
-$tables = 'admin, banners, categorias, contenidos, envios, galerias,imagenes, novedades, pagos, pedidos, portfolio, productos, servicios, sliders, subcategorias, usuarios, videos';
-$dbBackup->backupDatabase($tables, 'backup');
 
 ?>

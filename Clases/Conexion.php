@@ -30,23 +30,9 @@ class Conexion
         $dato = $this->con->query($query);
         return $dato;
     }
-
-    public function backup($archivo, $sql, $compress) {
-        if ($compress) {
-            if (!($zf = gzopen($archivo, 'w9'))) {
-                $this->error = 'Can\'t create the output file.';
-                return false;
-            }
-            gzwrite($zf, $sql);
-            gzclose($zf);
-        } else {
-            if (!($f = fopen($archivo, 'w'))) {
-                $this->error = 'Can\'t create the output file.';
-                return false;
-            }
-            fwrite($f, $sql);
-            fclose($f);
-        }
-        return true;
+ 
+    public function backup()
+    {
+        return $this->datos;
     }
 }

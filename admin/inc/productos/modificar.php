@@ -51,6 +51,9 @@ if (isset($_POST["agregar"])) {
     $productos->set("stock", $funciones->antihack_mysqli(isset($_POST["stock"]) ? $_POST["stock"] : ''));
     $productos->set("desarrollo", $funciones->antihack_mysqli(isset($_POST["desarrollo"]) ? $_POST["desarrollo"] : ''));
 
+    $productos->set("variable1", $funciones->antihack_mysqli(isset($_POST["estado"]) ? $_POST["estado"] : ''));
+    $productos->set("variable2", $funciones->antihack_mysqli(isset($_POST["lugar"]) ? $_POST["lugar"] : ''));
+
     $productos->set("variable4", $funciones->antihack_mysqli(isset($_POST["peso"]) ? $_POST["peso"] : ''));
     $productos->set("variable5", $funciones->antihack_mysqli(isset($_POST["altura"]) ? $_POST["altura"] : ''));
     $productos->set("variable6", $funciones->antihack_mysqli(isset($_POST["ancho"]) ? $_POST["ancho"] : ''));
