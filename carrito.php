@@ -16,7 +16,9 @@ $carrito = new Clases\Carrito();
 $envios = new Clases\Envios();
 $pagos = new Clases\Pagos();
 $carro = $carrito->return();
+$metodo_get = isset($_GET["metodos-pago"]) ? $_GET["metodos-pago"] : '';
 $carroEnvio = $carrito->checkEnvio();
+$carroPago = $carrito->checkPago();
 if (count($carro) == 0) {
     $funciones->headerMove(URL . "/tienda");
 }
@@ -65,10 +67,10 @@ if (count($carro) == 0) {
                             $funciones->headerMove(CANONICAL . "");
                         }
                         ?>
-                        <b>Elegí el tipo de envío para tus productos: (<?= $pesoFinal ?>kg) </b><i style="float:right;font-size:12px">* Seleccionar la mejor opción y presionar Finalizar Carrito</i><br/>
+                        <p class="text-uppercase bold fs-20 text-center">Elegí el tipo de envío para tus productos: (<?= $pesoFinal ?>kg) </p>
                         <form method="post">
-                            <select name="envio" class="form-control" id="envio" onchange="this.form.submit()">
-                                <option value="" selected disabled>Elegir envío</option>
+                            <select name="envio" class="form-control text-uppercase" id="envio" onchange="this.form.submit()">
+                                <option value="" selected disabled>Elegir método de envío</option>
                                 <?php
                                 foreach ($metodos_de_envios as $key => $metodos_de_envio_) {
                                     if ($metodos_de_envio_["precio"] == 0) {
@@ -113,7 +115,7 @@ if (count($carro) == 0) {
             $carroPago = $carrito->checkPago();
             if (empty($carroPago)) {
                 ?>
-                <div id="formEnvio" class="alert alert-warning animated fadeIn">
+                <div id="formPago" class="alert alert-warning animated fadeIn">
                     <?php
                     $metodo = $funciones->antihack_mysqli(isset($_POST["metodos-pago"]) ? $_POST["metodos-pago"] : '');
                     if ($metodo != '') {
@@ -142,10 +144,10 @@ if (count($carro) == 0) {
                         }
                     }
                     ?>
-                    <b>Elegí el medio de pago que desea relizar. </b><i style="float:right;font-size:12px">* Seleccionar la mejor opción y presionar Finalizar Carrito</i><br/>
+                    <p class="text-uppercase bold fs-20 text-center">Elegí el medio de pago que desea relizar. </p>
                     <form method="post">
-                        <select name="metodos-pago" class="form-control" id="pago" onchange="this.form.submit()">
-                            <option value="" selected disabled>Elegir envío</option>
+                        <select name="metodos-pago" class="form-control text-uppercase" id="pago" onchange="this.form.submit()">
+                            <option value="" selected disabled>Elegir método de pago</option>
                             <?php
                             $lista_pagos = $pagos->list(array(" estado = 0 "));
                             foreach ($lista_pagos as $pago) {
@@ -236,7 +238,7 @@ if (count($carro) == 0) {
             ?>
         </table>
         <hr>
-        <div class="col-md-12">
+        <div class="col-md-12 hidden-xs hidden-sm hidden-lg hidden-md">
             <form method="post" class="row">
                 <div class="col-md-6 text-right">
                     <p style="margin-top: 7px"><b>¿Tenés algún código de descuento para tus compras?</b></p>
@@ -258,20 +260,43 @@ if (count($carro) == 0) {
                     </div>
                     <!-- Cart Button Start -->
                     <!-- Cart Totals Start -->
-                    <div class="col-md-4 col-sm-12 mb-15" id="buy">
+                    <div class="col-md-12 col-sm-12 mb-15" id="buy">
                         <div class="cart_totals float-md-right text-md-right" style="text-align: center;">
                             <hr>
                             <br/>
-                            <div>
-                                <strong style="font-size: 26px;">Total: $<?= number_format($carrito->precio_total(), "2", ",", "."); ?></strong>
+                            <div class="mb-20">
+                                <strong class="text-uppercase" style="font-size: 36px;">Total: $<?= number_format($carrito->precio_total(), "2", ",", "."); ?></strong>
                             </div>
                             <?php
-                            $metodo_get = $funciones->antihack_mysqli(isset($_GET["metodos-pago"]) ? $_GET["metodos-pago"] : '');
-                            if ($metodo_get != '') {
+                            if ($carroEnvio != '' && $carroPago != '') {
                                 ?>
-                                <div class="wc-proceed-to-checkout">
-                                    <a class="btn btn-success" href="<?= URL ?>/pagar/<?= $metodo_get ?>" style="width: 100%;">
-                                        <i class="fa fa-check"></i>Finalizar Carrito
+                                <div class="mt-20 wc-proceed-to-checkout">
+                                    <a class="btn btn-success btn-block btn-lg" href="<?= URL ?>/pagar/<?= $metodo_get ?>">
+                                        <i class="fa fa-check"></i> Finalizar Carrito
+                                    </a>
+                                </div>
+                                <?php
+                            } elseif ($carroEnvio == '' && $carroPago != '') {
+                                ?>
+                                <div class="mt-20 wc-proceed-to-checkout">
+                                    <a class="btn btn-info btn-block" onclick="$('#formEnvio').addClass('alert-danger')">
+                                        <i class="fa fa-check"></i> Seleccionar Método de Envío
+                                    </a>
+                                </div>
+                                <?php
+                            } elseif ($carroEnvio != '' && $carroPago == '') {
+                                ?>
+                                <div class="mt-20 wc-proceed-to-checkout">
+                                    <a class="btn btn-info btn-block" onclick="$('#formPago').addClass('alert-danger')">
+                                        <i class="fa fa-check"></i> Seleccionar Método de Pago
+                                    </a>
+                                </div>
+                                <?php
+                            } else {
+                                ?>
+                                <div class="mt-20 wc-proceed-to-checkout">
+                                    <a class="btn btn-info btn-block" onclick="$('#formEnvio').addClass('alert-danger')">
+                                        <i class="fa fa-check"></i> Seleccionar Método de Envío
                                     </a>
                                 </div>
                                 <?php

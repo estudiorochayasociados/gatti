@@ -5,7 +5,7 @@ class autoload
 {
     public static function runSitio()
     {
-        //require_once "Config/Minify.php";
+        require_once "Config/Minify.php";
         session_start();
         $_SESSION["cod_pedido"] = isset($_SESSION["cod_pedido"]) ? $_SESSION["cod_pedido"] : strtoupper(substr(md5(uniqid(rand())), 0, 7));
         define('SALT', hash("sha256", "salt@estudiorochayasoc.com.ar"));
@@ -51,8 +51,8 @@ class autoload
         define('SALT', hash("sha256", "salt@estudiorochayasoc.com.ar"));
         define('HUBKEY', "9d0a9974-0576-4494-9798-22e3300e4b21");
         define('LOGO', URL . "/assets/img/logo/logo.png");
-        define('MELI_ID', "5737861010581482");
-        define('MELI_SECRET', "eVbx5m7ynhVosyvbHrME9s7RYKy27nbY");
+        define('MELI_ID', "7886107849656513");
+        define('MELI_SECRET', "qpmHgTrLTYlff4gA8PUsE8mqjsgDE3ki");
         require_once "../Clases/Zebra_Image.php";
         spl_autoload_register(function ($clase) {
             $ruta = str_replace("\\", "/", $clase) . ".php";

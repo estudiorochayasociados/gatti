@@ -19,6 +19,7 @@ $hub = new Clases\Hubspot();
 $cod_pedido = $_SESSION["cod_pedido"];
 $pedidos->set("cod", $cod_pedido);
 $pedido_info = $pedidos->view();
+
 if (empty($_SESSION["carrito"])) {
     $funciones->headerMove(URL . "/index");
 } else {

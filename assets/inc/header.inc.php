@@ -32,6 +32,7 @@
 <link href="<?=URL ?>/assets/css/lightbox.min.css" rel="stylesheet">
 <link href="<?=URL ?>/assets/css/hover-min.css" rel="stylesheet">
 <link href="<?=URL ?>/assets/css/estilo.css" rel="stylesheet">
+<link href="<?=URL ?>/assets/css/main-rocha.css" rel="stylesheet">
 
 <!-- Begin Inspectlet Asynchronous Code -->
 <script type="text/javascript">

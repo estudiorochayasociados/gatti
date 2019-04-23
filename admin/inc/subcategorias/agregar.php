@@ -4,7 +4,7 @@ $subcategorias = new Clases\Subcategorias();
 $categoriaCod  = isset($_GET["cod"]) ? $_GET["cod"] : '';
 $categorias->set("cod",$categoriaCod);
 $dataCategoria = $categorias->view();
-$cate          = $categorias->list("");
+$cate          = $categorias->listWithOps("","area ASC","");
 
 if (isset($_POST["agregar"])) {
     $count = 0;
@@ -36,7 +36,7 @@ if (isset($_POST["agregar"])) {
                  <option>---------------</option>
                 <?php
                 foreach ($cate as $categoria) {
-                    echo "<option value='".$categoria["cod"]."'>".$categoria["titulo"]."</option>";
+                    echo "<option value='".$categoria["cod"]."'>".mb_strtoupper($categoria["area"])." -> ".mb_strtoupper($categoria["titulo"])."</option>";
                 }
                 ?>
             </select>

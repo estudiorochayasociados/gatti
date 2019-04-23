@@ -148,50 +148,7 @@ class Productos
         "tags": [
         "immediate_payment"
         ],
-        "video_id": "onlvYuHOZtM",
-        "attributes": [
-        {     
-          "id": "EAN",
-          "value_name": "123212451323",
-         },
-        {
-          "id": "BRAND",
-          "name": "Marca",
-          "value_id": null,
-          "value_name": "GATTI",
-          "value_struct": null,
-          "attribute_group_id": "OTHERS",
-          "attribute_group_name": "Otros"
-         }, 
-        {
-          "id": "MODEL",
-          "name": "Modelo",
-          "value_id": null,
-          "value_name": "' . $this->cod_producto . '",
-          "value_struct": null,
-          "attribute_group_id": "OTHERS",
-          "attribute_group_name": "Otros"
-        },
-        {
-          "id": "ITEM_CONDITION",
-          "name": "Condición del ítem",
-          "value_id": "2230284",
-          "value_name": "Nuevo",
-          "value_struct": null,
-          "attribute_group_id": "OTHERS",
-          "attribute_group_name": "Otros"
-        },
-        {
-          "id": "MANUFACTURER",
-          "name": "Fabricante",
-          "value_id": null,
-          "value_name": "GATTI",
-          "value_struct": null,
-          "attribute_group_id": "OTHERS",
-          "attribute_group_name": "Otros"
-        },
-        ],
-        "pictures": [' . $this->img . ',{"source":"' . LOGO . '"}],
+        "pictures": [' . $this->img . '{"source":"' . LOGO . '"}],
         "shipping": {
            "mode": "me2",
            "local_pick_up": false,
@@ -200,9 +157,21 @@ class Productos
          } 
         }';
 
+
         $meli = $this->funciones->curl("POST", "https://api.mercadolibre.com/items?access_token=" . $_SESSION["access_token"], $data);
         $meli = json_decode($meli, true);
-        return $meli;
+
+        if (isset($meli)) {
+            if (isset($meli['error'])) {
+                if ($meli["error"] != '') {
+                    $error = array("status" => "false", "error" => $meli["cause"]);
+                    return $error;
+                }
+            } else {
+                $meli_ = array("status" => "true", "data" => $meli);
+                return $meli_;
+            }
+        }
     }
 
 
@@ -212,10 +181,42 @@ class Productos
         "title": "' . $this->titulo . '",  
         "price": ' . $this->precio . ', 
         "available_quantity": ' . $this->stock . ',      
-        "pictures": [' . $this->img . ',{"source":"' . LOGO . '"}]
+        "pictures": [' . $this->img . '{"source":"' . LOGO . '"}]
         }';
         $meli = $this->funciones->curl("PUT", "https://api.mercadolibre.com/items/$this->meli?access_token=" . $_SESSION["access_token"], $data);
-        return $meli;
+        $meli = json_decode($meli, true);
+
+        if (isset($meli)) {
+            if (isset($meli['error'])) {
+                if ($meli["error"] != '') {
+                    $error = array("status" => "false", "error" => $meli["error"]);
+                    return $error;
+                }
+            } else {
+                $meli_ = array("status" => "true", "data" => $meli);
+                return $meli_;
+            }
+        }
+    }
+
+    public function validateItem()
+    {
+        $url = 'https://api.mercadolibre.com/items/' . $this->meli;
+        $response = $this->funciones->curl("", $url, '');
+        $data = json_decode($response, true);
+        if (is_array($data)) {
+            if (isset($data["status"])) {
+                if (is_numeric($data["status"])) {
+                    return false;
+                } else {
+                    if ($_SESSION["user_id"] == $data["seller_id"]) {
+                        return $data;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        };
     }
 
     public function delete_meli()

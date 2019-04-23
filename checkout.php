@@ -135,8 +135,8 @@ switch ($pago["tipo"]) {
         $pedidos->changeState();
         $pedido_info = $pedidos->view();
         $stage = $hub->getStage($pago["defecto"]);
-        $hub->set("deal",$pedido_info['data']['hub_cod']);
-        $hub->set("estado",$stage);
+        $hub->set("deal", $pedido_info['data']['hub_cod']);
+        $hub->set("estado", $stage);
         $hub->updateStage();
         $funciones->headerMove(URL . "/compra-finalizada");
         break;

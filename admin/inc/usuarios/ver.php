@@ -30,11 +30,17 @@ $usuarios = new Clases\Usuarios();
                             echo "<td>Mayorista</td>";
                         endif;
                         echo "<td>";
+                        echo '<a class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver Pedidos" href="' . URL . '/index.php?op=pedidos&accion=ver&usuario=' . $data[$i]["cod"] . '">
+                        <i class="fa fa-list"></i></a>';
+
+
                         echo '<a class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Modificar" href="' . URL . '/index.php?op=usuarios&accion=modificar&cod=' . $data[$i]["cod"] . '">
                         <i class="fa fa-cog"></i></a>';
 
                         echo '<a class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar" href="' . URL . '/index.php?op=usuarios&accion=ver&borrar=' . $data[$i]["cod"] . '">
                         <i class="fa fa-trash"></i></a>';
+
+
                         echo "</td>";
                         echo "</tr>";
                     }

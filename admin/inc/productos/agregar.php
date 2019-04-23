@@ -39,6 +39,8 @@ if (isset($_POST["agregar"])) {
     $productos->set("variable6", $funciones->antihack_mysqli(isset($_POST["ancho"]) ? $_POST["ancho"] : ''));
     $productos->set("variable7", $funciones->antihack_mysqli(isset($_POST["profundidad"]) ? $_POST["profundidad"] : ''));
 
+    $cod_meli = $funciones->antihack_mysqli(isset($_POST["cod_meli"]) ? $_POST["cod_meli"] : null);
+
     $productos->set("categoria", $funciones->antihack_mysqli(isset($_POST["categoria"]) ? $_POST["categoria"] : ''));
     $productos->set("subcategoria", $funciones->antihack_mysqli(isset($_POST["subcategoria"]) ? $_POST["subcategoria"] : ''));
     $productos->set("keywords", $funciones->antihack_mysqli(isset($_POST["keywords"]) ? $_POST["keywords"] : ''));
@@ -81,20 +83,37 @@ if (isset($_POST["agregar"])) {
         $count++;
     }
 
-    $error='';
+    $error = '';
     if (isset($_POST['meli'])) {
         if (isset($_SESSION['access_token'])) {
-            $productos->set("img", substr($img_meli, 0, -1));
+            $productos->set("img", $img_meli);
             $add_meli = $productos->add_meli();
-            $productos->set("meli", $add_meli["id"]);
-            $productos->add();
-            $funciones->headerMove(URL . "/index.php?op=productos");
+            if (isset($add_meli['error'])) {
+                foreach ($add_meli['error'] as $err) {
+                    $error .= "- " . $err['message'] . "<br>";
+                }
+            } else {
+                $productos->set("meli", $add_meli['data']["id"]);
+                $productos->add();
+                $funciones->headerMove(URL . "/index.php?op=productos");
+            }
         } else {
             $error = "No te logueaste con MercadoLibre.";
         }
     } else {
-        $productos->add();
-        $funciones->headerMove(URL . "/index.php?op=productos");
+        if ($cod_meli != null) {
+            $productos->set("meli", $cod_meli);
+            if ($productos->validateItem() != false) {
+                $productos->set("meli", $cod_meli);
+                $productos->add();
+                $funciones->headerMove(URL . "/index.php?op=productos");
+            } else {
+                $error = "El código de producto en MercadoLibre ingresado es incorrecto.";
+            }
+        } else {
+            $productos->add();
+            $funciones->headerMove(URL . "/index.php?op=productos");
+        }
     }
 }
 ?>
@@ -154,7 +173,7 @@ if (isset($_POST["agregar"])) {
         </label>
         <label class="col-md-3">
             Stock:<br/>
-            <input type="number" name="stock">
+            <input type="number" id="stock" name="stock" min="0" required>
         </label>
         <div class="clearfix">
         </div>
@@ -164,7 +183,7 @@ if (isset($_POST["agregar"])) {
         </label>
         <label class="col-md-3">
             Precio:<br/>
-            <input type="text" name="precio">
+            <input type="text" name="precio" required>
         </label>
         <!--
         <label class="col-md-3">
@@ -193,8 +212,6 @@ if (isset($_POST["agregar"])) {
                 <option value="0">Productos</option>
             </select>
         </label>
-
-
         <!--
         <label class="col-md-4">
             Url:<br/>
@@ -240,14 +257,24 @@ if (isset($_POST["agregar"])) {
                             }
                         }
                     }
-                    echo '<input type="checkbox" class="form-check-input" id="meli" name="meli"> <label class="form-check-label" for="meli">¿Publicar en MercadoLibre?</label>';
+                    ?>
+                    <div class="row">
+                        <div class="col-md-6 centro" style="margin-top:5px;">
+                            <input type="checkbox" class="form-check-input" id="meli" value="1" name="meli" onchange="$('#cod_meli').attr('disabled',true); $('#stock').attr('min', 1);">
+                            <label class="form-check-label display-inline" for="meli">¿Publicar en MercadoLibre?</label>
+                        </div>
+                        <div class="col-md-6 centro">
+                            <label> Ya está publicado en ML? Ingresar código:</label>
+                            <input type="text" class="col-md-3 display-inline" id="cod_meli" name="cod_meli" onchange="$('#meli').attr('disabled',true)" value="<?= isset($_POST["cod_meli"]) ? $_POST["cod_meli"] : ''; ?>">
+                        </div>
+                    </div>
+                    <?php
                 } else {
                     echo '<div class="ml-0 pl-0 mt-20 mb-20"><a  target="_blank" href="' . $meli->getAuthUrl($redirectURI, Meli::$AUTH_URL[$siteId]) . '"><img src="' . URL . '/img/meli.png" width="30" /> ¿Ingresar a Mercadolibre para publicar el producto <i class="fa fa-square green">?</i></a></div>';
                 }
                 ?>
             </div>
         </div>
-
         <label class="col-md-7">
             Imágenes:<br/>
             <input type="file" id="file" name="files[]" multiple="multiple" accept="image/*"/>
@@ -260,3 +287,14 @@ if (isset($_POST["agregar"])) {
         </div>
     </form>
 </div>
+<script>
+    setInterval(ML, 1000);
+
+    function ML() {
+        if ($('#meli').prop('checked') == false && $('#cod_meli').val() == '') {
+            $('#cod_meli').attr('disabled', false);
+            $('#meli').attr('disabled', false);
+            $('#stock').attr('min', 0);
+        }
+    }
+</script>

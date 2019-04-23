@@ -31,8 +31,8 @@ class Hubspot
     //Metodos
     public function __construct()
     {
-        $this->publicFunction= new PublicFunction();
-        if(HUBKEY == '') {
+        $this->publicFunction = new PublicFunction();
+        if (HUBKEY == '') {
             die();
         }
     }
@@ -47,7 +47,8 @@ class Hubspot
         return $this->$atributo;
     }
 
-    public function addContact(){
+    public function addContact()
+    {
         $url = 'https://api.hubapi.com/contacts/v1/contact?hapikey=' . HUBKEY;
         $data_ = array(
             'properties' => array(
@@ -90,7 +91,7 @@ class Hubspot
             )
         );
         $data = json_encode($data_);
-        $response = $this->publicFunction->curl("POST", $url, $data);
+        $response = $this->curl("POST", $url, $data);
 
         //Responses Types:
         //200:Success
@@ -109,7 +110,8 @@ class Hubspot
         }
     }
 
-    public function updateContact(){
+    public function updateContact()
+    {
         $url = 'https://api.hubapi.com/contacts/v1/contact/vid/' . $this->vid . '/profile?hapikey=' . HUBKEY;
         $data_ = array(
             'properties' => array(
@@ -152,7 +154,7 @@ class Hubspot
             )
         );
         $data = json_encode($data_);
-        $response = $this->publicFunction->curl("POST", $url, $data);
+        $response = $this->curl("POST", $url, $data);
 
         //Responses Types:
         //204:Success/Updated
@@ -160,7 +162,7 @@ class Hubspot
         //401:Wrong API Key
         //404:Not Found with this vid
         //500:Internal server error
-        switch ($response["Status"]){
+        switch ($response["Status"]) {
             case 204:
                 return true;
                 break;
@@ -184,19 +186,19 @@ class Hubspot
     public function getContactByEmail()
     {
         $url = 'https://api.hubapi.com/contacts/v1/contact/email/' . $this->email . '/profile?hapikey=' . HUBKEY;
-        $response = $this->publicFunction->curl("", $url, '');
+        $response = $this->curl("", $url, '');
         $data = json_decode($response['Data'], true);
         //Responses Types:
         //200:Success
         //404:Email Not Found
-        switch ($response['Status']){
+        switch ($response['Status']) {
             case 200:
-                $data_=array(
-                  "vid" => $data['vid'],
-                  "nombre" => $data['properties']['firstname']['value'],
-                  "apellido" => $data['properties']['lastname']['value'],
-                  "email" => $data['properties']['email']['value'],
-                  "telefono" => $data['properties']['phone']['value']
+                $data_ = array(
+                    "vid" => $data['vid'],
+                    "nombre" => $data['properties']['firstname']['value'],
+                    "apellido" => $data['properties']['lastname']['value'],
+                    "email" => $data['properties']['email']['value'],
+                    "telefono" => $data['properties']['phone']['value']
                 );
                 return $data_;
                 break;
@@ -208,11 +210,11 @@ class Hubspot
 
     public function createDeal()
     {
-        $url = 'https://api.hubapi.com/deals/v1/deal?hapikey='. HUBKEY;
+        $url = 'https://api.hubapi.com/deals/v1/deal?hapikey=' . HUBKEY;
         $data_ = array(
             'associations' => array(
                 'associatedVids' => array(
-                        $this->vid
+                    $this->vid
                 )
             ),
             'properties' => array(
@@ -243,15 +245,15 @@ class Hubspot
             )
         );
         $data = json_encode($data_);
-        $response = $this->publicFunction->curl("POST", $url, $data);
+        $response = $this->curl("POST", $url, $data);
         $response_ = json_decode($response['Data'], true);
 
         //Responses Types:
         //200:Success
         //404:Email Not Found
-        switch ($response['Status']){
+        switch ($response['Status']) {
             case 200:
-               return $response_;
+                return $response_;
                 break;
             default:
                 return false;
@@ -259,7 +261,9 @@ class Hubspot
         }
     }
 
-    public function updateStage(){
+
+    public function updateStage()
+    {
         $url = 'https://api.hubapi.com/deals/v1/deal/' . $this->deal . '?hapikey=' . HUBKEY;
         $data_ = array(
             'properties' => array(
@@ -270,13 +274,13 @@ class Hubspot
             )
         );
         $data = json_encode($data_);
-        $response = $this->publicFunction->curl("PUT", $url, $data);
+        $response = $this->curl("PUT", $url, $data);
         $response_ = json_decode($response['Data'], true);
 
         //Responses Types:
         //200:Success
         //404:Email Not Found
-        switch ($response['Status']){
+        switch ($response['Status']) {
             case 200:
                 return $response_;
                 break;
@@ -286,7 +290,8 @@ class Hubspot
         }
     }
 
-    public function getStage($stage){
+    public function getStage($stage)
+    {
         switch ($stage) {
             //Carrito no cerrado
             case 0:
@@ -311,12 +316,13 @@ class Hubspot
         }
     }
 
-    public function getDealId(){
+    public function getDealId()
+    {
         $url = 'https://api.hubapi.com/deals/v1/deal/' . $this->deal . '?hapikey=' . HUBKEY;
-        $response = $this->publicFunction->curl('', $url, '');
+        $response = $this->curl('', $url, '');
         $response_ = json_decode($response['Data'], true);
 
-        switch ($response['Status']){
+        switch ($response['Status']) {
             case 200:
                 return $response_;
                 break;
@@ -324,5 +330,40 @@ class Hubspot
                 return false;
                 break;
         }
+    }
+
+
+    function curl($method, $url, $data)
+    {
+        $curl = curl_init();
+
+        switch ($method) {
+            case "POST":
+                curl_setopt($curl, CURLOPT_POST, 1);
+                if ($data) curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                break;
+            case "PUT":
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+                if ($data) curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                break;
+            default:
+                if ($data) $url = sprintf("%s?%s", $url, http_build_query($data));
+        }
+        // OPTIONS:
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json',));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+
+        // EXECUTE:
+        $result = curl_exec($curl);
+        $status_code = @curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $response = array(
+            "Status" => $status_code,
+            "Data" => $result,
+        );
+
+        curl_close($curl);
+        return $response;
     }
 }

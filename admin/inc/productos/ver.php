@@ -14,6 +14,8 @@ $data      = $productos->list("");
             <thead>
             <th>Título</th>
             <th>Tipo</th>
+            <th>Stock</th>
+            <th>Precio</th>
             <th>Ajustes</th>
             </thead>
              <tbody>
@@ -22,6 +24,8 @@ if (is_array($data)) {
     for ($i = 0; $i < count($data); $i++) {
         echo "<tr>";
         echo "<td>" . strtoupper($data[$i]["titulo"]) . "</td>";
+        echo "<td>" . strtoupper($data[$i]["stock"]) . "</td>";
+        echo "<td>$" . strtoupper($data[$i]["precio"]) . "</td>";
         echo "<td>";
         if($data[$i]["variable2"] == 0) {
             echo "Productos";

@@ -152,17 +152,18 @@ switch ($categoria["titulo"]) {
                             </form>
                             <hr/>
                         </div>
+                        <!--
                         <div class="mt-40 text-center">
                             <h5><b>Comunicate también por:</b></h5>
                             <div>
-                                <a target="_blank" href="https://wa.me/543564335294" class="btn btn-block btn-success fs-18">
+                                <a target="_blank" href="https://wa.me/" class="btn btn-block btn-success fs-18">
                                     <i class="ifoot fa fa-whatsapp" aria-hidden="true"></i> WhatsApp
                                 </a>
-                                <a target="_blank" href="tel:543564335294" class="btn btn-block btn-info fs-19">
-                                    <i class="ifoot fa fa-mobile" aria-hidden="true"></i> 3564 335294
+                                <a target="_blank" href="tel:" class="btn btn-block btn-info fs-19">
+                                    <i class="ifoot fa fa-mobile" aria-hidden="true"></i>
                                 </a>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>

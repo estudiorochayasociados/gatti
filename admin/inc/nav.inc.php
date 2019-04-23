@@ -200,7 +200,7 @@ $pages = ["ecommerce", "contenidos", "novedades", "multimedia", "usuarios", "ban
                             Agregar Categorias
                         </a>
                         <a class="dropdown-item" href="<?= URL ?>/index.php?op=subcategorias&accion=agregar">
-                            Agregar Sub Categorias
+                            Agregar Subcategorias
                         </a>
                     </div>
                 </li>

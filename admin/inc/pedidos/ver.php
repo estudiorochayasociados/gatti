@@ -11,6 +11,8 @@ $cod = isset($_GET["cod"]) ? $_GET["cod"] : '';
 $tipo = isset($_GET["tipo"]) ? $_GET["tipo"] : '';
 $usuario = isset($_GET["usuario"]) ? $_GET["usuario"] : '';
 
+$filter = '';
+
 if ($estado != '' && $cod != '') {
     $pedidos->set("estado", $estado);
     $pedidos->set("cod", $cod);
@@ -24,10 +26,16 @@ if ($estado != '' && $cod != '') {
     $funciones->headerMove(URL . '/?op=pedidos&accion=ver');
 }
 
-$filter = '';
+if($usuario != '') {
+    $filter = array("usuario ='". $usuario."'");
+}
+
 if ($estadoFiltro != '') {
     $filter = array("estado ='". $estadoFiltro."'");
 }
+
+
+
 
 $pedidosData=$pedidos->listWithOps($filter,'','');
 ?>
@@ -200,6 +208,7 @@ $pedidosData=$pedidos->listWithOps($filter,'','');
                         <a href="<?= CANONICAL ?>&estado=2&cod=<?= $value['data']['cod'] ?>" class="btn btn-success">Aprobado</a>
                         <a href="<?= CANONICAL ?>&estado=3&cod=<?= $value['data']['cod'] ?>" class="btn btn-info">Enviado</a>
                         <a href="<?= CANONICAL ?>&estado=4&cod=<?= $value['data']['cod'] ?>" class="btn btn-primary">Rechazado</a>
+                        <a href="<?= CANONICAL ?>&borrar=<?= $value['data']['cod'] ?>" class="btn btn-danger">Eliminar Pedido</a>
                     </div>
                 </div>
             </div>
@@ -208,7 +217,7 @@ $pedidosData=$pedidos->listWithOps($filter,'','');
 </div>
 <?php
 if (!empty($_GET["borrar"])) {
-    $pedidos->set("id", $funciones->antihack_mysqli(isset($_GET["borrar"]) ? $_GET["borrar"] : ''));
+    $pedidos->set("cod", $funciones->antihack_mysqli(isset($_GET["borrar"]) ? $_GET["borrar"] : ''));
     $pedidos->delete();
     $funciones->headerMove(URL . "/index.php?op=pedidos");
 }

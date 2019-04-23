@@ -38,7 +38,7 @@ if (isset($_POST["agregar"])) {
                 <option>---------------</option>
                 <?php
                 foreach ($cate as $categoria) {
-                    echo "<option value='".$categoria["cod"]."'>".$categoria["titulo"]."</option>";
+                    echo "<option value='".$categoria["cod"]."'>".mb_strtoupper($categoria["area"])." -> ".mb_strtoupper($categoria["titulo"])."</option>";
                 }
                 ?>
             </select>
