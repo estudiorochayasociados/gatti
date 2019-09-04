@@ -59,6 +59,13 @@ class DetallePedidos
         return $query;
     }
 
+    public function deleteById($id)
+    {
+        $sql   = "DELETE FROM `detalle_pedidos` WHERE `id`  = {$id}";
+        $query = $this->con->sql($sql);
+        return $query;
+    }
+
     function list($cod)
     {
         $array = array();

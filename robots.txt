@@ -7,4 +7,4 @@ Disallow: /backup/*
 User-agent: *
 Allow: /
 
-Sitemap: https://www.lasilleria.com.ar/sitemap.php
+Sitemap: https://www.gattisa.com.ar/sitemap.php

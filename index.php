@@ -53,12 +53,9 @@ if (!empty($sliders_data)) {
             <div class="carousel-inner" role="listbox">
                 <?php
                 $active = 0;
-                foreach ($sliders_data as $sli) {
+                foreach ($sliders_data as $key => $sli) {
                     ?>
-                    <div class="item <?php if ($active == 0) {
-                        echo 'active';
-                        $active++;
-                    } ?>"
+                    <div class="item <?= $key == 0 ? 'active' : '' ?>"
                          style="background:url('<?= URL . '/' . $sli['imagenes']['0']['ruta']; ?>') center center/cover;height:520px">
                         <?php
                         if (!empty($sli['data']['titulo'])) {
@@ -107,49 +104,18 @@ if (!empty($sliders_data)) {
         </div>
     </div>
     <?php
-} elseif (!empty($slidersm_data)) {
+}
+if (!empty($slidersm_data)) {
     ?>
     <div class="visible-xs" style="position: relative;">
         <div id="myCarouselM" class="sliderPrincipal carousel slide " data-ride="carousel" style="height:520px;overflow:hidden" data-pause="hover">
             <div class="carousel-inner" role="listbox">
                 <?php
                 $active = 0;
-                foreach ($slidersm_data as $sli) {
+                foreach ($slidersm_data as $key => $sli) {
                     ?>
-                    <div class="item <?php if ($active == 0) {
-                        echo 'active';
-                        $active++;
-                    } ?>"
+                    <div class="item <?= $key == 0 ? 'active' : '' ?>"
                          style="background:url('<?= URL . '/' . $sli['imagenes']['0']['ruta']; ?>') center center/cover;height:400px">
-                        <?php
-                        if (!empty($sli['data']['titulo'])) {
-                            ?>
-                            <div class="caption animated fadeInLeft" style="animation-delay: 0.2s">
-                                <div class="col-md-12 col-xs-12 captionSlider">
-                                    <div class="container">
-                                        <div class="col-md-6 col-sm-12">
-                                            <?php
-                                            if (!empty($sli['data']['titulo'])) {
-                                                ?>
-                                                <h1 class="wow fadeInLeft" data-wow-delay="0.6s"><?= $sli['data']['titulo'] ?></h1>
-                                                <?php
-                                            }
-                                            ?>
-                                            <div class="clearfix"></div>
-                                            <?php
-                                            if (!empty($sli['data']['subtitulo'])) {
-                                                ?>
-                                                <h2 class="wow fadeInUp" data-wow-delay="0.6s"><?= $sli['data']['subtitulo'] ?></h2>
-                                                <?php
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php
-                        }
-                        ?>
                     </div>
                     <?php
                 }
@@ -176,7 +142,6 @@ if (!empty($sliders_data)) {
             <div class="col-md-3" style="padding: 0px 0px 20px 0 !important">
                 <img src="<?= URL ?>/assets/img/box1.png" width="100%"/>
             </div>
-
             <div class="col-md-3" style="padding: 0px 0px 20px 0 !important">
                 <img src="<?= URL ?>/assets/img/box2.png" width="100%"/>
             </div>
@@ -192,7 +157,7 @@ if (!empty($sliders_data)) {
 </div>
 <div style="width:100%;background:#F8E002;box-shadow: 0px -5px 10px rgba(0,0,0,.2)">
     <center class="container">
-        <a href="https://perfil.mercadolibre.com.ar/gattisa" target="_blank">
+        <a href="https://www.mercadolibre.com.ar/perfil/GATTI+VENTILACI%25C3%2593N" target="_blank">
             <img src="<?= URL ?>/assets/img/banner-mercadolibre-lider.jpg" style="width: 70%; ">
         </a>
     </center>
@@ -223,38 +188,38 @@ if (!empty($sliders_data)) {
                             </h1>
                             <br/>
                             <?php
-                             if (!empty($prod['data']['precio_descuento']) && $prod['data']['precio_descuento'] > 0) {
-                                    ?>
-                                    <div class="label label-danger"
-                                         style="font-size: 12px;margin-bottom: 2px !important">
-                                        <?= "<b>Antes: </b>$" . ($prod['data']["precio"]) ?>
-                                    </div>
-                                    <div class="label label-success"
-                                         style="font-size: 12px;margin-bottom: 2px !important">
-                                        <?= "<b>Ahora: </b>$" . ($prod['data']['precio_descuento']) ?>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <?php
-                                    $desc_ = $prod['data']['precio_descuento'];
-                                } else {
-                                    ?>
-                                    <span class="precioProducto"><?= "<b>Precio: </b>$" . ($prod['data']['precio']) ?>
-                                    </span>
-                                    <br/>
-                                    <?php
-                                    $desc_ = $prod['data']['precio'];
-                                }
+                            if (!empty($prod['data']['precio_descuento']) && $prod['data']['precio_descuento'] > 0) {
                                 ?>
-                                <span class="precioProducto" style="color:red">
-                                    <?= "<i>Precio de contado: $" . ($desc_ - ($desc_ * 10 / 100)) . "</i>" ?>
-                                </span>
+                                <div class="label label-danger"
+                                     style="font-size: 12px;margin-bottom: 2px !important">
+                                    <?= "<b>Antes: </b>$" . ($prod['data']["precio"]) ?>
+                                </div>
+                                <div class="label label-success"
+                                     style="font-size: 12px;margin-bottom: 2px !important">
+                                    <?= "<b>Ahora: </b>$" . ($prod['data']['precio_descuento']) ?>
+                                </div>
+                                <div class="clearfix"></div>
                                 <?php
-                                if ($prod['data']['stock'] == 0) {
-                                    ?>
-                                    <br>
-                                    <div class='label label-danger'>* sin stock</div>
-                                    <?php
-                                }
+                                $desc_ = $prod['data']['precio_descuento'];
+                            } else {
+                                ?>
+                                <span class="precioProducto"><?= "<b>Precio: </b>$" . ($prod['data']['precio']) ?>
+                                    </span>
+                                <br/>
+                                <?php
+                                $desc_ = $prod['data']['precio'];
+                            }
+                            ?>
+                            <span class="precioProducto" style="color:red">
+                                    <?= "<i>Precio de contado: $" . ($desc_ - ($desc_ * 10 / 100)) . "</i>" ?>
+                            </span>
+                            <?php
+                            if ($prod['data']['stock'] == 0) {
+                                ?>
+                                <br>
+                                <div class='label label-danger'>* sin stock</div>
+                                <?php
+                            }
                             ?>
                             <div class="clearfix"></div>
                             <br/>

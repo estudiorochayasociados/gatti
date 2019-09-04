@@ -241,6 +241,11 @@ class Productos
         $sql = "SELECT * FROM `productos` WHERE id = '{$this->id}' ||  cod = '{$this->cod}' ORDER BY id DESC";
         $productos = $this->con->sqlReturn($sql);
         $row = mysqli_fetch_assoc($productos);
+        if ($row) {
+            if (!empty($row['variable10'])) {
+                $row['variable4'] = 0;
+            }
+        }
         $img = $this->imagenes->list(array("cod = '" . $this->cod . "'"));
         $cat = $this->categorias->view_row(array("cod = '" . $row['categoria'] . "'"));
         $row_ = array("data" => $row, "categorias" => $cat, "imagenes" => $img);
@@ -371,5 +376,11 @@ class Productos
 `$atributo` = '{$valor}'
 WHERE `id`='{$this->id}' || `cod`='{$this->cod}'";
         $this->con->sql($sql);
+    }
+
+    public function editUnicoV2($atributo, $valor)
+    {
+        $sql = "UPDATE `productos` SET`$atributo` = '{$valor}' WHERE `cod`='{$this->cod}'";
+        return $this->con->sqlReturn($sql);
     }
 }

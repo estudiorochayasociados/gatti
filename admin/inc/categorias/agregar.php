@@ -51,10 +51,10 @@ if (isset($_POST["agregar"])) {
     <hr/>
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">Título:<br/>
-            <input type="text" name="titulo">
+            <input type="text" name="titulo" required>
         </label>
         <label class="col-md-4">Área:<br/>
-            <select name="area">
+            <select name="area" required>
                 <option value="" disabled selected>-- categorías --</option>
                 <option value="sliders">Sliders</option>
                 <option value="novedades">Novedades</option>

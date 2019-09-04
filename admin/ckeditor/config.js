@@ -39,6 +39,7 @@ CKEDITOR.editorConfig = function( config ) {
 
 	config.extraPlugins = 'widgetselection,lineutils,dialog,btgrid,bootstrapTabs,accordionList,collapsibleItem,lightbox,youtube,justify,colorbutton,panelbutton,floatpanel,font';
 	config.language = 'es';
-	config.extraAllowedContent = 'a[data-lightbox,data-title,data-lightbox-saved]';
+	config.allowedContent = true;
+	config.extraAllowedContent = 'a[data-lightbox,data-title,data-lightbox-saved],iframe[*]';
 	config.protectedSource.push(/<\?[\s\S]*?\?>/g);
 };

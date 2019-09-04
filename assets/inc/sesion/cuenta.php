@@ -7,7 +7,7 @@ $usuarioData = $usuario->view();
 ?>
 <div class="col-md-12 mb-10">
     <?php
-    if (isset($_POST["guardar"])):
+    if (isset($_POST["guardar"])) {
 
         $nombre = $funciones->antihack_mysqli(!empty($_POST["nombre"]) ? $_POST["nombre"] : '');
         $apellido = $funciones->antihack_mysqli(!empty($_POST["apellido"]) ? $_POST["apellido"] : '');
@@ -20,58 +20,62 @@ $usuarioData = $usuario->view();
         $celular = $funciones->antihack_mysqli(!empty($_POST["celular"]) ? $_POST["celular"] : '');
         $postal = $funciones->antihack_mysqli(!empty($_POST["postal"]) ? $_POST["postal"] : '');
 
-        if (!empty($_POST["password"]) && !empty($_POST["password2"])):
-            if ($_POST["password"] == $_POST['password2']):
+        $error = '';
+        $pass = false;
+        if (!empty($_POST["password"]) && !empty($_POST["password2"])) {
+            if ($_POST["password"] == $_POST['password2']) {
                 $password = $funciones->antihack_mysqli($_POST["password"]);
-            else:
-                echo '<div class="alert alert-warning" role="alert">Las contraseña no coinciden</div>';
-                $password = $usuarioData['password'];
-            endif;
-        else:
-            $password = $usuarioData['password'];
-        endif;
-
-        $usuario->set("cod", $usuarioData['cod']);
-        $usuario->set("nombre", $nombre);
-        $usuario->set("apellido", $apellido);
-        $usuario->set("email", $email);
-        $usuario->set("provincia", $provincia);
-        $usuario->set("localidad", $localidad);
-        $usuario->set("direccion", $direccion);
-        $usuario->set("telefono", $telefono);
-        $usuario->set("celular", $celular);
-        $usuario->set("postal", $postal);
-        $usuario->set("password", $password);
-        $usuario->set("fecha", $usuarioData['fecha']);
-
-        $hub->set("nombre", $nombre);
-        $hub->set("apellido", $apellido);
-        $hub->set("email", $email);
-        $hub->set("direccion", $direccion);
-        $hub->set("telefono", $telefono);
-        $hub->set("celular", $celular);
-        $hub->set("localidad", $localidad);
-        $hub->set("provincia", $provincia);
-        $hub->set("postal",$postal);
-
-        if ($email!=$usuarioData['email']){
-            $hub->set("email",$usuarioData['email']);
-            $response = $hub->getContactByEmail();
-            if ($response!=false){
-                $hub->set("vid",$response['vid']);
-                $hub->updateContact();
-            }
-        }else{
-            $response = $hub->getContactByEmail();
-            if ($response!=false){
-                $hub->set("vid",$response['vid']);
-                $hub->updateContact();
+                $pass = true;
+            } else {
+                $error = '<div class="alert alert-warning" role="alert">Las contraseña no coinciden</div>';
             }
         }
 
-        $usuario->edit();
-        $funciones->headerMove(URL . '/sesion/cuenta');
-    endif;
+        $usuario->set("cod", $usuarioData['cod']);
+        if (empty($error)) {
+            $usuario->editUnico("nombre", $nombre);
+            $usuario->editUnico("apellido", $apellido);
+            $usuario->editUnico("email", $email);
+            $usuario->editUnico("provincia", $provincia);
+            $usuario->editUnico("localidad", $localidad);
+            $usuario->editUnico("direccion", $direccion);
+            $usuario->editUnico("telefono", $telefono);
+            $usuario->editUnico("celular", $celular);
+            $usuario->editUnico("postal", $postal);
+            $usuario->editUnico("fecha", $usuarioData['fecha']);
+
+            if ($pass) {
+                $usuario->editUnico("password", $password);
+            }
+
+            $hub->set("nombre", $nombre);
+            $hub->set("apellido", $apellido);
+            $hub->set("email", $email);
+            $hub->set("direccion", $direccion);
+            $hub->set("telefono", $telefono);
+            $hub->set("celular", $celular);
+            $hub->set("localidad", $localidad);
+            $hub->set("provincia", $provincia);
+            $hub->set("postal", $postal);
+
+            if ($email != $usuarioData['email']) {
+                $hub->set("email", $usuarioData['email']);
+                $response = $hub->getContactByEmail();
+                if ($response != false) {
+                    $hub->set("vid", $response['vid']);
+                    $hub->updateContact();
+                }
+            } else {
+                $response = $hub->getContactByEmail();
+                if ($response != false) {
+                    $hub->set("vid", $response['vid']);
+                    $hub->updateContact();
+                }
+            }
+
+            $funciones->headerMove(URL . '/sesion/cuenta');
+        }
+    }
     ?>
     <br>
     <form class="login_form" id="registro" method="post" autocomplete="off">
@@ -209,5 +213,5 @@ $usuarioData = $usuario->view();
         <br/>
         <button style="width: 100%;" type="submit" name="guardar" class="btn btn-success">Guardar</button>
     </form>
-        <br>
+    <br>
 </div>

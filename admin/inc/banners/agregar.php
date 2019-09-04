@@ -56,10 +56,10 @@ if (isset($_POST["agregar"])) {
     <hr/>
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">Nombre:<br/>
-            <input type="text" name="nombre">
+            <input type="text" name="nombre" required>
         </label>
         <label class="col-md-4">Categoría:<br/>
-            <select name="categoria">
+            <select name="categoria" required>
                 <option value="" disabled selected>-- categorías --</option>
                 <?php
                 foreach ($data as $categoria) {

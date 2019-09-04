@@ -45,10 +45,10 @@ if (isset($_POST["agregar"])) {
     <hr/>
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">Título:<br/>
-            <input type="text" value="<?= $data["titulo"] ?>" name="titulo">
+            <input type="text" value="<?= $data["titulo"] ?>" name="titulo" required>
         </label>
         <label class="col-md-4">Área:<br/>
-            <select name="area">
+            <select name="area" required>
                 <option value="<?= $data["area"] ?>" selected><?= ucwords($data["area"]) ?></option>
                 <option>---------------</option>
                 <option value="sliders">Sliders</option>

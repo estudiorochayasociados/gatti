@@ -65,7 +65,7 @@ if (isset($_POST["agregar"])) {
     }
 
     $novedades->edit();
-    $funciones->headerMove(URL . "/index.php?op=novedades&accion=modificar&cod=$cod");
+    $funciones->headerMove(URL . "/index.php?op=novedades");
 }
 ?>
 

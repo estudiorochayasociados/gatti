@@ -192,7 +192,7 @@ if (isset($_POST["agregar"])) {
         </label>-->
         <label class="col-md-3">
             Peso:<br/>
-            <input type="text" name="peso">
+            <input type="text" name="peso" required>
         </label>
         <label class="col-md-4">
             Precio Descuento:<br/>

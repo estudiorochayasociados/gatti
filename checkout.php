@@ -8,9 +8,7 @@ $template->set("description", "Finalizá tu compra eligiendo tu medio de pago y 
 $template->set("keywords", "");
 $template->set("favicon", LOGO);
 $template->themeInit();
-
-$cod_pedido = $funciones->antihack_mysqli(isset($_GET["cod_pedido"]) ? $_GET["cod_pedido"] : '');
-$tipo_pedido = $funciones->antihack_mysqli(isset($_GET["tipo_pedido"]) ? $_GET["tipo_pedido"] : '');
+////////////////////////////////////////////////
 
 $carrito = new Clases\Carrito();
 $pedidos = new Clases\Pedidos();
@@ -19,23 +17,42 @@ $usuarios = new Clases\Usuarios();
 $pagos = new Clases\Pagos();
 $hub = new Clases\Hubspot();
 
+$usuarioSesion = $usuarios->view_sesion();
+if (empty($usuarioSesion)) {
+    $funciones->headerMove(URL);
+}
+
+////////////////////////////////////////////////
+$cod_pedido = $funciones->antihack_mysqli(isset($_GET["cod_pedido"]) ? $_GET["cod_pedido"] : '');
+$tipo_pedido = $funciones->antihack_mysqli(isset($_GET["tipo_pedido"]) ? $_GET["tipo_pedido"] : '');
+$factura = $funciones->antihack_mysqli(isset($_GET["fact"]) ? $_GET["fact"] : '');
+
 $pedidos->set("cod", $cod_pedido);
 $pedido = $pedidos->view();
 
 $pagos->set("cod", $tipo_pedido);
 $pago = $pagos->view();
 
-$usuarioSesion = $usuarios->view_sesion();
+$usuarios->set("cod", $usuarioSesion['cod']);
+$userData = $usuarios->view();
+
+$factura_ = '';
+
+if (!empty($pago['leyenda'])) {
+    $factura_ .= "<b>DESCRIPCIÓN DEL PAGO: </b>" . $pago['leyenda'] . "<br/>";
+}
+
+if (!empty($factura)) {
+    $factura_ .= "<b>SOLICITÓ FACTURA A CON EL CUIT: </b>" . $userData["doc"] . "<br/>";
+}
 
 $carro = $carrito->return();
 $precio = $carrito->precio_total();
 
 $timezone = -3;
 $fecha = gmdate("Y-m-j H:i:s", time() + 3600 * ($timezone + date("I")));
-?>
-<?php
 
-//Hubspot
+////////////////////////////////////////////////Hubspot
 $descripcion = '';
 foreach ($carro as $c) {
     if ($c['precio'] != 0) {
@@ -66,10 +83,10 @@ if ($response != false) {
     $hub->set("email", $_SESSION['usuarios']['email']);
     $hub->set("direccion", $_SESSION['usuarios']['direccion']);
     $hub->set("telefono", $_SESSION['usuarios']['telefono']);
-    $hub->set("celular", $_SESSION['usuarios']['celular']);
+    $hub->set("celular", !empty($_SESSION['usuarios']['celular']) ? $_SESSION['usuarios']['celular'] : '');
     $hub->set("localidad", $_SESSION['usuarios']['localidad']);
     $hub->set("provincia", $_SESSION['usuarios']['provincia']);
-    $hub->set("postal", $_SESSION['usuarios']['postal']);
+    $hub->set("postal", !empty($_SESSION['usuarios']['postal']) ? $_SESSION['usuarios']['postal'] : '');
     $hub->addContact();
 
     $response = $hub->getContactByEmail();
@@ -86,20 +103,21 @@ $hubcod = '';
 if ($response != false) {
     $hubcod = $response['dealId'];
 }
-//
-if (is_array($pedido)) {
-    $pedidos->set("cod", $cod_pedido);
-    $pedidos->delete();
+////////////////////////////////////////////////
 
+
+if (is_array($pedido['data'])) {
     $pedidos->set("cod", $cod_pedido);
+    $pedidoViejo = $pedidos->view();
+
     $pedidos->set("total", $precio);
     $pedidos->set("estado", 0);
     $pedidos->set("tipo", $pago["titulo"]);
     $pedidos->set("usuario", $usuarioSesion["cod"]);
-    $pedidos->set("detalle", "");
+    $pedidos->set("detalle", $factura_);
     $pedidos->set("fecha", $fecha);
     $pedidos->set("hub_cod", $hubcod);
-    $pedidos->add();
+    $pedidos->edit();
 
     foreach ($carro as $carroItem) {
         $detalle->set("cod", $cod_pedido);
@@ -108,13 +126,18 @@ if (is_array($pedido)) {
         $detalle->set("precio", $carroItem["precio"]);
         $detalle->add();
     }
+    if (!empty($pedidoViejo['detail'])) {
+        foreach ($pedidoViejo['detail'] as $detail) {
+            $detalle->deleteById($detail['id']);
+        }
+    }
 } else {
     $pedidos->set("cod", $cod_pedido);
     $pedidos->set("total", $precio);
     $pedidos->set("estado", 0);
     $pedidos->set("tipo", $pago["titulo"]);
     $pedidos->set("usuario", $usuarioSesion["cod"]);
-    $pedidos->set("detalle", "");
+    $pedidos->set("detalle", $factura_);
     $pedidos->set("fecha", $fecha);
     $pedidos->set("hub_cod", $hubcod);
     $pedidos->add();
@@ -133,11 +156,15 @@ switch ($pago["tipo"]) {
         $pedidos->set("cod", $cod_pedido);
         $pedidos->set("estado", $pago["defecto"]);
         $pedidos->changeState();
+
+        ////////////////////////////////////////////////
         $pedido_info = $pedidos->view();
         $stage = $hub->getStage($pago["defecto"]);
         $hub->set("deal", $pedido_info['data']['hub_cod']);
         $hub->set("estado", $stage);
         $hub->updateStage();
+        ////////////////////////////////////////////////
+
         $funciones->headerMove(URL . "/compra-finalizada");
         break;
     case 1:

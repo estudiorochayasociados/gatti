@@ -22,7 +22,7 @@ if (isset($_POST["agregar"])) {
     <hr/>
     <form method="post" class="row">
         <label class="col-md-12">Método de pago:<br/>
-            <input type="text" name="titulo" value="<?= $pagos_['titulo'] ?>" />
+            <input type="text" name="titulo" value="<?= $pagos_['titulo'] ?>" required/>
         </label>
         <label class="col-md-12">Descripción del método de pago:<br/>
             <textarea name="leyenda"><?= $pagos_['leyenda'] ?></textarea>

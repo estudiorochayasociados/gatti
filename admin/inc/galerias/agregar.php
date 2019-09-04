@@ -59,7 +59,7 @@ if (isset($_POST["agregar"])) {
     <hr/>
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">Título:<br/>
-            <input type="text" name="titulo">
+            <input type="text" name="titulo" required>
         </label>
         <label class="col-md-4">Categoría:<br/>
             <select name="categoria">

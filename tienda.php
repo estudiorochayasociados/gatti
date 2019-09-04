@@ -39,8 +39,8 @@ if ($_GET) {
     if (@count($_GET) > 1) {
         if (isset($_GET["pagina"])) {
             $anidador = "&";
-        }else{
-            $anidador="&";
+        } else {
+            $anidador = "&";
         }
     } else {
         if (isset($_GET["pagina"])) {
@@ -71,7 +71,10 @@ if (!empty($categoria_get)) {
         array_push($filter, "categoria='$cod'");
     }
 }
-
+if (!empty($subcategoria_get)) {
+    $subcategoria->set("cod", $subcategoria_get);
+    $subcategoriaDataFiltro = $subcategoria->view();
+}
 if ($titulo != '') {
     $titulo_espacios = strpos($titulo, " ");
     if ($titulo_espacios) {
@@ -107,6 +110,25 @@ $template->themeInit();
         <div class="col-md-8 col-xs-12" style="margin-top:10px">
             <div class="hidden-lg hidden-md">
                 <div class="titular">
+                    <h3>BÚSQUEDA</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="get">
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <input class="form-control" type="text" name="buscar" value="<?= !empty($titulo) ? $titulo : '' ?>" style="height: 30px">
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-sm" style="width: 100%">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="titular">
                     <h3>FILTROS DE BÚSQUEDA</h3>
                 </div>
                 <form method="get">
@@ -121,10 +143,22 @@ $template->themeInit();
                         <?php
                     }
                     ?>
+                    <?php
+                    if (!empty($subcategoria_get)) {
+                        ?>
+                        <a href="<?= URL ?>/tienda">
+                            <span class="alert btn-block alert-warning">
+                                <i class="fa fa-close"></i> <?= $subcategoriaDataFiltro['titulo']; ?>
+                            </span>
+                        </a>
+                        <?php
+                    }
+                    ?>
                     Filtrá por la categoría que te interesa.
 
-                    <select class="form-control" name="categoria" onchange="this.form.submit()">
-                        <?php if (!empty($categoria_get)) {
+                    <select class="form-control" name="categoria" id="categoria-mobile">
+                        <?php
+                        if (!empty($categoria_get)) {
                             ?>
                             <option value="<?= $categoria_get ?>"><?= $categoria_data_filtro['titulo']; ?></option>
                             <?php
@@ -141,6 +175,41 @@ $template->themeInit();
                                 ?>
                                 <option value="<?= $cat['cod']; ?>"><?= $cat["titulo"] ?></option>
                                 <?php
+                            }
+                        }
+                        ?>
+                    </select>
+
+                    <select class="form-control mt-10" name="subcategoria" id="subcategoria-mobile">
+                        <?php
+                        if (!empty($subcategoria_get)) {
+                            ?>
+                            <option value="<?= $subcategoria_get ?>"><?= $subcategoriaDataFiltro['titulo']; ?></option>
+                            <?php
+                        } else {
+                            ?>
+                            <option>-- Seleccionar Subcategoría --</option>
+                            <?php
+                        }
+                        ?>
+                        <option disabled>──────────</option>
+                        <?php
+                        if (!empty($categorias_data)) {
+                            foreach ($categorias_data as $cat) {
+                                $subs_data = $subcategoria->listIfHave('productos', $cat['cod']);
+                                if (!empty($subs_data)) {
+                                    ?>
+                                    <optgroup label="<?= $cat['titulo'] ?>">
+                                        <?php
+                                        foreach ($subs_data as $sub) {
+                                            ?>
+                                            <option value="<?= $sub['cod'] ?>"><?= $sub['titulo']; ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <?php
+                                }
                             }
                         }
                         ?>
@@ -201,11 +270,21 @@ $template->themeInit();
                                     ?>
                                     <span class="precioProducto"><?= "<b>Precio: </b>$" . ($prod['data']['precio']) ?>
                                     </span>
-                                    <br/>
                                     <?php
                                     $desc_ = $prod['data']['precio'];
                                 }
                                 ?>
+
+                                <?php
+                                if (!empty($prod['data']['variable10'])) {
+                                    ?>
+                                        <label class="alert-success fs-12" style="margin-bottom: 20px;border: 1px solid transparent;border-radius: 4px;background-color: white">
+                                            <i class="fa fa-truck"></i> GRATIS
+                                        </label>
+                                    <?php
+                                }
+                                ?>
+                                <br>
                                 <span class="precioProducto" style="color:red">
                                     <?= "<i>Precio de contado: $" . ($desc_ - ($desc_ * 10 / 100)) . "</i>" ?>
                                 </span>
@@ -276,6 +355,25 @@ $template->themeInit();
         <div class="col-md-4 col-xs-12">
             <div class="hidden-sm hidden-xs">
                 <div class="titular">
+                    <h3>BÚSQUEDA</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="get">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <input class="form-control" type="text" name="buscar" value="<?= !empty($titulo) ? $titulo : '' ?>" style="height: 30px">
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-sm" style="width: 100%">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="titular">
                     <h3>FILTROS DE BÚSQUEDA</h3>
                 </div>
                 <?php
@@ -307,3 +405,11 @@ $template->themeInit();
 <?php
 $template->themeEnd();
 ?>
+<script>
+    $("#categoria-mobile").on("change", () => {
+        document.location.href = "<?=URL?>/tienda?categoria=" + $("#categoria-mobile").val();
+    });
+    $("#subcategoria-mobile").on("change", () => {
+        document.location.href = "<?=URL?>/tienda?subcategoria=" + $("#subcategoria-mobile").val();
+    });
+</script>

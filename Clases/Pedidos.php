@@ -28,6 +28,7 @@ class Pedidos
         $this->con = new Conexion();
         $this->detallePedido = new DetallePedidos();
         $this->user = new Usuarios();
+        $this->payment = new Pagos();
     }
 
     public function set($atributo, $valor)
@@ -53,6 +54,25 @@ class Pedidos
                           '{$this->hub_cod}')";
         $query = $this->con->sql($sql);
         return true;
+    }
+
+    public function edit()
+    {
+        $sql = "UPDATE `pedidos` 
+                SET  total =  {$this->total}  ,
+                     estado = {$this->estado},           
+                     tipo = {$this->tipo},           
+                     usuario = {$this->usuario},           
+                     detalle = {$this->detalle},           
+                     fecha = {$this->fecha},           
+                     hub_cod = {$this->hub_cod},           
+                  WHERE `cod`= {$this->cod} ";
+        $query = $this->con->sql($sql);
+        if (!empty($query)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function changeState(){
@@ -84,7 +104,11 @@ class Pedidos
         $details = $this->detallePedido->list($this->cod);
         $this->user->set("cod",$row['usuario']);
         $user = $this->user->view();
-        $array = array("data"=>$row, "user" => $user, "detail" => $details);
+
+        $payment = $this->payment->list(array("titulo = '".$row['tipo']."'"))[0];
+
+        $array = array("data"=>$row, "user" => $user, "detail" => $details, "payment" => $payment);
+
         return $array;
     }
 

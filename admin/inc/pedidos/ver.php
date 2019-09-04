@@ -20,24 +20,21 @@ if ($estado != '' && $cod != '') {
 
     $pedido = $pedidos->view();
     $stage = $hub->getStage($estado);
-    $hub->set("deal",$pedido['data']['hub_cod']);
-    $hub->set("estado",$stage);
+    $hub->set("deal", $pedido['data']['hub_cod']);
+    $hub->set("estado", $stage);
     $hub->updateStage();
     $funciones->headerMove(URL . '/?op=pedidos&accion=ver');
 }
 
-if($usuario != '') {
-    $filter = array("usuario ='". $usuario."'");
+if ($usuario != '') {
+    $filter = array("usuario ='" . $usuario . "'");
 }
 
-if ($estadoFiltro != '') {
-    $filter = array("estado ='". $estadoFiltro."'");
+if ($estadoFiltro != '' && $estadoFiltro != 5) {
+    $filter = array("estado ='" . $estadoFiltro . "'");
 }
 
-
-
-
-$pedidosData=$pedidos->listWithOps($filter,'','');
+$pedidosData = $pedidos->listWithOps($filter, '', '');
 ?>
 <div class="mt-20">
     <div class="col-lg-12 col-md-12">
@@ -48,6 +45,7 @@ $pedidosData=$pedidos->listWithOps($filter,'','');
                     <input type="hidden" name="op" value="pedidos"/>
                     <input type="hidden" name="accion" value="ver"/>
                     <select name="estadoFiltro" onchange="this.form.submit()">
+                        <option></option>
                         <option value="5" <?php if ($estadoFiltro == 5) {
                             echo "selected";
                         } ?>>Todos
@@ -139,7 +137,7 @@ $pedidosData=$pedidos->listWithOps($filter,'','');
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($value['detail'] as  $value2): ?>
+                                    <?php foreach ($value['detail'] as $value2): ?>
                                         <?php if ($value2['cod'] == $value['data']["cod"]): ?>
                                             <tr>
                                                 <td><?= $value2["producto"] ?></td>
@@ -197,7 +195,7 @@ $pedidosData=$pedidos->listWithOps($filter,'','');
                         <hr/>
                         <div class="alert alert-info" style="border-radius: 10px; padding: 10px;">
                             <?php
-                            if (empty($value['data']['detalle'])){
+                            if (empty($value['data']['detalle'])) {
                                 echo 'No hay observaciones del pedido';
                             }
                             ?>

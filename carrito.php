@@ -22,6 +22,16 @@ $carroPago = $carrito->checkPago();
 if (count($carro) == 0) {
     $funciones->headerMove(URL . "/tienda");
 }
+$envioEspecial = false;
+//foreach ($carro as $carro_) {
+//    $productos->set("id", $carro_['id']);
+//    $pro = $productos->view();
+//    if (!empty($pro)) {
+//        if ($pro['cod'] == 'f3aacdff42') {
+//            $envioEspecial = true;
+//        }
+//    }
+//}
 ?>
     <div class="headerTitular">
         <div class="container">
@@ -39,7 +49,7 @@ if (count($carro) == 0) {
         $metodos_de_envios = $envios->list(array("peso BETWEEN " . $carrito->peso_final() . " AND " . $tope . " OR peso = 0"));
         $precioFinal = $carrito->precio_total();
         if ($carroEnvio == '') {
-            if (($precioFinal > 500 && $precioFinal < 1500) || ($precioFinal > 3500 && $precioFinal < 7000)) {
+            if (($precioFinal > 3500 && $precioFinal < 7000) || $pesoFinal == 0) {
                 $carrito->set("id", "Envio-Seleccion");
                 $carrito->set("cantidad", 1);
                 $carrito->set("titulo", "ENVÍO GRATUITO");
@@ -73,12 +83,12 @@ if (count($carro) == 0) {
                                 <option value="" selected disabled>Elegir método de envío</option>
                                 <?php
                                 foreach ($metodos_de_envios as $key => $metodos_de_envio_) {
-                                    if ($metodos_de_envio_["precio"] == 0) {
-                                        $metodos_de_envio_precio = "¡Gratis!";
+                                    if (empty($metodos_de_envio_["precio"])) {
+                                        $metodos_de_envio_precio = "";
                                     } else {
-                                        $metodos_de_envio_precio = "$" . $metodos_de_envio_["precio"];
+                                        $metodos_de_envio_precio = "-> $" . $metodos_de_envio_["precio"];
                                     }
-                                    echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . " -> " . $metodos_de_envio_precio . "</option>";
+                                    echo "<option value='" . $metodos_de_envio_["cod"] . "'>" . $metodos_de_envio_["titulo"] . $metodos_de_envio_precio . "</option>";
                                 }
                                 ?>
                             </select>
@@ -212,7 +222,7 @@ if (count($carro) == 0) {
                         <span class="amount hidden-md hidden-lg <?= $none ?>">Cantidad: <?= $carroItem["cantidad"]; ?>
                     </td>
                     <td class="hidden-xs hidden-sm">
-                        <span class="amount <?= $none ?>"><?= $carroItem["cantidad"]; ?>
+                        <span class="amount <?= $none ?>"><?= $carroItem["cantidad"]; ?></span>
                     </td>
                     <td>
                         <span class="amount <?= $none ?>"><?= "$" . $carroItem["precio"]; ?></span>
@@ -222,7 +232,7 @@ if (count($carro) == 0) {
                         if ($carroItem["precio"] != 0) {
                             echo "$" . ($carroItem["precio"] * $carroItem["cantidad"]);
                         } else {
-                            echo "¡Gratis!";
+                            echo "";
                         }
                         ?>
                     </td>
@@ -241,7 +251,11 @@ if (count($carro) == 0) {
         <div class="col-md-12 hidden-xs hidden-sm hidden-lg hidden-md">
             <form method="post" class="row">
                 <div class="col-md-6 text-right">
-                    <p style="margin-top: 7px"><b>¿Tenés algún código de descuento para tus compras?</b></p>
+                    <p style="margin-top: 7px">
+                        <b>
+                            ¿Tenés algún código de descuento para tus compras?
+                        </b>
+                    </p>
                 </div>
                 <div class="col-md-4">
                     <input type="text" name="codigoDescuento" class="form-control" placeholder="CÓDIGO DE DESCUENTO">

@@ -21,6 +21,7 @@ class Usuarios
     public $telefono;
     public $celular;
     public $invitado;
+    public $descuento;
     public $fecha;
     private $con;
 
@@ -58,7 +59,7 @@ class Usuarios
     {
         $validar = $this->validate();
         $usuario = $this->view();
-        if($usuario["password"] != $this->password){
+        if ($usuario["password"] != $this->password) {
             $this->password = hash('sha256', $this->password . SALT);
         }
         $sql = "UPDATE `usuarios` SET `nombre` = '{$this->nombre}', `apellido` = '{$this->apellido}', `doc` = '{$this->doc}', `email` = '{$this->email}', `password` = '{$this->password}', `direccion` = '{$this->direccion}', `postal` = '{$this->postal}', `localidad` = '{$this->localidad}', `provincia` = '{$this->provincia}', `pais` = '{$this->pais}', `telefono` = '{$this->telefono}', `celular` = '{$this->celular}', `invitado` = '{$this->invitado}', `fecha` = '{$this->fecha}'WHERE `cod`='{$this->cod}'";
@@ -82,7 +83,7 @@ class Usuarios
     {
         $validar = $this->validate();
         $usuario = $this->view();
-        if($atributo == 'password'){
+        if ($atributo == 'password') {
             $valor = hash('sha256', $valor . SALT);
         }
         $sql = "UPDATE `usuarios` SET `$atributo` = '{$valor}' WHERE `cod`='{$this->cod}'";
@@ -117,7 +118,7 @@ class Usuarios
     public function login()
     {
         $usuario = $this->view();
-        if($usuario["password"] != $this->password){
+        if ($usuario["password"] != $this->password) {
             $this->password = hash('sha256', $this->password . SALT);
         }
         $sql = "SELECT * FROM `usuarios` WHERE `email` = '{$this->email}' AND `password`= '{$this->password}'";
@@ -161,7 +162,7 @@ class Usuarios
             $sql = "SELECT * FROM `usuarios` WHERE email = '{$this->email}'";
             $usuario = $this->con->sqlReturn($sql);
             $row = mysqli_fetch_assoc($usuario);
-        }else{
+        } else {
             $row = 'string';
         }
 
@@ -188,6 +189,7 @@ class Usuarios
             return $array;
         }
     }
+
     function listV($filter)
     {
         $array = array();
@@ -209,15 +211,133 @@ class Usuarios
         }
     }
 
-    function validarVendedor(){
+    function validarVendedor()
+    {
         $sql = "SELECT vendedor FROM `usuarios`WHERE cod = '{$this->cod}' AND vendedor='1' ORDER BY id DESC";
         $usuario = $this->con->sqlReturn($sql);
         $row = mysqli_fetch_assoc($usuario);
-        if (!empty($row)){
+        if (!empty($row)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
+
+    //28/08/2019
+    public function validateV2()
+    {
+        if (!empty($this->email)) {
+            $sql = "SELECT * FROM `usuarios` WHERE email = '{$this->email}'";
+            $usuario = $this->con->sqlReturn($sql);
+            $row = mysqli_fetch_assoc($usuario);
+            if (!empty($row)) {
+                return ["status" => true, "data" => $row];
+            } else {
+                return ["status" => false];
+            }
+        } else {
+            return ["status" => false];
+        }
+    }
+
+    public function transformQuery()
+    {
+        $atributes = [
+            "cod" => $this->cod,
+            "nombre" => $this->nombre,
+            "apellido" => $this->apellido,
+            "doc" => $this->doc,
+            "email" => $this->email,
+            "password" => $this->password,
+            "direccion" => $this->direccion,
+            "postal" => $this->postal,
+            "localidad" => $this->localidad,
+            "provincia" => $this->provincia,
+            "pais" => $this->pais,
+            "telefono" => $this->telefono,
+            "celular" => $this->celular,
+            "invitado" => $this->invitado,
+            "descuento" => $this->descuento,
+            "fecha" => $this->fecha
+        ];
+
+        foreach ($atributes as $name => $value) {
+            if (strlen($value)) {
+                $valor = "'" . $value . "'";
+            } else {
+                $valor = "NULL";
+            }
+            $this->$name = $valor;
+        }
+    }
+
+    public function firstGuestSession()
+    {
+        $_SESSION["usuarios"] = [
+            'cod' => $this->cod,
+            'nombre' => $this->nombre,
+            'apellido' => $this->apellido,
+            'doc' => $this->doc,
+            'email' => $this->email,
+            'direccion' => $this->direccion,
+            'localidad' => $this->localidad,
+            'provincia' => $this->provincia,
+            'telefono' => $this->telefono,
+            'celular' => $this->celular,
+            'invitado' => $this->invitado,
+            'fecha' => $this->fecha
+        ];
+
+        $this->transformQuery();
+        $sql = "INSERT INTO `usuarios` (`cod`, `nombre`, `apellido`, `doc`, `email`, `direccion`, `postal`, `localidad`, `provincia`, `pais`, `telefono`, `celular`,`invitado`,`descuento`, `fecha`) 
+                VALUES ({$this->cod},
+                        {$this->nombre},
+                        {$this->apellido},
+                        {$this->doc},
+                        {$this->email},
+                        {$this->direccion},
+                        {$this->postal},
+                        {$this->localidad},
+                        {$this->provincia},
+                        {$this->pais},
+                        {$this->telefono},
+                        {$this->celular},
+                        1,
+                        0,
+                        {$this->fecha}                
+                        )";
+        $this->con->sql($sql);
+    }
+
+    public function guestSession()
+    {
+        $_SESSION["usuarios"] = [
+            'cod' => $this->cod,
+            'nombre' => $this->nombre,
+            'apellido' => $this->apellido,
+            'doc' => $this->doc,
+            'email' => $this->email,
+            'direccion' => $this->direccion,
+            'localidad' => $this->localidad,
+            'provincia' => $this->provincia,
+            'telefono' => $this->telefono,
+            'celular' => $this->celular,
+            'invitado' => $this->invitado,
+            'fecha' => $this->fecha
+        ];
+
+        $this->transformQuery();
+        $sql = "UPDATE `usuarios` 
+                SET `nombre` = {$this->nombre},
+                    `apellido` = {$this->apellido},
+                    `doc` = {$this->doc},
+                    `email` = {$this->email},
+                    `direccion` = {$this->direccion},
+                    `localidad` = {$this->localidad},
+                    `provincia` = {$this->provincia},
+                    `telefono` = {$this->telefono}
+                WHERE `cod`={$this->cod}";
+        $this->con->sql($sql);
+    }
 }

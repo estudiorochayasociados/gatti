@@ -11,7 +11,7 @@ if (isset($_POST["agregar"])) {
     $envios->set("precio", $funciones->antihack_mysqli(isset($_POST["precio"]) ? $_POST["precio"] : ''));
     $envios->set("peso", $funciones->antihack_mysqli(isset($_POST["peso"]) ? $_POST["peso"] : ''));
     $envios->edit();
-    $funciones->headerMove(URL . "/index.php?op=envios&accion=ver");
+   $funciones->headerMove(URL . "/index.php?op=envios&accion=ver");
 }
 ?>
 
@@ -23,7 +23,7 @@ if (isset($_POST["agregar"])) {
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">
             Título:<br/>
-            <input type="text" value="<?= $envios_["titulo"] ?>" name="titulo">
+            <input type="text" value="<?= $envios_["titulo"] ?>" name="titulo" required>
         </label>
         <label class="col-md-4">
             Peso:<br/>

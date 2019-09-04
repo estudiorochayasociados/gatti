@@ -43,7 +43,8 @@ $url_limpia = str_replace("?error", "", $url_limpia);
 <div class="container cuerpoContenedor">
     <div class="row">
         <div class="col-md-12 col-xs-12" style="margin-top:10px">
-            <h1 id="title" class="tituloProducto"><?= ucfirst($producto_data['data']['titulo']); ?>
+            <h1 id="title" class="tituloProducto">
+                <?= ucfirst($producto_data['data']['titulo']); ?>
             </h1>
             <div class="col-md-5">
                 <div class='zoom' id='ex3'>
@@ -61,8 +62,7 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                                     <a href="<?= URL . '/' . $img['ruta']; ?>" data-lightbox="roadtrip">
 
                                         <div class="col-md-3">
-                                            <div class=""
-                                                 style="height: 100px; background: url(<?= URL . '/' . $img['ruta'] ?>) no-repeat center center/contain;">
+                                            <div style="height: 100px; background: url(<?= URL . '/' . $img['ruta'] ?>) no-repeat center center/contain;">
                                             </div>
                                         </div>
                                     </a>
@@ -103,7 +103,9 @@ $url_limpia = str_replace("?error", "", $url_limpia);
             </div>
             <div class="col-md-7">
                 <p><b>Categoría: </b>
-                    <a href="<?= URL . '/tienda?categoria=' . $producto_data['data']['categoria'] ?>"><?= $producto_data['categorias']['titulo'] ?></a>
+                    <a href="<?= URL . '/tienda?categoria=' . $producto_data['data']['categoria'] ?>">
+                        <?= $producto_data['categorias']['titulo'] ?>
+                    </a>
                 </p>
                 <br>
                 <?php
@@ -176,6 +178,18 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                                        oninput="this.setCustomValidity('')"
                                        onkeydown="return (event.keyCode!=13);"/>
                             </label>
+                            <?php
+                            if (!empty($producto_data['data']['variable10'])) {
+                                ?>
+                                <div class="col-md-6">
+                                    <br>
+                                    <label class="alert-success fs-21" style="margin-bottom: 20px;border: 1px solid transparent;border-radius: 4px;background-color: white">
+                                        <i class="fa fa-truck"></i> POSEE ENVÍO GRATUITO
+                                    </label>
+                                </div>
+                                <?php
+                            }
+                            ?>
                             <div class="precioFinal"></div>
                             <div class="clearfix"></div>
                             <br/>
@@ -212,7 +226,7 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                     <img src="<?= URL ?>/assets/img/mp.jpg" width="90%"/><br/>
                     <!-- PROMOS -->
                     <hr/>
-                    <a data-toggle="modal" data-target="#promo">Promociones con Mercadopago</a>
+                    <!--                    <a data-toggle="modal" data-target="#promo">Promociones con Mercadopago</a>-->
 
                     <div class="modal fade" id="promo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -272,11 +286,6 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                 <li role="presentation" class="active">
                     <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Descripción del Producto</a>
                 </li>
-                <!--
-                <li role="presentation">
-                    <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Comentarios del Producto</a>
-                </li>
-                -->
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="home">
@@ -310,13 +319,6 @@ $url_limpia = str_replace("?error", "", $url_limpia);
                     </p>
                     <br/>
                 </div>
-                <!--
-                <div role="tabpanel" class="tab-pane" id="profile">
-                    <h3>Escribí comentarios o dudas</h3>
-                    <hr/>
-                    <?php // include("inc/comentariofb.inc.php"); ?>
-                </div>
-                -->
             </div>
         </div>
     </div>

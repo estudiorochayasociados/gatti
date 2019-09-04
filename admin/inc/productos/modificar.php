@@ -11,14 +11,6 @@ $borrarImg = $funciones->antihack_mysqli(isset($_GET["borrarImg"]) ? $_GET["borr
 $productos->set("cod", $cod);
 $producto = $productos->view();
 
-$img_ = $imagenes->list(array("cod = '" . $producto['cod'] . "'"));
-
-$img_meli = '';
-
-foreach ($img_ as $img) {
-    $img_meli .= '{"source":"' . URLSITE . "/" . $img["ruta"] . '"},';
-}
-
 $variable_1_explode = explode("||", $producto["variable1"]);
 $variable_2_explode = explode("||", $producto["variable2"]);
 $variable_3_explode = explode("||", $producto["variable3"]);
@@ -93,7 +85,6 @@ if (isset($_POST["agregar"])) {
 
             $imagenes->set("cod", $cod);
             $imagenes->set("ruta", str_replace("../", "", $destinoRecortado));
-            $img_meli .= '{"source":"' . URLSITE . str_replace("../", "/", $destinoRecortado) . '"},';
             $imagenes->add();
         }
 
@@ -102,6 +93,11 @@ if (isset($_POST["agregar"])) {
 
     $error = '';
     if (isset($_POST['meli'])) {
+        $img_meli = '';
+        $imgMeliPreview = $imagenes->list(array("cod = '$cod'"));
+        foreach ($imgMeliPreview as $imgMeli) {
+            $img_meli .= '{"source":"' . URLSITE . "/" . $imgMeli["ruta"] . '"},';
+        }
         if (isset($_SESSION['access_token'])) {
             if ($producto["meli"] == '') {
                 $productos->set("img", $img_meli);
@@ -116,7 +112,6 @@ if (isset($_POST["agregar"])) {
                     $funciones->headerMove(URL . "/index.php?op=productos");
                 }
             } else {
-                $img_meli = $imagenes->list_meli(array("cod = '$cod'"));
                 $productos->set("meli", $producto["meli"]);
                 $productos->set("img", $img_meli);
                 $_meli = $productos->edit_meli();
@@ -161,7 +156,7 @@ if (isset($_POST["agregar"])) {
     ?>
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">Título:<br/>
-            <input type="text" name="titulo" value="<?= $producto["titulo"] ?>">
+            <input type="text" name="titulo" value="<?= $producto["titulo"] ?>" required>
         </label>
         <label class="col-md-4">Categoría:<br/>
             <select name="categoria">
@@ -209,7 +204,7 @@ if (isset($_POST["agregar"])) {
             </select>
         </label>
         <label class="col-md-3">Stock:<br/>
-            <input type="number" name="stock" id="stock" min="0" value="<?= $producto["stock"] ?>">
+            <input type="number" name="stock" id="stock" min="0" value="<?= $producto["stock"] ?>" required>
         </label>
         <div class="clearfix"></div>
         <label class="col-md-3">Código:<br/>
@@ -219,7 +214,7 @@ if (isset($_POST["agregar"])) {
             <input type="text" name="precio" value="<?= $producto["precio"] ?>">
         </label>
         <label class="col-md-3">Peso:<br/>
-            <input type="text" name="peso" value="<?= $producto["variable4"] ?>">
+            <input type="text" name="peso" value="<?= $producto["variable4"] ?>" required>
         </label>
         <label class="col-md-4">Precio descuento:<br/>
             <input type="text" name="precio_descuento" value="<?= $producto["precio_descuento"] ?>">

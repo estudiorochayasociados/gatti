@@ -11,7 +11,7 @@ $cate          = $categorias->list("");
 if (isset($_POST["agregar"])) {
     $count = 0;
     $cod   = substr(md5(uniqid(rand())), 0, 10);
-    $subcategorias->set("cod", $cod);
+    $subcategorias->set("cod", $dataSubcategoria['cod']);
     $subcategorias->set("titulo", $funciones->antihack_mysqli(isset($_POST["titulo"]) ? $_POST["titulo"] : ''));
     $subcategorias->set("categoria", $funciones->antihack_mysqli(isset($_POST["categoria"]) ? $_POST["categoria"] : ''));
     $subcategorias->edit();
@@ -27,11 +27,11 @@ if (isset($_POST["agregar"])) {
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">
             Título:<br/>
-            <input type="text" name="titulo" value="<?= $dataSubcategoria["titulo"] ?>">
+            <input type="text" name="titulo" value="<?= $dataSubcategoria["titulo"] ?>" required>
         </label>
         <label class="col-md-4">
             Categoria:<br/>
-            <select name="categoria">
+            <select name="categoria" required>
                 <option value="<?= $dataCategoria["cod"] ?>" selected>
                     <?= $dataCategoria["titulo"]; ?>
                 </option>

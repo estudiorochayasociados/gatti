@@ -18,7 +18,7 @@
 <div class="clearfix"></div>
 <div style="width:100%;background:#F8E002;">
     <center class="container">
-        <a href="https://perfil.mercadolibre.com.ar/gattisa" target="_blank">
+        <a href="https://www.mercadolibre.com.ar/perfil/GATTI+VENTILACI%25C3%2593N" target="_blank">
             <img src="<?= URL ?>/assets/img/banner-mercadolibre.jpg" alt="mercadolibre" style="width: 60%">
         </a>
     </center>
@@ -31,7 +31,9 @@
             <?php
             include 'assets/inc/facebook.inc.php';
             ?>
-            <h3><i class="fa fa-caret-right"></i> menu</h3>
+            <h3>
+                <i class="fa fa-caret-right"></i> menu
+            </h3>
             <ul class="footerMenu">
                 <li>
                     <a href="<?= URL ?>/index" title="Index">Inicio</a>
@@ -82,6 +84,10 @@
             Whatsapp: +54 9 (341) 6548296<br/>
             Tel: (0341) 4354452<br/>
             rosario@gattisa.com.ar<br/>
+            <br/>
+            <b>ASESORAMIENTO</b><br/>
+            Whatsapp: +54 9 (3564) 622146<br/>
+            asesoramiento@gattisa.com.ar<br/>
             <div class="clearfix"></div>
             <a target="_blank"
                title="facebook"
@@ -107,7 +113,7 @@
         </div>
     </div>
 </footer>
-<div style="background:#111;padding:4px 0px;color:#999;font-size:12px">
+<div style="background:#111;padding:4px 0px;color:#999;font-size:12px;height: 80px">
     <div class="container">
         2019 · Realizado por Estudio Rocha & Asociados
     </div>

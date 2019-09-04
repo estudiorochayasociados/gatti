@@ -75,11 +75,11 @@ if (isset($_POST["agregar"])) {
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">
             Nombre:<br/>
-            <input type="text" value="<?=$banner['nombre']?>" name="nombre">
+            <input type="text" value="<?=$banner['nombre']?>" name="nombre" required>
         </label>
         <label class="col-md-4">
             Categoría:<br/>
-            <select name="categoria">
+            <select name="categoria" required>
                <?php
                 foreach ($data as $categoria) {
                     if($banner["categoria"] == $categoria["cod"]) {

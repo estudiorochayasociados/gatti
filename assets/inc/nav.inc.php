@@ -22,6 +22,7 @@ if (isset($_GET['logout'])) {
     <label style="color:#fff">
         ¿De dónde nos estás visitando?
         <select name="provinciaChat" id="provinciaChat" onchange="sector($('#provinciaChat').val())" style="color:#333">
+            <option disabled selected></option>
             <option value="1">Bolivia</option>
             <option value="1">Chile</option>
             <option value="1">Paraguay</option>
@@ -120,23 +121,49 @@ if (isset($_GET['logout'])) {
     <div class="row" style="padding:5px 0px;">
         <div class="col-md-3 col-xs-12 col-sm-12" style="z-index: 0;">
             <center class="hidden-md hidden-lg">
-                <a href="index.php" title="inicio">
+                <a href="<?= URL ?>" title="inicio">
                     <img alt="LOGO GATTI SA" src="<?= LOGO ?>" class="logo"/>
                 </a>
             </center>
             <div class="hidden-xs hidden-sm">
-                <a href="index.php" title="inicio">
+                <a href="<?= URL ?>" title="inicio">
                     <img alt="LOGO GATTI SA" src="<?= LOGO ?>" class="logo"/>
                 </a>
             </div>
         </div>
-        <div class="col-md-4 pull-right hidden-xs hidden-sm">
-            <a href="https://wa.me/5493564589747" title="whatsapp de gatti" style="margin: 0" target="_blank">
-                <div class="pull-right text-right">
-                    <h2 style="font-size: 17px">VENTAS CASA CENTRAL<br/><span style="font-size:31px"><?= TELEFONO ?></span></h2>
-                </div>
-                <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:10px;width: 70px"/>
-            </a>
+        <div class="col-md-9 pull-right mt-10 hidden-xs hidden-sm">
+            <div>
+                <a href="https://wa.me/5493564622146" title="whatsapp de gatti" style="margin: 0" target="_blank">
+                    <div class="pull-right text-right " style="margin-right:15px;">
+                        <h2 style="font-size: 11px;color:black">ASESORAMIENTO<br/><span style="font-size:21px">3564 622146</span></h2>
+                    </div>
+                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:10px;width: 52px"/>
+                </a>
+            </div>
+            <div>
+                <a href="https://wa.me/549<?= TELEFONO ?>" title="whatsapp de gatti" style="margin: 0" target="_blank">
+                    <div class="pull-right text-right" style="margin-right:15px;">
+                        <h2 style="font-size: 11px">VENTAS CASA CENTRAL<br/><span style="font-size:21px"><?= TELEFONO ?></span></h2>
+                    </div>
+                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:10px;width: 52px"/>
+                </a>
+            </div>
+            <div>
+                <a href="https://wa.me/5491158917312" title="whatsapp de gatti" style="margin: 0" target="_blank">
+                    <div class="pull-right text-right " style="margin-right:15px;">
+                        <h2 style="font-size: 11px">VENTAS CASA BS AS<br/><span style="font-size:21px">11 58917312</span></h2>
+                    </div>
+                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:10px;width: 52px"/>
+                </a>
+            </div>
+            <div>
+                <a href="https://wa.me/5493416548296" title="whatsapp de gatti" style="margin: 0" target="_blank">
+                    <div class="pull-right text-right " style="margin-right:15px;">
+                        <h2 style="font-size: 11px">VENTAS CASA ROSARIO<br/><span style="font-size:21px">341 6548296</span></h2>
+                    </div>
+                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:10px;width: 52px"/>
+                </a>
+            </div>
         </div>
     </div>
 </div>

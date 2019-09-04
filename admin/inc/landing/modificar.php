@@ -77,7 +77,7 @@ if (isset($_POST["agregar"])) {
     <form method="post" class="row" enctype="multipart/form-data">
         <label class="col-md-4">
             Título:<br/>
-            <input type="text" value="<?=$landingInd["titulo"]?>" name="titulo">
+            <input type="text" value="<?=$landingInd["titulo"]?>" name="titulo" required>
         </label>
         <label class="col-md-4">
             Categoría:<br/>

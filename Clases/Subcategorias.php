@@ -93,4 +93,18 @@ class Subcategorias
             return $array ;
         }
     }
+
+    function listIfHave($db,$cat)
+    {
+        $array = array();
+        $sql = "SELECT DISTINCT subcategorias.titulo, subcategorias.cod,subcategorias.categoria FROM subcategorias INNER JOIN $db ON $db.subcategoria=subcategorias.cod WHERE subcategorias.categoria='{$cat}'";
+
+        $subcategorias_ = $this->con->sqlReturn($sql);
+        if ($subcategorias_) {
+            while ($row = mysqli_fetch_assoc($subcategorias_)) {
+                $array[] = $row;
+            }
+            return $array;
+        }
+    }
 }

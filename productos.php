@@ -95,6 +95,25 @@ $template->themeInit();
         <div class="col-md-8 col-xs-12" style="margin-top:10px">
             <div class="hidden-lg hidden-md">
                 <div class="titular">
+                    <h3>BÚSQUEDA</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="get">
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <input class="form-control" type="text" name="buscar" value="<?= !empty($titulo) ? $titulo : '' ?>" style="height: 30px">
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-sm" style="width: 100%">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="titular">
                     <h3>FILTROS DE BÚSQUEDA</h3>
                 </div>
                 <form method="get">
@@ -177,8 +196,6 @@ $template->themeInit();
                         </div>
                         <?php
                     }
-                    ?>
-                    <?php
                 } else {
                     ?>
                     <h3>No se encontró ningun producto.</h3>
@@ -191,8 +208,6 @@ $template->themeInit();
                 <div class="Zebra_Pagination">
                     <ul>
                         <?php
-                        // <li><a href="javascript:void(0)" class="navigation previous disabled" rel="prev"><i class="fa fa-arrow-left"></i></a></li>
-                        // <li><a href="/tienda?page=2" class="navigation next" rel="next"><i class="fa fa-arrow-right"></i></a></li>
                         if (!empty($numeroPaginas)) {
                             if ($numeroPaginas != 1 && $numeroPaginas != 0) {
                                 $url_final = $funciones->eliminar_get(CANONICAL, "pagina");
@@ -226,6 +241,25 @@ $template->themeInit();
         </div>
         <div class="col-md-4 col-xs-12">
             <div class="hidden-sm hidden-xs">
+                <div class="titular">
+                    <h3>BÚSQUEDA</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="get">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <input class="form-control" type="text" name="buscar" value="<?= !empty($titulo) ? $titulo : '' ?>" style="height: 30px">
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-sm" style="width: 100%">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <div class="titular">
                     <h3>FILTROS DE BÚSQUEDA</h3>
                 </div>

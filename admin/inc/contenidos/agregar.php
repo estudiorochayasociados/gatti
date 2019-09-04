@@ -16,7 +16,7 @@ if (isset($_POST["agregar"])) {
     <form method="post">
         <label class="col-lg-12">Título:
             <br/>
-            <input type="text" name="codigo" value=""  />
+            <input type="text" name="codigo" value=""  required/>
         </label>
         <label class="col-lg-12" >Desarrollo:
             <br/>
