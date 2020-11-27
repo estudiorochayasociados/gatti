@@ -1,0 +1,1 @@
+<div style='border:1px solid #e1e1e1;padding:20px'><b>Tipo de envío:</b> Correo Argentino a Domicilio 2.6kg<br/><b>Precio:</b> $165<br/><b>Nombre y apellido</b>: FACUNDO ROCHA<br/><b>Email</b>: facundo.rocha93@gmail.com<br/><b>Provincia</b>: CÓRDOBA<br/><b>Localidad</b>: SAN FRANCISCO<br/><b>Domicilio</b>: Moreno 377<br/><b>Teléfono</b>: 356457079<br/></div>

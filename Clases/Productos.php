@@ -59,7 +59,7 @@ class Productos
     public function add()
     {
         $sql = "INSERT INTO `productos`(`cod`, `titulo`,`cod_producto`, `precio`,`precio_descuento`, `variable1`,`variable2`,`variable3`,`variable4`,`variable5`,`variable6`,`variable7`,`variable8`,`variable9`,`variable10`,  `stock`, `desarrollo`, `categoria`, `subcategoria`, `keywords`, `description`, `fecha`, `meli`, `url`) 
-                VALUES ('{$this->cod}', '{$this->titulo}','{$this->cod_producto}', '{$this->precio}','{$this->precio_descuento}', '{$this->variable1}','{$this->variable2}','{$this->variable3}','{$this->variable4}','{$this->variable5}','{$this->variable6}','{$this->variable7}','{$this->variable8}','{$this->variable9}', '{$this->variable10}',  '{$this->stock}', '{$this->desarrollo}', '{$this->categoria}', '{$this->subcategoria}', '{$this->keywords}', '{$this->description}', '{$this->fecha}', '{$this->meli}', '{$this->url}')";
+                VALUES ('{$this->cod}', '{$this->titulo}','{$this->cod_producto}', '{$this->precio}','{$this->precio_descuento}', '{$this->variable1}','{$this->variable2}','{$this->variable3}','{$this->variable4}','{$this->variable5}','{$this->variable6}','{$this->variable7}','{$this->variable8}','{$this->variable9}', '{$this->variable10}',  '{$this->stock}', '{$this->desarrollo}', '{$this->categoria}', '{$this->subcategoria}', '{$this->keywords}', '{$this->description}', NOW(), '{$this->meli}', '{$this->url}')";
         $query = $this->con->sql($sql);
         return true;
     }
@@ -88,7 +88,7 @@ class Productos
         `subcategoria` = '{$this->subcategoria}',
         `keywords` = '{$this->keywords}',
         `description` = '{$this->description}',
-        `fecha` = '{$this->fecha}',
+        `fecha` = $this->fecha,
         `meli` = '{$this->meli}',
         `url` = '{$this->url}'
         WHERE `id`='{$this->id}'";
@@ -204,19 +204,11 @@ class Productos
         $url = 'https://api.mercadolibre.com/items/' . $this->meli;
         $response = $this->funciones->curl("", $url, '');
         $data = json_decode($response, true);
-        if (is_array($data)) {
-            if (isset($data["status"])) {
-                if (is_numeric($data["status"])) {
-                    return false;
-                } else {
-                    if ($_SESSION["user_id"] == $data["seller_id"]) {
-                        return $data;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-        };
+        if (isset($data["id"])) {
+            return $data;
+        } else {
+            return false;
+        }
     }
 
     public function delete_meli()

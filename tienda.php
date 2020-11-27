@@ -134,24 +134,24 @@ $template->themeInit();
                 <form method="get">
                     <?php
                     if (!empty($categoria_get)) {
-                        ?>
+                    ?>
                         <a href="<?= URL ?>/tienda">
                             <span class="alert btn-block alert-warning">
                                 <i class="fa fa-close"></i> <?= $categoria_data_filtro['titulo']; ?>
                             </span>
                         </a>
-                        <?php
+                    <?php
                     }
                     ?>
                     <?php
                     if (!empty($subcategoria_get)) {
-                        ?>
+                    ?>
                         <a href="<?= URL ?>/tienda">
                             <span class="alert btn-block alert-warning">
                                 <i class="fa fa-close"></i> <?= $subcategoriaDataFiltro['titulo']; ?>
                             </span>
                         </a>
-                        <?php
+                    <?php
                     }
                     ?>
                     Filtrá por la categoría que te interesa.
@@ -159,22 +159,22 @@ $template->themeInit();
                     <select class="form-control" name="categoria" id="categoria-mobile">
                         <?php
                         if (!empty($categoria_get)) {
-                            ?>
+                        ?>
                             <option value="<?= $categoria_get ?>"><?= $categoria_data_filtro['titulo']; ?></option>
-                            <?php
+                        <?php
                         } else {
-                            ?>
+                        ?>
                             <option>-- Seleccionar Categoría --</option>
-                            <?php
+                        <?php
                         }
                         ?>
                         <option disabled>──────────</option>
                         <?php
                         if (!empty($categorias_data)) {
                             foreach ($categorias_data as $cat) {
-                                ?>
+                        ?>
                                 <option value="<?= $cat['cod']; ?>"><?= $cat["titulo"] ?></option>
-                                <?php
+                        <?php
                             }
                         }
                         ?>
@@ -183,13 +183,13 @@ $template->themeInit();
                     <select class="form-control mt-10" name="subcategoria" id="subcategoria-mobile">
                         <?php
                         if (!empty($subcategoria_get)) {
-                            ?>
+                        ?>
                             <option value="<?= $subcategoria_get ?>"><?= $subcategoriaDataFiltro['titulo']; ?></option>
-                            <?php
+                        <?php
                         } else {
-                            ?>
+                        ?>
                             <option>-- Seleccionar Subcategoría --</option>
-                            <?php
+                        <?php
                         }
                         ?>
                         <option disabled>──────────</option>
@@ -198,17 +198,17 @@ $template->themeInit();
                             foreach ($categorias_data as $cat) {
                                 $subs_data = $subcategoria->listIfHave('productos', $cat['cod']);
                                 if (!empty($subs_data)) {
-                                    ?>
+                        ?>
                                     <optgroup label="<?= $cat['titulo'] ?>">
                                         <?php
                                         foreach ($subs_data as $sub) {
-                                            ?>
+                                        ?>
                                             <option value="<?= $sub['cod'] ?>"><?= $sub['titulo']; ?></option>
-                                            <?php
+                                        <?php
                                         }
                                         ?>
                                     </optgroup>
-                                    <?php
+                        <?php
                                 }
                             }
                         }
@@ -216,72 +216,82 @@ $template->themeInit();
                     </select>
                 </form>
                 <div class="clearfix"></div>
-                <br/>
+                <br />
             </div>
             <div class="col-md-12">
                 <?php
                 if (!empty($productos_data)) {
                     foreach ($productos_data as $prod) {
-                        ?>
+                ?>
                         <div class=" col-md-4 col-xs-12 product-box hvr-outline-in">
-                            <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>"
-                               class="relative">
+                            <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>" class="relative">
                                 <?php
                                 if (!empty($prod['data']['precio_descuento']) && $prod['data']['precio_descuento'] > 0) {
-                                    ?>
+                                ?>
                                     <span class="top label label-info">¡PRODUCTO EN OFERTA!</span>
-                                    <?php
+                                <?php
                                 }
                                 ?>
-                                <div class="product-wrap"
-                                     style="height:150px;background:url(<?= $prod['imagenes']['0']['ruta']; ?>) no-repeat center center/contain;">
+                                <div style="top:0;">
+                                    <?php
+                                    if ($prod['data']['fecha'] != "0000-00-00") {
+                                        $productCreateDate = $prod['data']['fecha'];
+                                        $Date2 = date('Y-m-d', strtotime($productCreateDate . " + 10 day"));
+                                        if ($Date2 >= date('Y-m-d')) {
+                                    ?>
+                                            <div class="shape">
+                                                <div class="shape-text">
+                                                    ¡NUEVO!
+                                                </div>
+                                            </div>
+                                    <?php }
+                                    } ?>
+                                </div>
+                                <div class="product-wrap" style="height:150px;background:url(<?= $prod['imagenes']['0']['ruta']; ?>) no-repeat center center/contain;">
                                 </div>
                             </a>
                             <h1 class="tituloProducto">
-                                <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>"
-                                   style="font-size:25px"><?= ucfirst($prod['data']['titulo']); ?>
+                                <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>" style="font-size:25px"><?= ucfirst($prod['data']['titulo']); ?>
                                 </a>
                             </h1>
                             <span class="precioProducto">
-                            <b>Categoría: </b>
-                            <br/>
-                            <a href="<?= URL . '/tienda?categoria=' . $prod['data']['categoria'] ?>">
-                                <?= ucfirst($prod['categorias']['titulo']); ?>
-                            </a>
-                        </span>
-                            <br/>
+                                <b>Categoría: </b>
+                                <br />
+                                <a href="<?= URL . '/tienda?categoria=' . $prod['data']['categoria'] ?>">
+                                    <?= ucfirst($prod['categorias']['titulo']); ?>
+                                </a>
+                            </span>
+                            <br />
                             <?php
                             if ($prod['data']['variable2'] != 0) {
                                 if (!empty($prod['data']['precio_descuento']) && $prod['data']['precio_descuento'] > 0) {
-                                    ?>
-                                    <div class="label label-danger"
-                                         style="float:left;font-size: 12px;display:inherit;margin-bottom: 2px !important">
+                            ?>
+                                    <div class="label label-danger" style="float:left;font-size: 12px;display:inherit;margin-bottom: 2px !important">
                                         <?= "<b>Antes: </b>$" . ($prod['data']["precio"]) ?>
                                     </div>
                                     <div class="clearfix"></div>
-                                    <div class="label label-success"
-                                         style="float:left;font-size: 15px;display:inherit;margin-bottom: 2px !important">
+                                    <div class="label label-success" style="float:left;font-size: 15px;display:inherit;margin-bottom: 2px !important">
                                         <?= "<b>Ahora: </b>$" . ($prod['data']['precio_descuento']) ?>
                                     </div>
                                     <div class="clearfix"></div>
-                                    <?php
+                                <?php
                                     $desc_ = $prod['data']['precio_descuento'];
                                 } else {
-                                    ?>
+                                ?>
                                     <span class="precioProducto"><?= "<b>Precio: </b>$" . ($prod['data']['precio']) ?>
                                     </span>
-                                    <?php
+                                <?php
                                     $desc_ = $prod['data']['precio'];
                                 }
                                 ?>
 
                                 <?php
                                 if (!empty($prod['data']['variable10'])) {
-                                    ?>
-                                        <label class="alert-success fs-12" style="margin-bottom: 20px;border: 1px solid transparent;border-radius: 4px;background-color: white">
-                                            <i class="fa fa-truck"></i> GRATIS
-                                        </label>
-                                    <?php
+                                ?>
+                                    <label class="alert-success fs-12" style="margin-bottom: 20px;border: 1px solid transparent;border-radius: 4px;background-color: white">
+                                        <i class="fa fa-truck"></i> GRATIS
+                                    </label>
+                                <?php
                                 }
                                 ?>
                                 <br>
@@ -290,27 +300,26 @@ $template->themeInit();
                                 </span>
                                 <?php
                                 if ($prod['data']['stock'] == 0) {
-                                    ?>
+                                ?>
                                     <div class='label label-danger'>* sin stock</div>
-                                    <?php
+                            <?php
                                 }
                             }
                             ?>
                             <div class="clearfix"></div>
-                            <br/>
-                            <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>"
-                               class="btn btn-primary botonComprar">
+                            <br />
+                            <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>" class="btn btn-primary botonComprar">
                                 <i class="fa fa-plus"></i> VER MÁS
                             </a>
                         </div>
-                        <?php
+                    <?php
                     }
                     ?>
-                    <?php
+                <?php
                 } else {
-                    ?>
+                ?>
                     <h3>No se encontró ningun producto.</h3>
-                    <?php
+                <?php
                 }
                 ?>
             </div>
@@ -378,24 +387,24 @@ $template->themeInit();
                 </div>
                 <?php
                 foreach ($categorias_data as $cat) {
-                    ?>
-                    <hr class="hr-chicos"/>
+                ?>
+                    <hr class="hr-chicos" />
                     <a class="catt" href="<?= URL . '/tienda?categoria=' . $cat['cod']; ?>"><?= $cat['titulo']; ?></a>
                     <br>
                     <?php
                     $subs_data = $subcategoria->listForCount('');
                     foreach ($subs_data as $sub) {
                         if ($sub['categoria'] == $cat['cod']) {
-                            ?>
+                    ?>
                             <a class="subb" href="<?= URL . '/tienda?categoria=' . $cat['cod'] . '&subcategoria=' . $sub['cod'] ?>"><?= $sub['titulo']; ?></a>
                             <br>
-                            <?php
+                <?php
                         }
                     }
                 }
                 ?>
             </div>
-            <br/>
+            <br />
             <?php
             include 'assets/inc/facebook.inc.php';
             ?>
@@ -407,9 +416,9 @@ $template->themeEnd();
 ?>
 <script>
     $("#categoria-mobile").on("change", () => {
-        document.location.href = "<?=URL?>/tienda?categoria=" + $("#categoria-mobile").val();
+        document.location.href = "<?= URL ?>/tienda?categoria=" + $("#categoria-mobile").val();
     });
     $("#subcategoria-mobile").on("change", () => {
-        document.location.href = "<?=URL?>/tienda?subcategoria=" + $("#subcategoria-mobile").val();
+        document.location.href = "<?= URL ?>/tienda?subcategoria=" + $("#subcategoria-mobile").val();
     });
 </script>

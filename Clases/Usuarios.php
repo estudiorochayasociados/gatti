@@ -140,7 +140,7 @@ class Usuarios
 
     public function view()
     {
-        $sql = "SELECT * FROM `usuarios`WHERE cod = '{$this->cod}' ORDER BY id DESC";
+        $sql = "SELECT * FROM `usuarios` WHERE cod = '{$this->cod}' ORDER BY id DESC";
         $usuario = $this->con->sqlReturn($sql);
         $row = mysqli_fetch_assoc($usuario);
         return $row;
@@ -281,6 +281,7 @@ class Usuarios
             'doc' => $this->doc,
             'email' => $this->email,
             'direccion' => $this->direccion,
+            'postal' => $this->postal,
             'localidad' => $this->localidad,
             'provincia' => $this->provincia,
             'telefono' => $this->telefono,
@@ -319,6 +320,7 @@ class Usuarios
             'doc' => $this->doc,
             'email' => $this->email,
             'direccion' => $this->direccion,
+            'postal' => $this->postal,
             'localidad' => $this->localidad,
             'provincia' => $this->provincia,
             'telefono' => $this->telefono,

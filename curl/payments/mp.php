@@ -19,7 +19,7 @@ if (!empty($cod)) {
 
         $config->set("id", 1);
         $paymentsData = $config->viewPayment();
-        $mp = new MP ($paymentsData['data']['variable1'], $paymentsData['data']['variable2']);
+        $mp = new MP($paymentsData['data']['variable1'], $paymentsData['data']['variable2']);
         $preference_data = array(
             "items" => array(
                 array(
@@ -33,7 +33,8 @@ if (!empty($cod)) {
             "payer" => array(
                 "name" => $_SESSION['usuarios']["nombre"],
                 "surname" => $_SESSION['usuarios']["apellido"],
-                "email" => $_SESSION['usuarios']["email"]),
+                "email" => $_SESSION['usuarios']["email"]
+            ),
             "back_urls" => array(
                 "success" => URL . "/checkout/detail",
                 "pending" => URL . "/checkout/detail",
@@ -59,9 +60,9 @@ if (!empty($cod)) {
         );
         $preference = $mp->create_preference($preference_data);
         var_dump($preference);
-//        $checkout->close();
-//        $response = array("status" => true, "url" => $preference['response']['sandbox_init_point']);
-//        echo json_encode($response);
+        //        $checkout->close();
+        //        $response = array("status" => true, "url" => $preference['response']['sandbox_init_point']);
+        //        echo json_encode($response);
     } else {
         $response = array("status" => false, "message" => "Ocurrió un error, recargar la página.");
         echo json_encode($response);

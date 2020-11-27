@@ -49,7 +49,7 @@ $envioEspecial = false;
         $metodos_de_envios = $envios->list(array("peso BETWEEN " . $carrito->peso_final() . " AND " . $tope . " OR peso = 0"));
         $precioFinal = $carrito->precio_total();
         if ($carroEnvio == '') {
-            if (($precioFinal > 3500 && $precioFinal < 7000) || $pesoFinal == 0) {
+            if (($pesoFinal == 0) && $precioFinal > 0) {
                 $carrito->set("id", "Envio-Seleccion");
                 $carrito->set("cantidad", 1);
                 $carrito->set("titulo", "ENVÍO GRATUITO");
@@ -134,16 +134,17 @@ $envioEspecial = false;
                         $pagos->set("cod", $metodo);
                         $pago__ = $pagos->view();
                         $precio_final_metodo = $carrito->precio_total();
+                        $precio_envio = $carrito->precio_envio();
                         if ($pago__["aumento"] != 0 || $pago__["disminuir"] != '') {
                             if ($pago__["aumento"]) {
-                                $numero = (($precio_final_metodo * $pago__["aumento"]) / 100);
+                                $numero = ((($precio_final_metodo-$precio_envio) * $pago__["aumento"]) / 100);
                                 $carrito->set("id", "Metodo-Pago");
                                 $carrito->set("cantidad", 1);
                                 $carrito->set("titulo", "CARGO +" . $pago__['aumento'] . "% / " . mb_strtoupper($pago__["titulo"]));
                                 $carrito->set("precio", $numero);
                                 $carrito->add();
                             } else {
-                                $numero = (($precio_final_metodo * $pago__["disminuir"]) / 100);
+                                $numero = ((($precio_final_metodo-$precio_envio) * $pago__["disminuir"]) / 100);
                                 $carrito->set("id", "Metodo-Pago");
                                 $carrito->set("cantidad", 1);
                                 $carrito->set("titulo", "DESCUENTO -" . $pago__['disminuir'] . "% / " . mb_strtoupper($pago__["titulo"]));
@@ -162,11 +163,12 @@ $envioEspecial = false;
                             $lista_pagos = $pagos->list(array(" estado = 0 "));
                             foreach ($lista_pagos as $pago) {
                                 $precio_total = $carrito->precioSinMetodoDePago();
+                                $precio_envio = $carrito->precio_envio();
                                 if ($pago["aumento"] != 0 || $pago["disminuir"] != 0) {
                                     if ($pago["aumento"] > 0) {
-                                        $precio_total = (($precio_total * $pago["aumento"]) / 100) + $precio_total;
+                                        $precio_total = ((($precio_total-$precio_envio) * $pago["aumento"]) / 100) + $precio_total;
                                     } else {
-                                        $precio_total = $precio_total - (($precio_total * $pago["disminuir"]) / 100);
+                                        $precio_total = $precio_total - ((($precio_total-$precio_envio) * $pago["disminuir"]) / 100);
                                     }
                                 }
                                 echo "<option value='" . $pago["cod"] . "'>" . $pago["titulo"] . " -> Total: $" . $precio_total . "</option>";

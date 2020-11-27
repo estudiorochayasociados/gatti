@@ -10,11 +10,12 @@ class autoload
         session_start();
         $_SESSION["cod_pedido"] = isset($_SESSION["cod_pedido"]) ? $_SESSION["cod_pedido"] : strtoupper(substr(md5(uniqid(rand())), 0, 7));
         define('SALT', hash("sha256", "salt@estudiorochayasoc.com.ar"));
-        define('URL', "https://" . $_SERVER['HTTP_HOST'] . "/Gatti2");
+        define('URL', "https://" . $_SERVER['HTTP_HOST'] . "/Gatti");
         define('CANONICAL', "https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
         define('GOOGLE_TAG', "");
         define('TITULO', "GATTI SA");
         define('TELEFONO', "3564589747");
+        define('TELEFONO_VENTAS_ONLINE', "3564589745");
         define('CIUDAD', "San Francisco");
         define('PROVINCIA', "Cordoba");
         define('PAIS', "Argentina");
@@ -48,8 +49,8 @@ class autoload
     public static function runAdmin()
     {
         session_start();
-        define('URLSITE', "https://" . $_SERVER['HTTP_HOST'] . "/Gatti2");
-        define('URL', "https://" . $_SERVER['HTTP_HOST'] . "/Gatti2/admin");
+        define('URLSITE', "https://" . $_SERVER['HTTP_HOST'] . "/Gatti");
+        define('URL', "https://" . $_SERVER['HTTP_HOST'] . "/Gatti/admin");
         define('CANONICAL', "https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
         define('SALT', hash("sha256", "salt@estudiorochayasoc.com.ar"));
         define('HUBKEY', "9d0a9974-0576-4494-9798-22e3300e4b21");
@@ -66,8 +67,8 @@ class autoload
     public static function runAdminAPI()
     {
         session_start();
-        define('URLSITE', "https://" . $_SERVER['HTTP_HOST'] . "/Gatti2");
-        define('URL', "https://" . $_SERVER['HTTP_HOST'] . "/Gatti2/admin");
+        define('URLSITE', "https://" . $_SERVER['HTTP_HOST'] . "/Gatti");
+        define('URL', "https://" . $_SERVER['HTTP_HOST'] . "/Gatti/admin");
         define('CANONICAL', "https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
         require_once "../../Clases/Zebra_Image.php";
         spl_autoload_register(function ($clase) {

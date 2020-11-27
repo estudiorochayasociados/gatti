@@ -1,24 +1,18 @@
 <?php
-require_once "../../Config/Autoload.php";
-Config\Autoload::runCurl();
+require_once dirname(__DIR__, 2) . "/Config/Autoload.php";
+Config\Autoload::runSitio();
 $funciones = new Clases\PublicFunction();
-$checkout = new Clases\Checkout();
 $pedidos = new Clases\Pedidos();
-$config = new Clases\Config();
-
-$cod = $funciones->antihack_mysqli(isset($_POST['cod']) ? $_POST['cod'] : '');
-
+$cod = $funciones->antihack_mysqli(isset($_SESSION['cod_pedido']) ? $_SESSION['cod_pedido'] : '');
 if (!empty($cod)) {
     $pedidos->set("cod", $cod);
     $pedidosData = $pedidos->view();
 
     if (!empty($pedidosData['data'])) {
-        $mode = "test";//identificador de entorno obligatorio, la otra opción es "prod"
-        $http_header = array('Authorization' => 'TODOPAGO 4c22c6aaf8c94bc981e229e5d4917097');//authorization key del ambiente requerido
-
+        $mode = "prod"; //identificador de entorno obligatorio, la otra opción es "prod"
+        $http_header = array('Authorization' => "TODOPAGO 040AE30164072C8EF2BB7A67EF52EF73"); //authorization key del ambiente requerido
+        $merchant = "687559";
         $connector = new TodoPago\Sdk($http_header, $mode);
-
-        $merchant = 1011975;
         $operation_id = $_SESSION['cod_pedido'];
         $precio = number_format($pedidosData['data']['total'], "2", ".", "");
         $nombre = $_SESSION['usuarios']["nombre"];
@@ -28,23 +22,24 @@ if (!empty($cod)) {
         $postal = "2400";
         $localidad = "SAN FRANCISCO";
         $domicilio = "MORENO 357";
+        $rand_user = rand(1, 9999);
 
         //comercio
         $optionsSAR_comercio = array(
-            'Security' => 'J4JL12J412LKJ12LKJ41L4JK12',
+            'Security' => "040AE30164072C8EF2BB7A67EF52EF73",
             'Merchant' => $merchant,
-            'URL_OK' => URL . '/checkout/detail',
-            'URL_ERROR' => URL . '/checkout/detail'
+            'URL_OK' => URL . '/curl/payments/ipn-tp.php',
+            'URL_ERROR' => URL . '/curl/payments/ipn-tp.php'
         );
 
         //operacion
         $optionsSAR_operacion = array(
             'CSBTCITY' => $localidad, //Ciudad de facturación, REQUERIDO.
             'CSBTCOUNTRY' => 'AR', //País de facturación. REQUERIDO. Código ISO.
-            'CSBTCUSTOMERID' => '453458', //Identificador del usuario al que se le emite la factura. REQUERIDO. No puede contener un correo electrónico.
-            'CSBTIPADDRESS' => $_SERVER['REMOTE_ADDR'],//'192.0.0.4', //IP de la PC del comprador. REQUERIDO.
+            'CSBTCUSTOMERID' => $rand_user, //Identificador del usuario al que se le emite la factura. REQUERIDO. No puede contener un correo electrónico.
+            'CSBTIPADDRESS' => $_SERVER['REMOTE_ADDR'], //'192.0.0.4', //IP de la PC del comprador. REQUERIDO.
             'CSBTEMAIL' => $email, //Mail del usuario al que se le emite la factura. REQUERIDO.
-            'CSBTFIRSTNAME' => $nombre,//Nombre del usuario al que se le emite la factura. REQUERIDO.
+            'CSBTFIRSTNAME' => $nombre, //Nombre del usuario al que se le emite la factura. REQUERIDO.
             'CSBTLASTNAME' => $apellido, //Apellido del usuario al que se le emite la factura. REQUERIDO.
             'CSBTPHONENUMBER' => $celular, //Teléfono del usuario al que se le emite la factura. No utilizar guiones, puntos o espacios. Incluir código de país. REQUERIDO.
             'CSBTPOSTALCODE' => $postal, //Código Postal de la dirección de facturación. REQUERIDO.
@@ -63,7 +58,7 @@ if (!empty($cod)) {
             'CSSTSTATE' => 'X', //Provincia de envío. REQUERIDO. Son de 1 caracter
             'CSSTSTREET1' => $domicilio, //Domicilio de envío. REQUERIDO.
             //Retail: datos a enviar por cada producto, los valores deben estar separados con #:
-            'CSITPRODUCTCODE' => 'electronic_good', //Código de producto. REQUERIDO. Valores posibles(adult_content;coupon;default;electronic_good;electronic_software;gift_certificate;handling_only;service;shipping_and_handling;shipping_only;subscription)
+            'CSITPRODUCTCODE' => 'default', //Código de producto. REQUERIDO. Valores posibles(adult_content;coupon;default;electronic_good;electronic_software;gift_certificate;handling_only;service;shipping_and_handling;shipping_only;subscription)
             'CSITPRODUCTDESCRIPTION' => 'ORDEN ' . $operation_id, //Descripción del producto. REQUERIDO.
             'CSITPRODUCTNAME' => 'ORDEN ' . $operation_id, //Nombre del producto. REQUERIDO.
             'CSITPRODUCTSKU' => $operation_id, //Código identificador del producto. REQUERIDO.
@@ -77,7 +72,6 @@ if (!empty($cod)) {
             'AMOUNT' => $precio,
             'EMAILCLIENTE' => $email
         );
-
         $values = $connector->sendAuthorizeRequest($optionsSAR_comercio, $optionsSAR_operacion);
 
         if (@$values['URL_Request'] != '') {

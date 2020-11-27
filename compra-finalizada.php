@@ -78,6 +78,7 @@ if (empty($_SESSION["carrito"])) {
     $datos_usuario .= "<b>Provincia:</b> " . $_SESSION["usuarios"]["provincia"] . "<br/>";
     $datos_usuario .= "<b>Localidad:</b> " . $_SESSION["usuarios"]["localidad"] . "<br/>";
     $datos_usuario .= "<b>Dirección:</b> " . $_SESSION["usuarios"]["direccion"] . "<br/>";
+    $datos_usuario .= "<b>Código postal:</b> " . $_SESSION["usuarios"]["postal"] . "<br/>";
     $datos_usuario .= "<b>Teléfono:</b> " . $_SESSION["usuarios"]["telefono"] . "<br/>";
 
 
@@ -211,7 +212,7 @@ if (empty($_SESSION["carrito"])) {
                 </div>
             </div>
             <div class="mt-10 ">
-                <a href="https://www.rocha.com/Gatti2" class="btn btn-primary">
+                <a href="<?=URL?>" class="btn btn-primary">
                     VOLVER A LA PÁGINA PRINCIPAL
                 </a>
             </div>

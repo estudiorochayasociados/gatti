@@ -119,87 +119,101 @@ $template->themeInit();
                 <form method="get">
                     <?php
                     if (!empty($categoria_get)) {
-                        ?>
+                    ?>
                         <a href="<?= URL ?>/productos">
                             <span class="alert btn-block alert-warning">
                                 <i class="fa fa-close"></i> <?= $categoria_data_filtro['titulo']; ?>
                             </span>
                         </a>
-                        <?php
+                    <?php
                     }
                     ?>
                     Filtrá por la categoría que te interesa.
 
                     <select class="form-control" name="categoria" onchange="this.form.submit()">
                         <?php if (!empty($categoria_get)) {
-                            ?>
+                        ?>
                             <option value="<?= $categoria_get ?>"><?= $categoria_data_filtro['titulo']; ?></option>
-                            <?php
+                        <?php
                         } else {
-                            ?>
+                        ?>
                             <option>-- Seleccionar Categoría --</option>
-                            <?php
+                        <?php
                         }
                         ?>
                         <option disabled>──────────</option>
                         <?php
                         if (!empty($categorias_data)) {
                             foreach ($categorias_data as $cat) {
-                                ?>
+                        ?>
                                 <option value="<?= $cat['cod']; ?>"><?= $cat["titulo"] ?></option>
-                                <?php
+                        <?php
                             }
                         }
                         ?>
                     </select>
                 </form>
                 <div class="clearfix"></div>
-                <br/>
+                <br />
             </div>
             <div class="col-md-12">
                 <?php
                 if (!empty($productos_data)) {
                     foreach ($productos_data as $prod) {
-                        ?>
+                ?>
+
                         <div class=" col-md-4 col-xs-12 product-box hvr-outline-in">
-                            <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>"
-                               class="relative">
+
+                            <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>" class="relative">
+
                                 <?php
                                 if (!empty($prod['data']['precio_descuento']) && $prod['data']['precio_descuento'] > 0) {
-                                    ?>
+                                ?>
                                     <span class="top label label-info">¡PRODUCTO EN OFERTA!</span>
-                                    <?php
+                                <?php
                                 }
                                 ?>
-                                <div class="product-wrap"
-                                     style="height:150px;background:url(<?= $prod['imagenes']['0']['ruta']; ?>) no-repeat center center/contain;">
+                                <div style="top:0;">
+                                    <?php
+                                    if ($prod['data']['fecha'] != "0000-00-00") {
+                                        $productCreateDate = $prod['data']['fecha'];
+                                        $Date2 = date('Y-m-d', strtotime($productCreateDate . " + 10 day"));
+                                        if ($Date2 >= date('Y-m-d')) {
+                                    ?>
+                                            <div class="shape">
+                                                <div class="shape-text">
+                                                    ¡NUEVO!
+                                                </div>
+                                            </div>
+                                    <?php }
+                                    } ?>
+                                </div>
+                                <div class="product-wrap" style="height:150px;background:url(<?= $prod['imagenes']['0']['ruta']; ?>) no-repeat center center/contain;">
                                 </div>
                             </a>
                             <h1 class="tituloProducto">
-                                <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>"
-                                   style="font-size:25px"><?= ucfirst($prod['data']['titulo']); ?></a>
+                                <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>" style="font-size:25px"><?= ucfirst($prod['data']['titulo']); ?></a>
                             </h1>
                             <span class="precioProducto">
-                            <b>Categoría: </b>
-                            <br/>
-                            <a href="<?= URL . '/productos?categoria=' . $prod['data']['categoria'] ?>">
-                                <?= ucfirst($prod['categorias']['titulo']); ?>
-                            </a>
-                        </span>
-                            <br/>
+                                <b>Categoría: </b>
+                                <br />
+                                <a href="<?= URL . '/productos?categoria=' . $prod['data']['categoria'] ?>">
+                                    <?= ucfirst($prod['categorias']['titulo']); ?>
+                                </a>
+                            </span>
+                            <br />
                             <div class="clearfix"></div>
-                            <br/>
-                            <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>"
-                               class="btn btn-primary botonComprar">
+                            <br />
+                            <a href="<?= URL . '/producto/' . $funciones->normalizar_link($prod['data']["titulo"]) . '/' . $prod['data']['cod'] ?>" class="btn btn-primary botonComprar">
                                 <i class="fa fa-plus"></i> VER MÁS
                             </a>
                         </div>
-                        <?php
+                    <?php
                     }
                 } else {
                     ?>
                     <h3>No se encontró ningun producto.</h3>
-                    <?php
+                <?php
                 }
                 ?>
             </div>
@@ -265,15 +279,15 @@ $template->themeInit();
                 </div>
                 <?php
                 foreach ($categorias_data as $cat) {
-                    ?>
-                    <hr/>
+                ?>
+                    <hr />
                     <a class="catt" href="<?= URL . '/productos?categoria=' . $cat['cod']; ?>"><?= $cat['titulo']; ?></a>
                     <br>
-                    <?php
+                <?php
                 }
                 ?>
             </div>
-            <br/>
+            <br />
             <?php
             include 'assets/inc/facebook.inc.php';
             ?>

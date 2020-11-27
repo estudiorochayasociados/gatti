@@ -7,7 +7,7 @@ $enviar = new Clases\Email();
 $template->set("title", TITULO . " | Contacto");
 $template->set("description", "Contacto de " . TITULO);
 $template->set("keywords", "");
-$template->themeInit();?>
+$template->themeInit(); ?>
 <div class="headerTitular">
     <div class="container">
         <h1>Contacto</h1>
@@ -21,64 +21,79 @@ $template->themeInit();?>
                     <?php
                     if (isset($_POST["enviar"])) {
 
-                            $nombre = $funciones->antihack_mysqli(isset($_POST["nombre"]) ? $_POST["nombre"] : '');
-                            $telefono = $funciones->antihack_mysqli(isset($_POST["telefono"]) ? $_POST["telefono"] : '');
-                            $email = $funciones->antihack_mysqli(isset($_POST["email"]) ? $_POST["email"] : '');
-                            $consulta = $funciones->antihack_mysqli(isset($_POST["mensaje"]) ? $_POST["mensaje"] : '');
+                        $nombre = $funciones->antihack_mysqli(isset($_POST["nombre"]) ? $_POST["nombre"] : '');
+                        $telefono = $funciones->antihack_mysqli(isset($_POST["telefono"]) ? $_POST["telefono"] : '');
+                        $email = $funciones->antihack_mysqli(isset($_POST["email"]) ? $_POST["email"] : '');
+                        $localidad = $funciones->antihack_mysqli(isset($_POST["localidad"]) ? $_POST["localidad"] : '');
+                        $provincia = $funciones->antihack_mysqli(isset($_POST["provincia"]) ? $_POST["provincia"] : '');
+                        $consulta = $funciones->antihack_mysqli(isset($_POST["mensaje"]) ? $_POST["mensaje"] : '');
 
-                            $mensajeFinal = "<b>Nombre</b>: " . $nombre . " <br/>";
-//                                        $mensajeFinal .= "<b>Teléfono</b>: " . $telefono . "<br/>";
-                            $mensajeFinal .= "<b>Email</b>: " . $email . "<br/>";
-                            $mensajeFinal .= "<b>Consulta</b>: " . $consulta . "<br/>";
+                        $mensajeFinal = "<b>Nombre</b>: " . $nombre . " <br/>";
+                        $mensajeFinal .= "<b>Email</b>: " . $email . "<br/>";
+                        $mensajeFinal .= "<b>Localidad</b>: " . $localidad . "<br/>";
+                        $mensajeFinal .= "<b>Provincia</b>: " . $provincia . "<br/>";
+                        $mensajeFinal .= "<b>Consulta</b>: " . $consulta . "<br/>";
 
-                            //USUARIO
-                            $enviar->set("asunto", "Realizaste tu consulta");
-                            $enviar->set("receptor", $email);
-                            $enviar->set("emisor", $email);
-                            $enviar->set("mensaje", $mensajeFinal);
-                            if ($enviar->emailEnviar() == 1) {
-                                echo '<div class="alert alert-success" role="alert">¡Consulta enviada correctamente!</div>';
-                            }
+                        //USUARIO
+                        $enviar->set("asunto", "Realizaste tu consulta");
+                        $enviar->set("receptor", $email);
+                        $enviar->set("emisor", $email);
+                        $enviar->set("mensaje", $mensajeFinal);
+                        if ($enviar->emailEnviar() == 1) {
+                            echo '<div class="alert alert-success" role="alert">¡Consulta enviada correctamente!</div>';
+                        }
 
-                            $mensajeFinalAdmin = "<b>Nombre</b>: " . $nombre . " <br/>";
-//                                        $mensajeFinalAdmin .= "<b>Teléfono</b>: " . $telefono . "<br/>";
-                            $mensajeFinalAdmin .= "<b>Email</b>: " . $email . "<br/>";
-                            $mensajeFinalAdmin .= "<b>Consulta</b>: " . $consulta . "<br/>";
-                            //ADMIN
-                            $enviar->set("asunto", "Consulta Web");
-                            $enviar->set("receptor",EMAIL );
-                            $enviar->set("mensaje", $mensajeFinalAdmin);
-                            if ($enviar->emailEnviar() == 0) {
-                                echo '<div class="alert alert-danger" role="alert">¡No se ha podido enviar la consulta!</div>';
-                            }
+                        $mensajeFinalAdmin = "<b>Nombre</b>: " . $nombre . " <br/>";
+                        $mensajeFinalAdmin .= "<b>Email</b>: " . $email . "<br/>";
+                        $mensajeFinalAdmin .= "<b>Localidad</b>: " . $localidad . "<br/>";
+                        $mensajeFinalAdmin .= "<b>Provincia</b>: " . $provincia . "<br/>";
+                        $mensajeFinalAdmin .= "<b>Consulta</b>: " . $consulta . "<br/>";
 
+                        //ADMIN
+                        $enviar->set("asunto", "Consulta Web");
+                        $enviar->set("receptor", EMAIL);
+                        $enviar->set("mensaje", $mensajeFinalAdmin);
+                        if ($enviar->emailEnviar() == 0) {
+                            echo '<div class="alert alert-danger" role="alert">¡No se ha podido enviar la consulta!</div>';
+                        }
                     }
                     ?>
                 </div>
                 <div class="col-lg-12">
                     <div class="name-fild-padding mb-sm-30 mb-xs-30">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-fild">
-                                    <p><label>Nombre </label></p>
-                                    <input name="nombre" value="" type="text" required>
+                            <div class="col-md-6" style="margin-bottom:10px">
+                                <div class="form-field">
+                                    <strong>Nombre </strong>
+                                    <input name="nombre" value="" class="form-control" type="text" required>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-fild">
-                                    <p><label>Email </label></p>
-                                    <input name="email" value="" type="email" required>
+                            <div class="col-md-6" style="margin-bottom:10px">
+                                <div class="form-field">
+                                    <strong>Email </strong>
+                                    <input name="email" value="" class="form-control" type="email" required>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-fild">
-                                    <p><label>Mensaje </label></p>
+                            <div class="col-md-6" style="margin-bottom:10px">
+                                <div class="form-field">
+                                    <strong>Localidad </strong>
+                                    <input name="localidad" value="" class="form-control" type="text" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="margin-bottom:10px">
+                                <div class="form-field">
+                                    <strong>Provincia </strong>
+                                    <input name="provincia" value="" class="form-control" type="text" required>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-bottom:10px">
+                                <div class="form-field">
+                                    <strong>Consulta </strong>
                                     <textarea class="form-control" name="mensaje" rows="5" placeholder="Tu mensaje.." required></textarea>
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <br>
-                                <button class="btn" name="enviar" type="submit"><span>Enviar mensaje</span></button>
+                                <button class="btn btn-success" name="enviar" type="submit"><span>Enviar mensaje</span></button>
                             </div>
                         </div>
                     </div>

@@ -68,7 +68,7 @@ if (isset($_GET['logout'])) {
             <div class="navTop  align-right">
                 <?php
                 if (empty($_SESSION['usuarios'])) {
-                    ?>
+                ?>
                     <li>
                         <a href="<?= URL ?>/usuarios" title="iniciar sesion">iniciar sesión</a>
                     </li>
@@ -81,13 +81,13 @@ if (isset($_GET['logout'])) {
                     <?php
                 } else {
                     if ($_SESSION['usuarios']['invitado'] == 0) {
-                        ?>
+                    ?>
                         <li>
                             <a href="<?= URL ?>/sesion" title="usuarios"><i class="fa fa-user"></i> <?= $_SESSION["usuarios"]["nombre"] ?></a>
                         </li>
-                        <?php
+                    <?php
                     } else {
-                        ?>
+                    ?>
                         <li>
                             <a href="<?= URL ?>/usuarios" title="iniciar sesion">iniciar sesión</a>
                         </li>
@@ -97,20 +97,20 @@ if (isset($_GET['logout'])) {
                         <li>
                             <a href="<?= URL ?>/usuarios" title="registrarme">registrarme</a>
                         </li>
-                        <?php
+                <?php
                     }
                 }
                 ?>
                 <?php
                 if (!empty($_SESSION["carrito"])) {
-                    ?>
+                ?>
                     <li>
                         <span> / </span>
                     </li>
                     <li>
                         <a href="<?= URL ?>/carrito" title="carrito"><i class="fa fa-shopping-cart"></i> Ver carrito</a>
                     </li>
-                    <?php
+                <?php
                 }
                 ?>
             </div>
@@ -122,46 +122,46 @@ if (isset($_GET['logout'])) {
         <div class="col-md-3 col-xs-12 col-sm-12" style="z-index: 0;">
             <center class="hidden-md hidden-lg">
                 <a href="<?= URL ?>" title="inicio">
-                    <img alt="LOGO GATTI SA" src="<?= LOGO ?>" class="logo"/>
+                    <img alt="LOGO GATTI SA" src="<?= LOGO ?>" class="logo" />
                 </a>
             </center>
             <div class="hidden-xs hidden-sm">
                 <a href="<?= URL ?>" title="inicio">
-                    <img alt="LOGO GATTI SA" src="<?= LOGO ?>" class="logo"/>
+                    <img alt="LOGO GATTI SA" src="<?= LOGO ?>" class="logo" />
                 </a>
             </div>
         </div>
         <div class="col-md-9 pull-right mt-10 hidden-xs hidden-sm">
             <div>
                 <a href="https://wa.me/5493564622146" title="whatsapp de gatti" style="margin: 0" target="_blank">
-                    <div class="pull-right text-right " style="margin-right:15px;">
-                        <h2 style="font-size: 11px;color:black">ASESORAMIENTO<br/><span style="font-size:21px">3564 622146</span></h2>
+                    <div class="pull-right text-right " style="margin-right:15px;margin-top:5px">
+                        <h2 style="font-size: 11px;color:black" class="bold">ASESORAMIENTO<br /><span style="font-size:14px">3564 622146</span></h2>
                     </div>
-                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:10px;width: 52px"/>
+                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:20px;width: 40px" />
                 </a>
             </div>
             <div>
                 <a href="https://wa.me/549<?= TELEFONO ?>" title="whatsapp de gatti" style="margin: 0" target="_blank">
-                    <div class="pull-right text-right" style="margin-right:15px;">
-                        <h2 style="font-size: 11px">VENTAS CASA CENTRAL<br/><span style="font-size:21px"><?= TELEFONO ?></span></h2>
+                    <div class="pull-right text-right" style="margin-right:15px;margin-top:5px">
+                        <h2 style="font-size: 11px" class="bold">VENTAS CASA CENTRAL<br /><span style="font-size:14px"><?= TELEFONO ?></span></h2>
                     </div>
-                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:10px;width: 52px"/>
+                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:20px;width: 40px" />
                 </a>
             </div>
             <div>
                 <a href="https://wa.me/5491158917312" title="whatsapp de gatti" style="margin: 0" target="_blank">
-                    <div class="pull-right text-right " style="margin-right:15px;">
-                        <h2 style="font-size: 11px">VENTAS CASA BS AS<br/><span style="font-size:21px">11 58917312</span></h2>
+                    <div class="pull-right text-right " style="margin-right:15px;margin-top:5px">
+                        <h2 style="font-size: 11px" class="bold">VENTAS CASA BS AS<br /><span style="font-size:14px">11 58917312</span></h2>
                     </div>
-                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:10px;width: 52px"/>
+                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:20px;width: 40px" />
                 </a>
             </div>
             <div>
                 <a href="https://wa.me/5493416548296" title="whatsapp de gatti" style="margin: 0" target="_blank">
-                    <div class="pull-right text-right " style="margin-right:15px;">
-                        <h2 style="font-size: 11px">VENTAS CASA ROSARIO<br/><span style="font-size:21px">341 6548296</span></h2>
+                    <div class="pull-right text-right " style="margin-right:15px;margin-top:5px">
+                        <h2 style="font-size: 11px" class="bold">VENTAS CASA ROSARIO<br /><span style="font-size:14px">341 6548296</span></h2>
                     </div>
-                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:10px;width: 52px"/>
+                    <img alt="whatsapp de gatti" src="<?= URL ?>/assets/img/whatsapp.png" class="pull-right" style="margin-top:20px;width: 40px" />
                 </a>
             </div>
         </div>
@@ -173,31 +173,21 @@ if (isset($_GET['logout'])) {
             <nav class="navbar">
                 <div class="navbar-header">
                     <center>
-                        <button type="button"
-                                class="navbar-toggle collapsed"
-                                data-toggle="collapse"
-                                data-target="#navbar"
-                                aria-expanded="false"
-                                aria-controls="navbar">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                             MENU <i class="fa fa-bars"></i>
                         </button>
                     </center>
                 </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-left">
-                        <li>
+                <div id="navbar"   class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li style="display:inline-block!important; float:none!important">
                             <a href="<?= URL ?>/index">
-                                <img alt="index" src="<?= URL ?>/assets/img/house.png" width="20"/>
+                                <img alt="index" src="<?= URL ?>/assets/img/house.png" width="20" />
                             </a>
                         </li>
-                        <li class="dropdown">
-                            <a href="#"
-                               class="dropdown-toggle back-a"
-                               data-toggle="dropdown"
-                               role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">
-                                <img src="<?= URL ?>/assets/img/factory.png" width="20"/> GATTI
+                        <li style="display:inline-block!important; float:none!important" class="dropdown">
+                            <a href="#" class="dropdown-toggle back-a" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <img src="<?= URL ?>/assets/img/factory.png" width="20" /> GATTI
                             </a>
                             <ul class="dropdown-menu back-ul">
                                 <li>
@@ -211,32 +201,20 @@ if (isset($_GET['logout'])) {
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown">
-                            <a href="#"
-                               class="dropdown-toggle back-a"
-                               data-toggle="dropdown"
-                               role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">
-                                <img src="<?= URL ?>/assets/img/floor-fan.png" width="20"/> Productos
+                        <li style="display:inline-block!important; float:none!important">
+                            <a href="<?= URL ?>/productos" title="productos">
+                                <img src="<?= URL ?>/assets/img/floor-fan.png" width="20" /> Productos
                             </a>
-                            <ul class="dropdown-menu back-ul">
-                                <li>
-                                    <a href="<?= URL ?>/tienda" title="tienda online">COMPRA ONLINE</a>
-                                </li>
-                                <li>
-                                    <a href="<?= URL ?>/productos" title="productos">FICHAS TÉCNICAS DE PRODUCTO</a>
-                                </li>
-                            </ul>
                         </li>
-                        <li class="dropdown">
-                            <a href="#"
-                               class="dropdown-toggle back-a"
-                               data-toggle="dropdown"
-                               role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">
-                                <img src="<?= URL ?>/assets/img/heart.png" width="20"/> Novedades
+                        <li style="display:inline-block!important; float:none!important">
+                            <a href="<?= URL ?>/tienda" title="tienda online">
+                                <img src="<?= URL ?>/assets/img/carrito.png" width="25" />
+                                Tienda ONLINE
+                            </a>
+                        </li>
+                        <li style="display:inline-block!important; float:none!important" class="dropdown">
+                            <a href="#" class="dropdown-toggle back-a" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <img src="<?= URL ?>/assets/img/heart.png" width="20" /> Novedades
                             </a>
                             <ul class="dropdown-menu back-ul">
                                 <li>
@@ -247,40 +225,40 @@ if (isset($_GET['logout'])) {
                                 </li>
                             </ul>
                         </li>
-                        <li>
+                        <li style="display:inline-block!important; float:none!important">
                             <a title="clientes" href="<?= URL ?>/clientes">
-                                <img alt="clientes" src="<?= URL ?>/assets/img/stick-man.png" width="20"/> Clientes
+                                <img alt="clientes" src="<?= URL ?>/assets/img/stick-man.png" width="20" /> Clientes
                             </a>
                         </li>
-                        <li>
+                        <li style="display:inline-block!important; float:none!important">
                             <a title="alquileres" href="<?= URL ?>/productos?categoria=7b90340746">
-                                <img alt="alquileres" src="<?= URL ?>/assets/img/floor-fan.png" width="20"/> Alquileres
+                                <img alt="alquileres" src="<?= URL ?>/assets/img/floor-fan.png" width="20" /> Alquileres
                             </a>
                         </li>
-                        <li>
+                        <li style="display:inline-block!important; float:none!important">
                             <a title="Sociales" href="<?= URL ?>/feed">
-                                <img alt="feed" src="<?= URL ?>/assets/img/heart.png" width="20"/> Redes Sociales
+                                <img alt="feed" src="<?= URL ?>/assets/img/heart.png" width="20" /> Redes Sociales
                             </a>
                         </li>
-                        <li>
+                        <li style="display:inline-block!important; float:none!important">
                             <a title="contacto" href="<?= URL ?>/contacto">
-                                <img alt="contacto" src="<?= URL ?>/assets/img/speech-bubble.png" width="20"/>
+                                <img alt="contacto" src="<?= URL ?>/assets/img/speech-bubble.png" width="20" />
                             </a>
                         </li>
                         <div class="hidden-md hidden-lg">
-                            <hr/>
+                            <hr />
                             <li class="hidden-md hidden-lg">
                                 <a target="_blank" title="catalogo" href="<?= URL ?>/assets/archivos/Catalogo_Digital.pdf">CATÁLOGO DE LA EMPRESA</a>
                             </li>
-                            <br/>
+                            <br />
                             <li class="hidden-md hidden-lg">
                                 <a target="_blank" title="software" href="<?= URL ?>/c/software">SOFTWARE DE SELECCIÓN DE VENTILADORES</a>
                             </li>
-                            <br/>
+                            <br />
                             <li class="hidden-md hidden-lg">
                                 <a target="_blank" title="archivos" href="<?= URL ?>/assets/archivos/COMO VENTILAR.pdf">GUÍA PARA UNA CORRECTA VENTILACIÓN</a>
                             </li>
-                            <br/>
+                            <br />
                         </div>
                     </ul>
                 </div>

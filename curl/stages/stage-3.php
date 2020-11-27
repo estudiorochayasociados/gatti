@@ -84,8 +84,8 @@ if (!empty($cod)) {
             );
 
             if (!empty($pagosData['data']['leyenda'])) {
-//                $detalleCompleto['leyenda'] = $pagosData['data']['leyenda'];
-                $detalleCompleto['leyenda'] = str_replace(["\n","\r"],"",$pagosData['data']['leyenda']);
+                //                $detalleCompleto['leyenda'] = $pagosData['data']['leyenda'];
+                $detalleCompleto['leyenda'] = str_replace(["\n", "\r"], "", $pagosData['data']['leyenda']);
             }
 
             $carro = $carrito->return();
@@ -139,7 +139,7 @@ if (!empty($cod)) {
             $pedidos->set("usuario", $_SESSION['stages']['user_cod']);
             $pedidos->set("detalle", $detalleCompletoJSON);
             $pedidos->set("fecha", $fecha);
-            $pedidos->set("hub_cod", "");//$hubcod);
+            $pedidos->set("hub_cod", ""); //$hubcod);
             $pedidos->add();
 
             $pedidosData = $pedidos->view();
@@ -242,10 +242,10 @@ if (!empty($cod)) {
                             $response = array("status" => true, "type" => "API", "url" => URL . '/curl/payments/mp.v2.php');
                             echo json_encode($response);
                             break;
-                        //case 3:
-                        //    $response = array("status" => true, "type" => "API", "url" => URL . '/curl/payments/tp.php');
-                        //    echo json_encode($response);
-                        //    break;
+                        case 3:
+                            $response = array("status" => true, "type" => "API", "url" => URL . '/curl/payments/tp.php');
+                            echo json_encode($response);
+                            break;
                         default:
                             $response = array("status" => false, "message" => "[301] Ocurrió un error, recargar la página.");
                             echo json_encode($response);
@@ -275,5 +275,3 @@ if (!empty($cod)) {
     $response = array("status" => false, "message" => "[305] Ocurrió un error, recargar la página.");
     echo json_encode($response);
 }
-
-
